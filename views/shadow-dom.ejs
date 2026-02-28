@@ -1,0 +1,137 @@
+<%# Shadow DOM Page %>
+<div class="page-header">
+  <h2><i class="fas fa-ghost"></i> Shadow DOM</h2>
+  <p>Elements inside Shadow DOM boundaries. Regular CSS/XPath selectors can't cross shadow roots — learn how each tool handles it.</p>
+</div>
+
+<!-- Visual explanation card -->
+<div class="alert alert-info" role="note" data-testid="shadow-dom-info">
+  <i class="fas fa-info-circle"></i>
+  <span>
+    <strong>About Shadow DOM:</strong> Elements inside a shadow root are encapsulated.
+    Playwright uses <code>page.locator('custom-el').locator('inner')</code> or
+    <code>>>></code> combinators. Selenium 4+ uses <code>getShadowRoot()</code>.
+    Cypress uses <code>cy.get('host').shadow().find('inner')</code>.
+  </span>
+</div>
+
+<!-- Shadow host 1 -->
+<div class="card">
+  <div class="card-title">Shadow Host: Login Widget</div>
+  <p class="text-muted mb-2" style="font-size:13px;">The elements below are inside a real shadow root attached to <code>#shadow-host-1</code>.</p>
+  <div id="shadow-host-1" class="shadow-host" data-testid="shadow-host-1"
+       aria-label="Shadow DOM login widget"></div>
+</div>
+
+<!-- Shadow host 2 -->
+<div class="card">
+  <div class="card-title">Shadow Host: Custom Counter</div>
+  <p class="text-muted mb-2" style="font-size:13px;">A counter component rendered completely inside a shadow root.</p>
+  <div id="shadow-host-2" class="shadow-host" data-testid="shadow-host-2"
+       aria-label="Shadow DOM counter"></div>
+</div>
+
+<!-- Shadow host 3 – nested shadow -->
+<div class="card">
+  <div class="card-title">Nested Shadow DOM</div>
+  <p class="text-muted mb-2" style="font-size:13px;">The outer host contains an inner host, creating two shadow root boundaries.</p>
+  <div id="shadow-host-outer" class="shadow-host" data-testid="shadow-host-outer"
+       aria-label="Outer shadow DOM host"></div>
+</div>
+
+
+
+<script>
+// Build Shadow DOM 1 – Login widget
+(function() {
+  const host = document.getElementById('shadow-host-1');
+  if (!host) return;
+  const shadow = host.attachShadow({ mode: 'open' });
+  shadow.innerHTML = `
+    <style>
+      * { box-sizing: border-box; font-family: inherit; }
+      .sw-form { display: flex; flex-direction: column; gap: 10px; max-width: 320px; }
+      .sw-input { padding: 8px 12px; border: 1px solid #c7d2fe; border-radius: 6px; font-size: 14px; width: 100%; }
+      .sw-btn { padding: 9px 20px; background: #4f46e5; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+      .sw-btn:hover { background: #3730a3; }
+      .sw-label { font-size: 13px; font-weight: 600; }
+      .sw-msg { font-size: 13px; color: green; }
+    </style>
+    <form class="sw-form" id="shadow-login-form">
+      <label class="sw-label" for="shadow-input">Shadow Username</label>
+      <input class="sw-input" id="shadow-input" name="shadowUsername"
+             type="text" placeholder="Enter username"
+             data-testid="shadow-input" autocomplete="off" />
+      <label class="sw-label" for="shadow-password">Shadow Password</label>
+      <input class="sw-input" id="shadow-password" name="shadowPassword"
+             type="password" placeholder="Enter password"
+             data-testid="shadow-password" />
+      <button class="sw-btn" id="shadow-login-btn" type="button"
+              data-testid="shadow-login-btn">Sign In (Shadow)</button>
+      <p class="sw-msg" id="shadow-login-msg" style="display:none;">
+        Shadow login triggered!
+      </p>
+    </form>
+  `;
+  shadow.getElementById('shadow-login-btn').addEventListener('click', function() {
+    shadow.getElementById('shadow-login-msg').style.display = 'block';
+  });
+})();
+
+// Build Shadow DOM 2 – Counter
+(function() {
+  const host = document.getElementById('shadow-host-2');
+  if (!host) return;
+  const shadow = host.attachShadow({ mode: 'open' });
+  shadow.innerHTML = `
+    <style>
+      .sc-wrap { display: flex; align-items: center; gap: 16px; }
+      .sc-btn  { width:36px;height:36px;border:1px solid #c7d2fe;border-radius:6px;
+                 background:#eef2ff;cursor:pointer;font-size:20px;display:flex;
+                 align-items:center;justify-content:center; }
+      .sc-count{ font-size: 28px; font-weight: 700; color: #4f46e5; min-width: 48px; text-align:center; }
+    </style>
+    <div class="sc-wrap">
+      <button class="sc-btn" id="shadow-decrement" data-testid="shadow-decrement"
+              aria-label="Decrement shadow counter">−</button>
+      <span class="sc-count" id="shadow-counter-value" data-testid="shadow-counter-value">0</span>
+      <button class="sc-btn" id="shadow-increment" data-testid="shadow-increment"
+              aria-label="Increment shadow counter">+</button>
+    </div>
+  `;
+  let count = 0;
+  function updateCount(val) {
+    count = val;
+    shadow.getElementById('shadow-counter-value').textContent = count;
+  }
+  shadow.getElementById('shadow-increment').addEventListener('click', () => updateCount(count + 1));
+  shadow.getElementById('shadow-decrement').addEventListener('click', () => updateCount(count - 1));
+})();
+
+// Build nested Shadow DOM
+(function() {
+  const outer = document.getElementById('shadow-host-outer');
+  if (!outer) return;
+  const outerShadow = outer.attachShadow({ mode: 'open' });
+  outerShadow.innerHTML = `
+    <style>
+      .os-wrap { border: 2px solid #06b6d4; border-radius: 6px; padding: 16px; }
+      label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; }
+    </style>
+    <div class="os-wrap" id="outer-shadow-content">
+      <label>Outer Shadow Label</label>
+      <div id="inner-shadow-host" data-testid="inner-shadow-host"></div>
+    </div>
+  `;
+  const innerHost = outerShadow.getElementById('inner-shadow-host');
+  const innerShadow = innerHost.attachShadow({ mode: 'open' });
+  innerShadow.innerHTML = `
+    <style>
+      .is-input { padding:8px;border:1px solid #a5b4fc;border-radius:6px;width:100%;font-size:14px; }
+    </style>
+    <p style="font-size:13px;color:#64748b;margin-bottom:6px;">⬇ Inside a nested shadow root</p>
+    <input class="is-input" id="nested-shadow-input" type="text"
+           placeholder="Nested shadow input" data-testid="nested-shadow-input" />
+  `;
+})();
+</script>

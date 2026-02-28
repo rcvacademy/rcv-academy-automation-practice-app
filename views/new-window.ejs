@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Window — Software Testing Mentor & RCV Academy</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 16px;
+    }
+    .nw-card {
+      background: #fff;
+      border: 1px solid #e0e7ff;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(79,70,229,.08);
+    }
+    .nw-icon { font-size: 3rem; color: #4f46e5; margin-bottom: 16px; }
+    .nw-title { font-size: 1.5rem; font-weight: 700; color: #1e1b4b; margin-bottom: 8px; }
+    .nw-subtitle { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+    .nw-attrs { background:#f5f3ff; border-radius:8px; padding:16px; margin-bottom:24px; text-align:left; font-size:13px; }
+    .nw-attrs code { background:#fff; padding:2px 6px; border-radius:4px; border:1px solid #e0e7ff; }
+    .nw-close-btn { background:#4f46e5; color:#fff; border:none; border-radius:8px; padding:10px 24px; cursor:pointer; font-size:15px; transition:background .2s; }
+    .nw-close-btn:hover { background:#4338ca; }
+  </style>
+</head>
+<body>
+  <div class="nw-card">
+    <!-- Icon -->
+    <div class="nw-icon">🪟</div>
+    <h1 id="new-window-heading" data-testid="new-window-heading"
+        class="nw-title" aria-label="New window heading">
+      This is a New Window!
+    </h1>
+    <p id="new-window-subtitle" data-testid="new-window-subtitle"
+       class="nw-subtitle" role="note">
+      This page was opened with <code>window.open()</code> or <code>target="_blank"</code>.
+    </p>
+
+    <!-- Interactive elements to find in this window -->
+    <div style="margin-bottom:20px;">
+      <label style="font-size:13px;font-weight:600;display:block;text-align:left;margin-bottom:4px;"
+             for="new-window-input">Type something:</label>
+      <input type="text" id="new-window-input" name="newWindowInput"
+             data-testid="new-window-input" aria-label="New window text input"
+             placeholder="Hello from new window!"
+             style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;box-sizing:border-box;" />
+      <p id="new-window-echo" data-testid="new-window-echo"
+         style="font-size:13px;color:#6b7280;margin-top:6px;text-align:left;min-height:18px;"></p>
+    </div>
+
+    <button id="new-window-close-btn" data-testid="new-window-close-btn"
+            class="nw-close-btn" role="button" aria-label="Close this window"
+            onclick="window.close()">
+      Close This Window
+    </button>
+    <p id="new-window-timestamp" data-testid="new-window-timestamp"
+       style="font-size:11px;color:#9ca3af;margin-top:16px;"></p>
+  </div>
+
+  <script>
+    document.getElementById('new-window-timestamp').textContent =
+      'Opened at: ' + new Date().toLocaleTimeString();
+
+    document.getElementById('new-window-input').addEventListener('input', function () {
+      document.getElementById('new-window-echo').textContent =
+        this.value ? 'You typed: ' + this.value : '';
+    });
+  </script>
+</body>
+</html>

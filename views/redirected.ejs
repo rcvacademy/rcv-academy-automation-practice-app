@@ -1,0 +1,32 @@
+<%# Redirect landing page — used by redirect-link.ejs %>
+<div class="page-header">
+  <h2><i class="fas fa-check-circle" style="color:#22c55e;"></i> Redirect Successful!</h2>
+  <p>You have been successfully redirected to this page.</p>
+</div>
+
+<div class="card" style="max-width:540px;text-align:center;">
+  <div id="redirect-confirm-box" data-testid="redirect-confirm-box"
+       aria-live="polite" style="padding:32px 16px;">
+    <i class="fas fa-map-marker-alt" style="font-size:3rem;color:#4f46e5;"></i>
+    <h3 id="redirect-heading" data-testid="redirect-heading"
+        style="margin:16px 0 8px;">You Arrived Here via Redirect</h3>
+    <p id="redirect-message" data-testid="redirect-message"
+       class="text-muted" style="font-size:14px;">
+      This page is the destination used to verify redirect navigation.
+      The URL in your browser bar changed from <code>/redirect-link</code>
+      to <code>/redirected</code>.
+    </p>
+    <p id="redirect-timestamp" data-testid="redirect-timestamp"
+       class="text-muted" style="font-size:12px;margin-top:8px;"></p>
+    <a id="back-to-redirects" data-testid="back-to-redirects"
+       href="/redirect-link" class="btn btn-primary" style="margin-top:16px;"
+       aria-label="Go back to redirect examples">
+      <i class="fas fa-arrow-left"></i> Back to Redirect Examples
+    </a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('redirect-timestamp').textContent =
+    'Arrived at: ' + new Date().toLocaleTimeString();
+</script>

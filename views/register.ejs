@@ -1,0 +1,110 @@
+<%# Register Page – rich form with many locatable fields %>
+<div class="page-header">
+  <h2><i class="fas fa-user-plus"></i> Register Page</h2>
+  <p>A full registration form. Practice locating inputs by ID, Name, Type, Placeholder, aria-label, data-testid and more.</p>
+</div>
+
+<% if (typeof message !== 'undefined' && message) { %>
+  <div id="register-message" class="alert alert-<%= message.type === 'success' ? 'success' : 'error' %>" role="alert" data-testid="register-message">
+    <i class="fas fa-check-circle"></i> <%= message.text %>
+  </div>
+<% } %>
+
+<div class="card" id="register-card" style="max-width:560px;">
+  <div class="card-title">Create a New Account</div>
+
+  <form id="register-form" name="registerForm" class="register-form" method="POST" action="/register" data-testid="register-form" novalidate>
+
+    <!-- Full name -->
+    <div class="form-group">
+      <label class="form-label" for="full-name">Full Name</label>
+      <input type="text" id="full-name" name="fullName" class="form-control" placeholder="John Doe"
+             aria-label="Full name" data-testid="fullname-input" required />
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label class="form-label" for="email">Email Address</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com"
+             aria-label="Email address" data-testid="email-input" required />
+    </div>
+
+    <!-- Phone -->
+    <div class="form-group">
+      <label class="form-label" for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" class="form-control" placeholder="+1 555 000 0000"
+             aria-label="Phone number" data-testid="phone-input" />
+    </div>
+
+    <!-- Username -->
+    <div class="form-group">
+      <label class="form-label" for="reg-username">Username</label>
+      <input type="text" id="reg-username" name="username" class="form-control" placeholder="Choose a username"
+             aria-label="Username" data-testid="reg-username-input" required />
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label class="form-label" for="reg-password">Password</label>
+      <input type="password" id="reg-password" name="password" class="form-control" placeholder="Min. 8 characters"
+             aria-label="Password" data-testid="reg-password-input" minlength="8" required />
+    </div>
+
+    <!-- Confirm password -->
+    <div class="form-group">
+      <label class="form-label" for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" name="confirmPassword" class="form-control"
+             placeholder="Re-enter password" aria-label="Confirm password"
+             data-testid="confirm-password-input" required />
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+      <label class="form-label">Gender</label>
+      <div class="radio-group" id="gender-group" role="radiogroup" aria-label="Gender">
+        <label><input type="radio" id="gender-male"   name="gender" value="male"   class="gender-radio" data-testid="gender-male"   /> Male</label>
+        <label><input type="radio" id="gender-female" name="gender" value="female" class="gender-radio" data-testid="gender-female" /> Female</label>
+        <label><input type="radio" id="gender-other"  name="gender" value="other"  class="gender-radio" data-testid="gender-other"  /> Other / Prefer not to say</label>
+      </div>
+    </div>
+
+    <!-- Country dropdown -->
+    <div class="form-group">
+      <label class="form-label" for="country">Country</label>
+      <select id="country" name="country" class="form-control" aria-label="Country" data-testid="country-select">
+        <option value="">-- Select Country --</option>
+        <option value="us">United States</option>
+        <option value="uk">United Kingdom</option>
+        <option value="in">India</option>
+        <option value="ca">Canada</option>
+        <option value="au">Australia</option>
+        <option value="de">Germany</option>
+        <option value="fr">France</option>
+        <option value="jp">Japan</option>
+      </select>
+    </div>
+
+    <!-- Terms checkbox -->
+    <div class="form-group d-flex align-center gap-2">
+      <input type="checkbox" id="terms" name="terms" value="true" data-testid="terms-checkbox" required />
+      <label for="terms" style="font-size:14px;cursor:pointer;">
+        I agree to the <a href="#" id="terms-link">Terms & Conditions</a>
+      </label>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="form-group d-flex align-center gap-2">
+      <input type="checkbox" id="newsletter" name="newsletter" value="true" data-testid="newsletter-checkbox" checked />
+      <label for="newsletter" style="font-size:14px;cursor:pointer;">Subscribe to newsletter</label>
+    </div>
+
+    <button type="submit" id="register-btn" name="registerButton" class="btn btn-primary" style="width:100%;"
+            role="button" data-testid="register-submit" aria-label="Register">
+      <i class="fas fa-user-plus"></i> Create Account
+    </button>
+  </form>
+
+  <div class="mt-3 text-center text-muted">
+    Already have an account? <a href="/login" id="login-link" data-testid="goto-login">Sign in</a>
+  </div>
+</div>

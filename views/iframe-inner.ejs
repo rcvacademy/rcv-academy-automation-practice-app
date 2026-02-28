@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IFrame Content</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0; padding: 16px;
+      background: #f5f3ff;
+      color: #1e1b4b;
+      font-size: 14px;
+    }
+    h3 { margin: 0 0 12px; color: #4f46e5; font-size: 1rem; }
+    .frame-label {
+      display: inline-block;
+      background: #4f46e5; color: #fff;
+      border-radius: 4px; padding: 2px 8px;
+      font-size: 11px; font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: .05em;
+    }
+    .form-row { margin-bottom: 10px; }
+    label { display: block; font-weight: 600; margin-bottom: 3px; font-size: 12px; }
+    input[type=text], input[type=email], select {
+      width: 100%; padding: 7px 10px;
+      border: 1px solid #c7d2fe; border-radius: 6px;
+      font-size: 13px; outline: none;
+      background: #fff;
+    }
+    input:focus, select:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px #e0e7ff; }
+    .btn {
+      background: #4f46e5; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 7px 18px; cursor: pointer;
+      font-size: 13px; transition: background .2s;
+    }
+    .btn:hover { background: #4338ca; }
+    .output-box {
+      background: #fff; border: 1px solid #c7d2fe;
+      border-radius: 6px; padding: 8px 12px;
+      margin-top: 10px; min-height: 32px;
+      font-size: 12px; color: #6b7280;
+    }
+    .counter-row { display:flex; gap:8px; align-items:center; }
+    .cnt-btn { padding:5px 12px; }
+    #iframe-count { font-size:1.3rem; font-weight:700; color:#4f46e5; min-width:32px; text-align:center; }
+  </style>
+</head>
+<body>
+  <%
+    /* Query param frame=1 (default) or frame=2 */
+    var frameNum = query && query.frame ? query.frame : '1';
+  %>
+
+  <div class="frame-label">FRAME <%= frameNum %></div>
+
+  <% if (frameNum === '2') { %>
+    <!-- Frame 2: simple counter -->
+    <h3 id="iframe-heading" data-testid="iframe-heading"
+        aria-label="Frame 2 heading">IFrame Counter Widget</h3>
+
+    <div class="counter-row">
+      <button id="iframe-decrement" data-testid="iframe-decrement"
+              class="btn cnt-btn" aria-label="Decrease counter">−</button>
+      <span id="iframe-count" data-testid="iframe-count"
+            aria-label="Counter value" role="status">0</span>
+      <button id="iframe-increment" data-testid="iframe-increment"
+              class="btn cnt-btn" aria-label="Increase counter">+</button>
+    </div>
+    <p id="iframe-counter-label" data-testid="iframe-counter-label"
+       style="margin-top:8px;font-size:12px;color:#6b7280;">Use the buttons to change the value.</p>
+
+    <script>
+      var n = 0;
+      document.getElementById('iframe-increment').onclick = function () {
+        document.getElementById('iframe-count').textContent = ++n;
+      };
+      document.getElementById('iframe-decrement').onclick = function () {
+        document.getElementById('iframe-count').textContent = --n;
+      };
+    </script>
+
+  <% } else { %>
+    <!-- Frame 1: mini form (default) -->
+    <h3 id="iframe-heading" data-testid="iframe-heading"
+        aria-label="Frame 1 heading">IFrame Mini Form</h3>
+
+    <div class="form-row">
+      <label for="iframe-name-input">Full Name:</label>
+      <input type="text" id="iframe-name-input" name="iframeName"
+             data-testid="iframe-name-input" aria-label="Name inside iframe"
+             placeholder="Jane Doe" />
+    </div>
+    <div class="form-row">
+      <label for="iframe-email-input">Email:</label>
+      <input type="email" id="iframe-email-input" name="iframeEmail"
+             data-testid="iframe-email-input" aria-label="Email inside iframe"
+             placeholder="jane@example.com" />
+    </div>
+    <div class="form-row">
+      <label for="iframe-role-select">Role:</label>
+      <select id="iframe-role-select" name="iframeRole"
+              data-testid="iframe-role-select" aria-label="Role select inside iframe">
+        <option value="">-- Select --</option>
+        <option value="admin">Admin</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+    </div>
+    <button id="iframe-submit-btn" data-testid="iframe-submit-btn"
+            class="btn" aria-label="Submit iframe form"
+            onclick="submitForm()">Submit</button>
+
+    <div id="iframe-output" data-testid="iframe-output"
+         class="output-box" aria-live="polite">Fill the form and click Submit.</div>
+
+    <script>
+      function submitForm() {
+        var name  = document.getElementById('iframe-name-input').value;
+        var email = document.getElementById('iframe-email-input').value;
+        var role  = document.getElementById('iframe-role-select').value;
+        document.getElementById('iframe-output').textContent =
+          (name || email || role)
+            ? '✅ ' + (name || '—') + ' | ' + (email || '—') + ' | ' + (role || '—')
+            : '⚠️ Please fill in at least one field.';
+      }
+    </script>
+  <% } %>
+</body>
+</html>

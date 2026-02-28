@@ -1,0 +1,99 @@
+<%# Login Page – practice locators: ID, Name, Class, CSS, XPath, Role, Placeholder %>
+<div class="page-header">
+  <h2><i class="fas fa-sign-in-alt"></i> Login Page</h2>
+  <p>Practice locating form elements using ID, Name, Class, CSS selector, XPath, Role, Placeholder, and Label locators.</p>
+</div>
+
+<!-- Alert message (visible after form submit) -->
+<% if (typeof message !== 'undefined' && message) { %>
+  <div id="login-message"
+       class="alert alert-<%= message.type === 'success' ? 'success' : 'error' %>"
+       role="alert"
+       data-testid="login-message">
+    <i class="fas fa-<%= message.type === 'success' ? 'check-circle' : 'exclamation-circle' %>"></i>
+    <span><%= message.text %></span>
+  </div>
+<% } %>
+
+<div class="card" id="login-card" style="max-width:480px;">
+  <div class="card-title">Sign In to Your Account</div>
+
+  <!-- The form itself has many locator-friendly attributes -->
+  <form id="login-form"
+        name="loginForm"
+        class="login-form"
+        method="POST"
+        action="/login"
+        aria-label="Login form"
+        data-testid="login-form"
+        novalidate>
+
+    <!-- Username field -->
+    <div class="form-group" id="username-group">
+      <label class="form-label" for="username" id="username-label">
+        <i class="fas fa-user"></i> Username
+      </label>
+      <input type="text"
+             id="username"
+             name="username"
+             class="form-control"
+             placeholder="Enter your username"
+             aria-label="Username"
+             aria-required="true"
+             data-testid="username-input"
+             autocomplete="username"
+             required />
+      <div class="invalid-feedback" id="username-error">Please enter your username.</div>
+    </div>
+
+    <!-- Password field -->
+    <div class="form-group" id="password-group">
+      <label class="form-label" for="password" id="password-label">
+        <i class="fas fa-lock"></i> Password
+      </label>
+      <input type="password"
+             id="password"
+             name="password"
+             class="form-control"
+             placeholder="Enter your password"
+             aria-label="Password"
+             aria-required="true"
+             data-testid="password-input"
+             autocomplete="current-password"
+             required />
+      <div class="invalid-feedback" id="password-error">Please enter your password.</div>
+      <p class="form-text">Hint: use <strong>admin</strong> / <strong>password</strong></p>
+    </div>
+
+    <!-- Remember me checkbox -->
+    <div class="form-group d-flex align-center gap-2" id="remember-group">
+      <input type="checkbox"
+             id="remember-me"
+             name="rememberMe"
+             class="remember-checkbox"
+             value="true"
+             data-testid="remember-me" />
+      <label for="remember-me" style="cursor:pointer;font-size:14px;">Remember me</label>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit"
+            id="login-btn"
+            name="loginButton"
+            class="btn btn-primary"
+            style="width:100%;"
+            role="button"
+            data-testid="login-submit"
+            aria-label="Sign in">
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </button>
+  </form>
+
+  <div class="mt-3 text-center text-muted">
+    Don't have an account?
+    <a href="/register" id="register-link" class="register-link" data-testid="goto-register">
+      Register here
+    </a>
+  </div>
+</div>
+

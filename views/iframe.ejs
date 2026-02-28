@@ -1,0 +1,45 @@
+<%# IFrame Page %>
+<div class="page-header">
+  <h2><i class="fas fa-window-restore"></i> IFrame</h2>
+  <p>Interact with elements inside <code>&lt;iframe&gt;</code> elements. Practice switching frames in Selenium, Playwright, and Cypress.</p>
+</div>
+
+<div class="alert alert-info" role="note">
+  <i class="fas fa-info-circle"></i>
+  Each coloured box below is an <code>&lt;iframe&gt;</code>. Elements inside a frame are not directly accessible without first switching into the frame context.
+</div>
+
+<!-- Internal iframe -->
+<div class="card iframe-demo">
+  <div class="card-title">Internal Page IFrame</div>
+  <p class="text-muted mb-2" style="font-size:13px;">
+    This iframe loads <code>/iframe-inner</code> — a page served by this same app.
+  </p>
+  <iframe id="internal-iframe"
+          src="/iframe-inner"
+          title="Internal iframe demo"
+          name="internalFrame"
+          data-testid="internal-iframe"
+          aria-label="Internal iframe">
+  </iframe>
+</div>
+
+<!-- Nested / multiple iframes -->
+<div class="card">
+  <div class="card-title">Multiple IFrames Side by Side</div>
+  <p class="text-muted mb-2" style="font-size:13px;">Two iframes on the same page — switch between them by ID or index.</p>
+  <div class="d-flex gap-3 flex-wrap iframe-demo">
+    <iframe id="iframe-frame-1" name="frame1"
+            src="/iframe-inner?frame=1"
+            title="IFrame 1" data-testid="iframe-frame-1"
+            aria-label="IFrame 1"
+            style="flex:1;min-width:200px;"></iframe>
+    <iframe id="iframe-frame-2" name="frame2"
+            src="/iframe-inner?frame=2"
+            title="IFrame 2" data-testid="iframe-frame-2"
+            aria-label="IFrame 2"
+            style="flex:1;min-width:200px;"></iframe>
+  </div>
+</div>
+
+

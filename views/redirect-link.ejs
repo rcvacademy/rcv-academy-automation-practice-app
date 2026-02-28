@@ -1,0 +1,96 @@
+<%# Redirect Link Page %>
+<div class="page-header">
+  <h2><i class="fas fa-external-link-alt"></i> Redirect Link</h2>
+  <p>Practice following redirects and verifying the destination URL. Links may redirect immediately, after a delay, or through multiple hops.</p>
+</div>
+
+<!-- Basic redirect -->
+<div class="card">
+  <div class="card-title">Immediate Redirect</div>
+  <p class="text-muted mb-3" style="font-size:13px;">Clicking this link navigates to <code>/redirected</code> — a separate page with its own content.</p>
+  <a href="/redirected" id="redirect-link-basic" class="btn btn-primary redirect-link"
+     target="_blank" rel="noopener noreferrer"
+     data-testid="redirect-link-basic" aria-label="Follow redirect to target page">
+    <i class="fas fa-arrow-right"></i> Go to Redirect Target
+  </a>
+</div>
+
+<!-- Delayed redirect via JS -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Delayed Redirect (3 s countdown)</div>
+  <p class="text-muted mb-3" style="font-size:13px;">After clicking, the page redirects automatically after 3 seconds.</p>
+  <button id="delayed-redirect-btn" class="btn btn-warning"
+          data-testid="delayed-redirect-btn" aria-label="Start delayed redirect">
+    <i class="fas fa-clock"></i> Start Delayed Redirect
+  </button>
+  <p id="redirect-countdown" class="mt-2 text-muted" data-testid="redirect-countdown"
+     style="font-size:14px;"></p>
+</div>
+
+<!-- Open-in-new-tab links -->
+<div class="card">
+  <div class="card-title">Open in New Tab</div>
+  <p class="text-muted mb-2" style="font-size:13px;">These links open in a new browser tab (<code>target="_blank"</code>).</p>
+  <div class="d-flex gap-2 flex-wrap">
+    <a href="/redirected" target="_blank" rel="noopener noreferrer"
+       id="new-tab-link-1" class="btn btn-outline new-tab-link"
+       data-testid="new-tab-link-1" aria-label="Open redirect page in new tab">
+      <i class="fas fa-external-link-alt"></i> New Tab (internal)
+    </a>
+    <a href="https://example.com" target="_blank" rel="noopener noreferrer"
+       id="new-tab-external" class="btn btn-outline new-tab-link"
+       data-testid="new-tab-external" aria-label="Open example.com in new tab">
+      <i class="fas fa-external-link-alt"></i> example.com
+    </a>
+  </div>
+</div>
+
+<!-- Status code redirect demo -->
+<div class="card">
+  <div class="card-title">Links to Practice Following</div>
+  <table class="data-table" id="redirect-links-table" data-testid="redirect-links-table">
+    <thead>
+      <tr><th>Link Label</th><th>Description</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr data-testid="redirect-row-1">
+        <td>Home Page</td>
+        <td>Takes you to the home page</td>
+        <td><a href="/" id="link-home" class="btn btn-sm btn-primary redirect-link" data-testid="link-home">Visit</a></td>
+      </tr>
+      <tr data-testid="redirect-row-2">
+        <td>Login Page</td>
+        <td>Navigate to login form</td>
+        <td><a href="/login" id="link-login" class="btn btn-sm btn-primary redirect-link" data-testid="link-login">Visit</a></td>
+      </tr>
+      <tr data-testid="redirect-row-3">
+        <td>Contact Us</td>
+        <td>Navigate to contact form</td>
+        <td><a href="/contact-us" id="link-contact" class="btn btn-sm btn-primary redirect-link" data-testid="link-contact">Visit</a></td>
+      </tr>
+      <tr data-testid="redirect-row-4">
+        <td>Anchor Link</td>
+        <td>Scroll to bottom of this page</td>
+        <td><a href="#bottom-anchor" id="link-anchor" class="btn btn-sm btn-outline redirect-link" data-testid="link-anchor">Visit</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.getElementById('delayed-redirect-btn').addEventListener('click', function () {
+    let seconds = 3;
+    const p = document.getElementById('redirect-countdown');
+    p.textContent = 'Redirecting in ' + seconds + 's…';
+    const iv = setInterval(function () {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(iv);
+        p.textContent = 'Redirecting now…';
+        window.location.href = '/redirected';
+      } else {
+        p.textContent = 'Redirecting in ' + seconds + 's…';
+      }
+    }, 1000);
+  });
+</script>

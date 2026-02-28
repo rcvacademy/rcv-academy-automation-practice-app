@@ -1,0 +1,84 @@
+<%# Sortable Data Tables %>
+<div class="page-header">
+  <h2><i class="fas fa-sort"></i> Sortable Data Tables</h2>
+  <p>Click any column header to sort the table. Practice verifying sort order and locating sort indicators.</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Products — Click Headers to Sort</div>
+  <div class="d-flex align-center gap-2 mb-3" style="flex-wrap:wrap;">
+    <input type="text" id="sort-search" class="form-control" placeholder="Filter products…"
+           aria-label="Filter sortable table" data-testid="sort-search" style="max-width:260px;" />
+    <span id="sort-indicator" class="badge badge-primary" data-testid="sort-indicator">
+      Sorted by: ID ↑
+    </span>
+    <button id="reset-sort-btn" class="btn btn-outline btn-sm"
+            data-testid="reset-sort-btn" aria-label="Reset table sort">Reset Sort</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="data-table" id="sortable-products-table"
+           aria-label="Sortable products table" data-testid="sortable-products-table">
+      <thead id="sort-head">
+        <tr>
+          <th data-sort-col="id"       data-sort-dir="asc"  class="sortable sort-asc"
+              id="sort-col-id"         data-testid="sort-col-id"
+              aria-sort="ascending">
+            ID <i class="fas fa-sort-up sort-icon"></i>
+          </th>
+          <th data-sort-col="name"     data-sort-dir="none" class="sortable"
+              id="sort-col-name"       data-testid="sort-col-name"
+              aria-sort="none">
+            Product Name <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort-col="category" data-sort-dir="none" class="sortable"
+              id="sort-col-category"   data-testid="sort-col-category"
+              aria-sort="none">
+            Category <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort-col="price"    data-sort-dir="none" class="sortable"
+              id="sort-col-price"      data-testid="sort-col-price"
+              aria-sort="none">
+            Price <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort-col="stock"    data-sort-dir="none" class="sortable"
+              id="sort-col-stock"      data-testid="sort-col-stock"
+              aria-sort="none">
+            Stock <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort-col="rating"   data-sort-dir="none" class="sortable"
+              id="sort-col-rating"     data-testid="sort-col-rating"
+              aria-sort="none">
+            Rating <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort-col="instock"  data-sort-dir="none" class="sortable"
+              id="sort-col-instock"    data-testid="sort-col-instock"
+              aria-sort="none">
+            In Stock <i class="fas fa-sort sort-icon"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="sort-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Seed data -->
+<script id="products-seed" type="application/json">
+[
+  {"id":1,  "name":"Wireless Mouse",      "category":"Electronics", "price":29.99, "stock":120, "rating":4.5, "instock":true},
+  {"id":2,  "name":"Mechanical Keyboard", "category":"Electronics", "price":79.99, "stock":45,  "rating":4.8, "instock":true},
+  {"id":3,  "name":"USB-C Hub",           "category":"Electronics", "price":49.99, "stock":200, "rating":4.2, "instock":true},
+  {"id":4,  "name":"Desk Lamp",           "category":"Office",      "price":34.99, "stock":0,   "rating":4.0, "instock":false},
+  {"id":5,  "name":"Notebook A5",         "category":"Stationery",  "price":5.99,  "stock":500, "rating":3.8, "instock":true},
+  {"id":6,  "name":"A4 Printer Paper",    "category":"Stationery",  "price":8.50,  "stock":1200,"rating":4.1, "instock":true},
+  {"id":7,  "name":"Monitor Stand",       "category":"Office",      "price":45.00, "stock":30,  "rating":4.6, "instock":true},
+  {"id":8,  "name":"Webcam HD 1080p",     "category":"Electronics", "price":65.00, "stock":0,   "rating":4.3, "instock":false},
+  {"id":9,  "name":"Ergonomic Chair",     "category":"Furniture",   "price":299.00,"stock":10,  "rating":4.9, "instock":true},
+  {"id":10, "name":"Standing Desk",       "category":"Furniture",   "price":499.00,"stock":5,   "rating":4.7, "instock":true},
+  {"id":11, "name":"Noise-Cancel Headphones","category":"Electronics","price":149.00,"stock":75, "rating":4.6,"instock":true},
+  {"id":12, "name":"Cable Management Kit","category":"Office",      "price":12.99, "stock":300, "rating":4.0, "instock":true}
+]
+</script>
+
+

@@ -1,0 +1,260 @@
+<%# Context Menu Page %>
+<div class="page-header">
+  <h2><i class="fas fa-mouse-pointer"></i> Context Menu</h2>
+  <p>Right-click on a text item to trigger the custom context menu. Use Copy, Cut, Edit, Paste, and Delete to move text between columns.</p>
+</div>
+
+<div class="d-flex gap-3 flex-wrap">
+
+  <!-- Source column: right-click items here -->
+  <div class="card" style="flex:1;min-width:320px;">
+    <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
+      <span><i class="fas fa-list"></i> Source Items — Right-Click to Act</span>
+      <button id="ctx-reset-btn" class="btn btn-outline btn-sm" data-testid="ctx-reset-btn" aria-label="Reset source items to original state">
+        <i class="fas fa-undo"></i> Reset
+      </button>
+    </div>
+    <div id="context-target" class="context-target"
+         data-testid="context-target" aria-label="Right-click area"
+         role="region" style="padding:12px;text-align:left;">
+      <p class="text-muted mb-2" style="font-size:12px;">Right-click any item below to Copy, Cut, Edit, or Delete it. Then Paste into the target column.</p>
+      <div id="ctx-source-list" data-testid="ctx-source-list">
+        <div class="ctx-text-item" id="ctx-text-1" data-testid="ctx-text-1" data-value="Project Proposal.docx"
+             style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:context-menu;display:flex;align-items:center;gap:10px;background:#fff;transition:all .2s;">
+          <i class="fas fa-file-alt" style="color:var(--primary);font-size:16px;"></i>
+          <span class="ctx-item-text">Project Proposal.docx</span>
+        </div>
+        <div class="ctx-text-item" id="ctx-text-2" data-testid="ctx-text-2" data-value="Banner_Design_v3.png"
+             style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:context-menu;display:flex;align-items:center;gap:10px;background:#fff;transition:all .2s;">
+          <i class="fas fa-image" style="color:var(--success);font-size:16px;"></i>
+          <span class="ctx-item-text">Banner_Design_v3.png</span>
+        </div>
+        <div class="ctx-text-item" id="ctx-text-3" data-testid="ctx-text-3" data-value="Q4_Financial_Report.xlsx"
+             style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:context-menu;display:flex;align-items:center;gap:10px;background:#fff;transition:all .2s;">
+          <i class="fas fa-table" style="color:var(--accent);font-size:16px;"></i>
+          <span class="ctx-item-text">Q4_Financial_Report.xlsx</span>
+        </div>
+        <div class="ctx-text-item" id="ctx-text-4" data-testid="ctx-text-4" data-value="app_config.json"
+             style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:context-menu;display:flex;align-items:center;gap:10px;background:#fff;transition:all .2s;">
+          <i class="fas fa-code" style="color:var(--warning);font-size:16px;"></i>
+          <span class="ctx-item-text">app_config.json</span>
+        </div>
+        <div class="ctx-text-item" id="ctx-text-5" data-testid="ctx-text-5" data-value="User_Manual_v2.1.pdf"
+             style="padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:context-menu;display:flex;align-items:center;gap:10px;background:#fff;transition:all .2s;">
+          <i class="fas fa-file-pdf" style="color:var(--danger);font-size:16px;"></i>
+          <span class="ctx-item-text">User_Manual_v2.1.pdf</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Target column: pasted / moved items appear here -->
+  <div class="card" style="flex:1;min-width:320px;">
+    <div class="card-title"><i class="fas fa-clipboard"></i> Target — Paste Items Here</div>
+    <div id="ctx-target-area" data-testid="ctx-target-area"
+         style="min-height:200px;border:2px dashed var(--border);border-radius:var(--radius);padding:16px;background:#fafafa;transition:all .2s;"
+         role="region" aria-label="Paste target area">
+      <p id="ctx-target-placeholder" class="text-muted" style="text-align:center;margin-top:40px;font-size:13px;">
+        <i class="fas fa-clipboard" style="font-size:24px;display:block;margin-bottom:8px;color:var(--border);"></i>
+        Right-click a source item, then choose <strong>Paste</strong> here.
+      </p>
+      <div id="ctx-target-list" data-testid="ctx-target-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Custom context menu DOM (hidden, positioned by JS) -->
+<div id="custom-context-menu" role="menu" aria-label="Custom context menu"
+     data-testid="custom-context-menu">
+  <div class="ctx-menu-item" id="ctx-copy" role="menuitem" data-testid="ctx-copy"
+       data-action="copy" aria-label="Copy">
+    <i class="fas fa-copy"></i> Copy
+  </div>
+  <div class="ctx-menu-item" id="ctx-cut" role="menuitem" data-testid="ctx-cut"
+       data-action="cut" aria-label="Cut">
+    <i class="fas fa-cut"></i> Cut
+  </div>
+  <div class="ctx-menu-item" id="ctx-edit" role="menuitem" data-testid="ctx-edit"
+       data-action="edit" aria-label="Edit">
+    <i class="fas fa-edit"></i> Edit
+  </div>
+  <div class="ctx-divider"></div>
+  <div class="ctx-menu-item" id="ctx-paste" role="menuitem" data-testid="ctx-paste"
+       data-action="paste" aria-label="Paste">
+    <i class="fas fa-paste"></i> Paste
+  </div>
+  <div class="ctx-divider"></div>
+  <div class="ctx-menu-item" id="ctx-delete" role="menuitem" data-testid="ctx-delete"
+       data-action="delete" aria-label="Delete" style="color:var(--danger);">
+    <i class="fas fa-trash"></i> Delete
+  </div>
+  <div class="ctx-divider"></div>
+  <div class="ctx-menu-item" id="ctx-inspect" role="menuitem" data-testid="ctx-inspect"
+       data-action="inspect" aria-label="Inspect element">
+    <i class="fas fa-binoculars"></i> Inspect
+  </div>
+</div>
+
+<div id="ctx-action-result" class="card mt-3" data-testid="ctx-action-result"
+     style="min-height:60px;">
+  <div class="card-title">Last Action</div>
+  <p id="ctx-result-text" class="text-muted" data-testid="ctx-result-text" style="font-size:14px;">
+    No action taken yet. Right-click an item above.
+  </p>
+</div>
+
+
+
+<script>
+(function () {
+  var target     = document.getElementById('context-target');
+  var targetArea = document.getElementById('ctx-target-area');
+  var targetList = document.getElementById('ctx-target-list');
+  var placeholder = document.getElementById('ctx-target-placeholder');
+  var menu       = document.getElementById('custom-context-menu');
+  var result     = document.getElementById('ctx-result-text');
+
+  var clipboard      = null;   // { text, mode: 'copy'|'cut', sourceEl }
+  var rightClickedEl = null;   // the .ctx-text-item that was right-clicked
+
+  // Store original source HTML for reset
+  var sourceList      = document.getElementById('ctx-source-list');
+  var originalSourceHTML = sourceList.innerHTML;
+
+  // ── Show context menu on right-click ──
+  target.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    var item = e.target.closest('.ctx-text-item');
+    rightClickedEl = item || null;
+
+    // Enable / disable items based on context
+    document.getElementById('ctx-copy').style.opacity   = item ? '1' : '0.4';
+    document.getElementById('ctx-cut').style.opacity     = item ? '1' : '0.4';
+    document.getElementById('ctx-edit').style.opacity    = item ? '1' : '0.4';
+    document.getElementById('ctx-delete').style.opacity  = item ? '1' : '0.4';
+    document.getElementById('ctx-paste').style.opacity   = clipboard ? '1' : '0.4';
+
+    // Highlight the right-clicked item
+    target.querySelectorAll('.ctx-text-item').forEach(function (el) {
+      el.style.background = '#fff';
+    });
+    if (item) item.style.background = 'var(--primary-light)';
+
+    menu.style.left = e.clientX + 'px';
+    menu.style.top  = e.clientY + 'px';
+    menu.style.display = 'block';
+  });
+
+  // Also allow right-click on the target area to paste
+  targetArea.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    rightClickedEl = null;
+    document.getElementById('ctx-copy').style.opacity   = '0.4';
+    document.getElementById('ctx-cut').style.opacity     = '0.4';
+    document.getElementById('ctx-edit').style.opacity    = '0.4';
+    document.getElementById('ctx-delete').style.opacity  = '0.4';
+    document.getElementById('ctx-paste').style.opacity   = clipboard ? '1' : '0.4';
+
+    menu.style.left = e.clientX + 'px';
+    menu.style.top  = e.clientY + 'px';
+    menu.style.display = 'block';
+  });
+
+  // Close menu on any click
+  document.addEventListener('click', function () {
+    menu.style.display = 'none';
+  });
+
+  // ── Helper: add item to target list ──
+  function addToTarget(text) {
+    if (placeholder) placeholder.style.display = 'none';
+    var div = document.createElement('div');
+    div.className = 'ctx-pasted-item';
+    div.setAttribute('data-testid', 'ctx-pasted-item');
+    div.style.cssText = 'padding:9px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;display:flex;align-items:center;gap:10px;background:#fff;font-size:13.5px;animation:slideIn .25s ease;';
+    div.innerHTML = '<i class="fas fa-file" style="color:var(--primary);"></i>' +
+                    '<span>' + text + '</span>' +
+                    '<button class="ctx-remove-btn" aria-label="Remove item" style="margin-left:auto;background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px;" data-testid="ctx-remove-pasted"><i class="fas fa-times"></i></button>';
+    div.querySelector('.ctx-remove-btn').addEventListener('click', function () {
+      div.remove();
+      if (!targetList.children.length && placeholder) placeholder.style.display = '';
+    });
+    targetList.appendChild(div);
+  }
+
+  // ── Handle context menu actions ──
+  menu.querySelectorAll('.ctx-menu-item').forEach(function (menuItem) {
+    menuItem.addEventListener('click', function () {
+      var action = menuItem.getAttribute('data-action');
+
+      if (action === 'copy' && rightClickedEl) {
+        clipboard = { text: rightClickedEl.getAttribute('data-value'), mode: 'copy', sourceEl: rightClickedEl };
+        rightClickedEl.style.background = '#dbeafe';
+        setTimeout(function () { rightClickedEl.style.background = '#fff'; }, 600);
+        result.innerHTML = '📋 <strong>Copied:</strong> "' + clipboard.text + '" — now right-click the target area and choose Paste.';
+      }
+      else if (action === 'cut' && rightClickedEl) {
+        clipboard = { text: rightClickedEl.getAttribute('data-value'), mode: 'cut', sourceEl: rightClickedEl };
+        rightClickedEl.style.opacity = '0.4';
+        rightClickedEl.style.textDecoration = 'line-through';
+        result.innerHTML = '✂️ <strong>Cut:</strong> "' + clipboard.text + '" — now right-click the target area and choose Paste.';
+      }
+      else if (action === 'edit' && rightClickedEl) {
+        var currentText = rightClickedEl.getAttribute('data-value');
+        var newText = prompt('Edit the text:', currentText);
+        if (newText !== null && newText.trim() !== '') {
+          rightClickedEl.setAttribute('data-value', newText.trim());
+          rightClickedEl.querySelector('.ctx-item-text').textContent = newText.trim();
+          rightClickedEl.style.background = '#fef9c3';
+          setTimeout(function () { rightClickedEl.style.background = '#fff'; }, 800);
+          result.innerHTML = '✏️ <strong>Edited:</strong> "' + currentText + '" → "' + newText.trim() + '"';
+        }
+      }
+      else if (action === 'paste' && clipboard) {
+        addToTarget(clipboard.text);
+        if (clipboard.mode === 'cut' && clipboard.sourceEl) {
+          clipboard.sourceEl.remove();
+        }
+        result.innerHTML = '📌 <strong>Pasted:</strong> "' + clipboard.text + '" into the target column.';
+        if (clipboard.mode === 'cut') clipboard = null; // one-time for cut
+      }
+      else if (action === 'delete' && rightClickedEl) {
+        var delText = rightClickedEl.getAttribute('data-value');
+        rightClickedEl.style.opacity = '0';
+        rightClickedEl.style.transform = 'translateX(-20px)';
+        setTimeout(function () { rightClickedEl.remove(); }, 250);
+        result.innerHTML = '🗑️ <strong>Deleted:</strong> "' + delText + '"';
+        if (clipboard && clipboard.sourceEl === rightClickedEl) clipboard = null;
+      }
+      else if (action === 'inspect' && rightClickedEl) {
+        var tag = rightClickedEl.tagName.toLowerCase();
+        var id  = rightClickedEl.id;
+        var cls = rightClickedEl.className;
+        result.innerHTML = '🔍 <strong>Inspect:</strong> &lt;' + tag + ' id="' + id + '" class="' + cls + '"&gt; — data-value="' + rightClickedEl.getAttribute('data-value') + '"';
+      }
+      else if (!rightClickedEl && action !== 'paste') {
+        result.innerHTML = '⚠️ No item selected. Right-click on a source item first.';
+      }
+      else if (action === 'paste' && !clipboard) {
+        result.innerHTML = '⚠️ Clipboard is empty. Copy or Cut an item first.';
+      }
+
+      rightClickedEl = null;
+    });
+  });
+
+  // ── Reset button ──
+  document.getElementById('ctx-reset-btn').addEventListener('click', function () {
+    // Restore source items to original state
+    sourceList.innerHTML = originalSourceHTML;
+    // Clear target list
+    targetList.innerHTML = '';
+    if (placeholder) placeholder.style.display = '';
+    // Clear clipboard
+    clipboard = null;
+    rightClickedEl = null;
+    result.innerHTML = '🔄 <strong>Reset:</strong> All items restored to their original state.';
+  });
+})();
+</script>

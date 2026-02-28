@@ -1,0 +1,68 @@
+<%# File Upload Page %>
+<div class="page-header">
+  <h2><i class="fas fa-upload"></i> File Upload</h2>
+  <p>Practice locating file input elements, drag-and-drop upload zones, and upload result messages.</p>
+</div>
+
+<% if (typeof uploadedFile !== 'undefined' && uploadedFile) { %>
+  <div id="upload-success" class="alert alert-success" role="alert" data-testid="upload-success">
+    <i class="fas fa-check-circle"></i>
+    File "<strong><%= uploadedFile %></strong>" uploaded successfully!
+  </div>
+<% } %>
+
+<!-- Standard file input -->
+<div class="card" style="max-width:560px;">
+  <div class="card-title">Standard File Upload</div>
+  <form id="upload-form" method="POST" action="/file-upload"
+        enctype="multipart/form-data" data-testid="upload-form">
+
+    <div class="form-group">
+      <label class="form-label" for="uploadFile">Choose a file</label>
+      <input type="file" id="uploadFile" name="uploadFile"
+             class="form-control" accept="*/*"
+             aria-label="Choose file to upload"
+             data-testid="file-input" />
+      <p class="form-text">Any file type accepted (for demo purposes).</p>
+    </div>
+
+    <button type="submit" id="upload-btn" class="btn btn-primary"
+            data-testid="upload-btn" aria-label="Upload file">
+      <i class="fas fa-upload"></i> Upload
+    </button>
+  </form>
+</div>
+
+<!-- Drag-and-drop upload zone -->
+<div class="card" style="max-width:560px;">
+  <div class="card-title">Drag &amp; Drop Upload Zone</div>
+  <div class="file-drop-zone" id="drop-zone"
+       data-testid="drop-zone" role="region" aria-label="File drop zone"
+       tabindex="0">
+    <input type="file" id="drop-zone-input" data-testid="drop-zone-input"
+           aria-label="Hidden file input for drop zone" multiple />
+    <div class="file-drop-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+    <p style="font-size:14px;font-weight:600;">Drag files here or <span style="color:var(--primary);cursor:pointer;" id="browse-link">browse</span></p>
+    <p class="text-muted" style="font-size:12px;">Supports any file type</p>
+  </div>
+  <div id="dropped-files-list" class="mt-2" data-testid="dropped-files-list" style="font-size:13px;"></div>
+</div>
+
+<!-- Multiple files -->
+<div class="card" style="max-width:560px;">
+  <div class="card-title">Multiple File Upload</div>
+  <form id="multi-upload-form" data-testid="multi-upload-form">
+    <div class="form-group">
+      <label class="form-label" for="multi-file-input">Select multiple files</label>
+      <input type="file" id="multi-file-input" name="files"
+             class="form-control" multiple
+             aria-label="Select multiple files"
+             data-testid="multi-file-input" />
+    </div>
+    <div id="multi-file-preview" data-testid="multi-file-preview" style="font-size:13px;"></div>
+    <button type="button" id="clear-files-btn" class="btn btn-outline btn-sm mt-2"
+            data-testid="clear-files-btn">Clear</button>
+  </form>
+</div>
+
+

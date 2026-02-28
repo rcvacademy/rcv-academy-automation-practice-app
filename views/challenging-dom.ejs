@@ -1,0 +1,71 @@
+<%# Challenging DOM Page – dynamic IDs, deeply nested elements, obfuscated markup %>
+<div class="page-header">
+  <h2><i class="fas fa-puzzle-piece"></i> Challenging DOM</h2>
+  <p>Elements with dynamic IDs, obfuscated class names, nested structures, and changing content. Practice robust XPath and CSS strategies.</p>
+</div>
+
+<!-- Buttons with randomised IDs (regenerated on load by JS) -->
+<div class="card">
+  <div class="card-title">Buttons with Dynamic IDs</div>
+  <p class="text-muted mb-2" style="font-size:13px;">The button IDs change on every page reload. Use stable locators instead.</p>
+  <div class="d-flex gap-2 flex-wrap" id="dynamic-btn-group" data-testid="dynamic-btn-group">
+    <!-- Rendered by JS with random IDs -->
+  </div>
+  <p id="dynamic-btn-result" class="mt-2 text-muted" data-testid="dynamic-btn-result" style="font-size:13px;"></p>
+</div>
+
+<!-- Table with challenging row structure -->
+<div class="card">
+  <div class="card-title">Table with Tricky Row/Column Access</div>
+  <div class="table-wrapper">
+    <table class="data-table challenging-table" id="challenging-table"
+           data-testid="challenging-table" aria-label="Challenging data table">
+      <thead>
+        <tr>
+          <th>Lorem</th><th>Ipsum</th><th>Dolor</th><th>Sit</th><th>Amet</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="challenging-tbody">
+        <!-- Rows created by JS -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Deeply nested element -->
+<div class="card" id="outer-wrapper">
+  <div class="card-title">Deeply Nested Element</div>
+  <div id="level-1" class="nest-level" data-depth="1">
+    <div id="level-2" class="nest-level" data-depth="2">
+      <div id="level-3" class="nest-level" data-depth="3">
+        <div id="level-4" class="nest-level" data-depth="4">
+          <span id="deep-target" class="deep-text" data-testid="deep-target">
+            🎯 Found the deep target!
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Elements that look similar / repeated -->
+<div class="card">
+  <div class="card-title">Repeated Similar Elements</div>
+  <p class="text-muted mb-2" style="font-size:13px;">All items share the same class. Distinguish them by index, text, or data attributes.</p>
+  <ul id="similar-items" data-testid="similar-items" style="display:flex;flex-direction:column;gap:8px;">
+    <% ['First Item','Second Item','Third Item','Fourth Item','Fifth Item'].forEach(function(txt, i){ %>
+      <li class="similar-item" data-index="<%= i+1 %>"
+          id="similar-item-<%= i+1 %>" data-testid="similar-item-<%= i+1 %>">
+        <%= txt %>
+        <button class="btn btn-sm btn-outline similar-edit-btn"
+                data-index="<%= i+1 %>"
+                aria-label="Edit <%= txt %>">Edit</button>
+        <button class="btn btn-sm btn-danger similar-delete-btn"
+                data-index="<%= i+1 %>"
+                aria-label="Delete <%= txt %>">Delete</button>
+      </li>
+    <% }); %>
+  </ul>
+</div>
+
+

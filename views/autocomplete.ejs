@@ -1,0 +1,75 @@
+<%# Autocomplete Page %>
+<div class="page-header">
+  <h2><i class="fas fa-search"></i> Autocomplete</h2>
+  <p>Type-ahead / autocomplete input widgets. Practice locating suggestion lists, highlight highlights, and selection events.</p>
+</div>
+
+<!-- Country autocomplete -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Country Search</div>
+  <div class="autocomplete-wrapper" id="country-ac-wrapper">
+    <label class="form-label" for="country-ac-input">Start typing a country name:</label>
+    <input type="text" id="country-ac-input" class="form-control" name="countrySearch"
+           placeholder="e.g. United…" autocomplete="off"
+           aria-label="Country autocomplete" aria-autocomplete="list"
+           aria-controls="country-ac-list" aria-expanded="false"
+           data-testid="country-ac-input" role="combobox" />
+    <ul id="country-ac-list" class="autocomplete-list" data-testid="country-ac-list"
+        role="listbox" aria-label="Country suggestions"></ul>
+    <input type="hidden" id="country-ac-value" name="countryValue" data-testid="country-ac-value" />
+    <p id="country-ac-result" class="form-text mt-1" data-testid="country-ac-result"></p>
+  </div>
+</div>
+
+<!-- Technology autocomplete (jQuery UI) -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Technology Search (jQuery UI Autocomplete)</div>
+  <div id="tech-ac-wrapper">
+    <label class="form-label" for="tech-ac-input">Search technologies:</label>
+    <input type="text" id="tech-ac-input" class="form-control" name="techSearch"
+           placeholder="e.g. Java…" autocomplete="off"
+           aria-label="Technology autocomplete"
+           data-testid="tech-ac-input" />
+    <p id="tech-ac-result" class="form-text mt-1" data-testid="tech-ac-result"></p>
+  </div>
+</div>
+
+<!-- Multi-tag input -->
+<div class="card" style="max-width:560px;">
+  <div class="card-title">Multi-tag Input</div>
+  <p class="text-muted mb-2" style="font-size:13px;">Type and press Enter or comma to add a tag. Click × to remove.</p>
+  <div id="tag-input-wrapper" style="border:1px solid var(--border);border-radius:var(--radius);
+       padding:6px;display:flex;flex-wrap:wrap;gap:6px;min-height:46px;background:#fff;"
+       data-testid="tag-input-wrapper">
+    <div id="tag-list" class="d-flex gap-2 flex-wrap" data-testid="tag-list"></div>
+    <input type="text" id="tag-input" class="form-control"
+           style="border:none;padding:4px;flex:1;min-width:120px;outline:none;"
+           placeholder="Add a tag…" data-testid="tag-input" aria-label="Add tag" />
+  </div>
+  <input type="hidden" id="tags-hidden" name="tags" data-testid="tags-hidden" value="" />
+  <p id="tag-count" class="form-text mt-1" data-testid="tag-count">0 tags added</p>
+</div>
+
+<!-- Seed data for JS -->
+<script id="country-list" type="application/json">
+["Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia",
+ "Austria","Azerbaijan","Bangladesh","Belgium","Bolivia","Bosnia","Brazil","Bulgaria",
+ "Cambodia","Canada","Chile","China","Colombia","Costa Rica","Croatia","Cuba","Cyprus",
+ "Czech Republic","Denmark","Ecuador","Egypt","Estonia","Ethiopia","Finland","France",
+ "Germany","Ghana","Greece","Guatemala","Honduras","Hungary","Iceland","India",
+ "Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan",
+ "Kazakhstan","Kenya","South Korea","Kuwait","Latvia","Lebanon","Lithuania","Luxembourg",
+ "Malaysia","Mexico","Morocco","Netherlands","New Zealand","Nigeria","Norway","Pakistan",
+ "Panama","Peru","Philippines","Poland","Portugal","Romania","Russia","Saudi Arabia",
+ "Serbia","Singapore","South Africa","Spain","Sri Lanka","Sweden","Switzerland","Syria",
+ "Taiwan","Thailand","Turkey","Ukraine","United Arab Emirates","United Kingdom",
+ "United States","Uruguay","Venezuela","Vietnam","Zimbabwe"]
+</script>
+<script id="tech-list" type="application/json">
+["Angular","Apollo GraphQL","Backbone.js","Bootstrap","C#","C++","Cypress",
+ "Django","Docker","Ember.js","Express.js","Flask","Go","GraphQL","Java",
+ "JavaScript","Jest","jQuery","Kubernetes","Laravel","MongoDB","MySQL","Next.js",
+ "Node.js","NumPy","PHP","Playwright","PostgreSQL","Python","React","Redis",
+ "Ruby on Rails","Rust","Selenium","Spring Boot","SQLite","Svelte","Swift",
+ "TypeScript","Vue.js","WebdriverIO","WordPress"]
+</script>

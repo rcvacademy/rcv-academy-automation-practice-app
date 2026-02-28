@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.*
+
+# Uploaded files (keep folder, ignore contents)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Build output
+dist/
+build/
+
+# Playwright / test artifacts
+.playwright-mcp/
+*.png.tmp
+test-results/
+playwright-report/

@@ -1,0 +1,107 @@
+<%# Tooltips Page %>
+<div class="page-header">
+  <h2><i class="fas fa-info-circle"></i> Tooltips</h2>
+  <p>Multiple tooltip patterns: CSS-only, jQuery UI, aria-describedby, and title attribute. Practice hovering to reveal tooltip text.</p>
+</div>
+
+<!-- CSS-only tooltips (data-tooltip attribute) -->
+<div class="card">
+  <div class="card-title">CSS-Only Tooltips (<code>data-tooltip</code>)</div>
+  <div class="tooltip-demo" id="css-tooltip-group" data-testid="css-tooltip-group">
+    <button id="tooltip-btn-1" class="btn btn-primary"
+            data-tooltip="This is a CSS tooltip on a button"
+            data-testid="tooltip-btn-1" aria-label="Button with CSS tooltip">
+      Hover: Button
+    </button>
+    <span id="tooltip-span-1"
+          data-tooltip="Tooltip on a plain text span"
+          data-testid="tooltip-span-1"
+          style="font-weight:600;cursor:pointer;border-bottom:1px dashed var(--primary);">
+      Hover: Inline Text
+    </span>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='40' viewBox='0 0 60 40'%3E%3Crect width='60' height='40' fill='%234f46e5' rx='8'/%3E%3Ctext x='50%25' y='55%25' fill='white' text-anchor='middle' font-size='10' font-family='Arial'%3EImage%3C/text%3E%3C/svg%3E"
+         id="tooltip-img-1"
+         data-tooltip="Tooltip on an image element"
+         data-testid="tooltip-img-1"
+         alt="Image with tooltip"
+         style="cursor:pointer;border-radius:var(--radius);" />
+  </div>
+</div>
+
+<!-- title attribute tooltips -->
+<div class="card">
+  <div class="card-title">Native <code>title</code> Attribute Tooltips</div>
+  <p class="text-muted mb-3" style="font-size:13px;">
+    The browser renders a native bubble tooltip for elements with the <code>title</code> attribute.
+    Hover slowly to see the native tooltip.
+  </p>
+  <div class="d-flex gap-3 flex-wrap">
+    <button id="title-btn-1" class="btn btn-outline"
+            title="I am a native browser tooltip"
+            data-testid="title-btn-1">Native Tooltip Button</button>
+    <input type="text" id="title-input-1" class="form-control"
+           title="Enter your search query here"
+           placeholder="Title tooltip on input"
+           data-testid="title-input-1"
+           style="max-width:260px;" />
+    <a href="#" id="title-link-1"
+       title="This link has a native tooltip"
+       data-testid="title-link-1">Link with title</a>
+  </div>
+</div>
+
+<!-- jQuery UI tooltips -->
+<div class="card">
+  <div class="card-title">jQuery UI Tooltips</div>
+  <p class="text-muted mb-2" style="font-size:13px;">jQuery UI enhances <code>title</code> attributes into styled popups.</p>
+  <div id="jqui-tooltip-group" data-testid="jqui-tooltip-group" class="d-flex gap-3 flex-wrap">
+    <button id="jqui-tip-1" class="btn btn-primary"
+            title="jQuery UI styled tooltip #1"
+            data-testid="jqui-tip-1">jQuery UI: Button</button>
+    <span id="jqui-tip-2"
+          title="jQuery UI tooltip on a span"
+          data-testid="jqui-tip-2"
+          style="cursor:pointer;font-weight:600;border-bottom:1px dashed;">jQuery UI: Span</span>
+    <input id="jqui-tip-3" type="text" class="form-control"
+           title="Type a username — this field also has a jQuery UI tooltip"
+           placeholder="jQuery UI tooltip on input"
+           data-testid="jqui-tip-3" style="max-width:260px;" />
+  </div>
+</div>
+
+<!-- Aria-describedby tooltip pattern -->
+<div class="card">
+  <div class="card-title">ARIA-Describedby Tooltip</div>
+  <p class="text-muted mb-2" style="font-size:13px;">
+    Accessible tooltip pattern using <code>aria-describedby</code> and a visually-hidden description element.
+  </p>
+  <div style="position:relative;display:inline-block;">
+    <button id="aria-tip-btn" class="btn btn-primary"
+            aria-describedby="aria-tooltip-text"
+            data-testid="aria-tip-btn">
+      Accessible Tooltip Button
+    </button>
+    <span id="aria-tooltip-text" role="tooltip"
+          data-testid="aria-tooltip-text"
+          style="position:absolute;bottom:110%;left:50%;transform:translateX(-50%);
+                 background:var(--text);color:#fff;padding:5px 10px;border-radius:5px;
+                 font-size:12px;white-space:nowrap;opacity:0;transition:.2s;pointer-events:none;">
+      ARIA tooltip — accessible to screen readers
+    </span>
+  </div>
+</div>
+
+<script>
+  // Show/hide ARIA tooltip
+  const ariaBtn = document.getElementById('aria-tip-btn');
+  const ariaTooltip = document.getElementById('aria-tooltip-text');
+  ariaBtn.addEventListener('mouseenter', () => ariaTooltip.style.opacity = '1');
+  ariaBtn.addEventListener('mouseleave', () => ariaTooltip.style.opacity = '0');
+  ariaBtn.addEventListener('focus',      () => ariaTooltip.style.opacity = '1');
+  ariaBtn.addEventListener('blur',       () => ariaTooltip.style.opacity = '0');
+
+  // jQuery UI tooltip  
+  $(function () {
+    $('#jqui-tooltip-group').tooltip();
+  });
+</script>

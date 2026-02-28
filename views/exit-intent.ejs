@@ -1,0 +1,145 @@
+<%# Exit Intent Page %>
+<div class="page-header">
+  <h2><i class="fas fa-sign-out-alt"></i> Exit Intent</h2>
+  <p>Move your mouse cursor above the viewport (towards the browser address bar) to trigger the exit-intent overlay. Practice locating modal elements and dismiss buttons.</p>
+</div>
+
+<div class="alert alert-info" role="note" data-testid="exit-intent-info">
+  <i class="fas fa-info-circle"></i>
+  The exit-intent popup fires when the mouse leaves the top of the page. You can also trigger it manually below.
+</div>
+
+<!-- Trigger controls -->
+<div class="card">
+  <div class="card-title">Manual Triggers</div>
+  <div class="d-flex gap-2 flex-wrap">
+    <button id="show-exit-overlay-btn" class="btn btn-danger"
+            data-testid="show-exit-overlay-btn" aria-label="Show exit intent overlay">
+      <i class="fas fa-sign-out-alt"></i> Show Exit Popup
+    </button>
+    <button id="reset-exit-btn" class="btn btn-outline"
+            data-testid="reset-exit-btn" aria-label="Reset exit intent trigger">
+      <i class="fas fa-redo"></i> Reset Trigger
+    </button>
+  </div>
+  <p id="exit-trigger-state" class="mt-2 text-muted" data-testid="exit-trigger-state"
+     style="font-size:13px;">
+    Trigger state: <strong id="exit-state-text">active</strong>
+  </p>
+</div>
+
+<!-- Result tracking -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Interaction Log</div>
+  <ul id="exit-log" data-testid="exit-log" style="font-size:13px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;">
+    <li class="text-muted">No interactions yet.</li>
+  </ul>
+</div>
+
+<!-- ===== Exit Intent Overlay ===== -->
+<div id="exit-overlay" role="dialog" aria-modal="true"
+     aria-labelledby="exit-modal-title"
+     aria-describedby="exit-modal-desc"
+     data-testid="exit-overlay">
+  <div class="exit-modal" id="exit-modal" data-testid="exit-modal">
+
+    <button id="exit-modal-close" class="exit-close"
+            data-testid="exit-modal-close" aria-label="Close exit intent popup">
+      &times;
+    </button>
+
+    <div style="font-size:48px;margin-bottom:12px;">🚀</div>
+    <h2 id="exit-modal-title">Wait! Don't Leave Yet!</h2>
+    <p id="exit-modal-desc">
+      You're about to leave. Let us offer you something special before you go!
+    </p>
+
+    <div style="background:var(--primary-light);border-radius:var(--radius);
+                padding:12px;margin-bottom:16px;">
+      <p style="font-size:13px;color:var(--primary);font-weight:600;">
+        🎁 Enter code <strong>STAY20</strong> for 20% off!
+      </p>
+    </div>
+
+    <div class="d-flex gap-2" style="justify-content:center;flex-wrap:wrap;">
+      <button id="exit-stay-btn" class="btn btn-primary"
+              data-testid="exit-stay-btn" aria-label="Stay on page and accept offer">
+        <i class="fas fa-heart"></i> I'll Stay!
+      </button>
+      <button id="exit-leave-btn" class="btn btn-outline"
+              data-testid="exit-leave-btn" aria-label="Decline exit offer and leave">
+        No thanks, I'll leave
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay   = document.getElementById('exit-overlay');
+  const log       = document.getElementById('exit-log');
+  let triggered   = false;
+
+  function addLog(msg) {
+    const li = document.createElement('li');
+    li.textContent = new Date().toLocaleTimeString() + ' — ' + msg;
+    if (log.firstElementChild && log.firstElementChild.classList.contains('text-muted')) {
+      log.innerHTML = '';
+    }
+    log.prepend(li);
+  }
+
+  function showOverlay() {
+    overlay.classList.add('show');
+    triggered = true;
+    document.getElementById('exit-state-text').textContent = 'triggered';
+    addLog('Exit intent popup shown');
+  }
+
+  function hideOverlay() {
+    overlay.classList.remove('show');
+  }
+
+  // Mouse-leave-document trigger
+  document.addEventListener('mouseleave', function (e) {
+    if (e.clientY <= 0 && !triggered) {
+      showOverlay();
+    }
+  });
+
+  // Manual trigger
+  document.getElementById('show-exit-overlay-btn').addEventListener('click', showOverlay);
+
+  // Reset
+  document.getElementById('reset-exit-btn').addEventListener('click', function () {
+    triggered = false;
+    document.getElementById('exit-state-text').textContent = 'active';
+    addLog('Trigger reset — will fire again on next mouse-leave');
+  });
+
+  // Close button
+  document.getElementById('exit-modal-close').addEventListener('click', function () {
+    hideOverlay();
+    addLog('Popup closed via × button');
+  });
+
+  // Stay button
+  document.getElementById('exit-stay-btn').addEventListener('click', function () {
+    hideOverlay();
+    addLog('User clicked "I\'ll Stay!" — offer accepted');
+  });
+
+  // Leave button
+  document.getElementById('exit-leave-btn').addEventListener('click', function () {
+    hideOverlay();
+    addLog('User clicked "No thanks, I\'ll leave"');
+    triggered = false;
+  });
+
+  // Click outside modal
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) {
+      hideOverlay();
+      addLog('Popup dismissed by clicking backdrop');
+    }
+  });
+</script>

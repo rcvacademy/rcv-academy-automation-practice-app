@@ -1,0 +1,63 @@
+<%# Checkboxes Page %>
+<div class="page-header">
+  <h2><i class="fas fa-check-square"></i> Checkboxes</h2>
+  <p>Standalone, grouped, indeterminate, and disabled checkboxes. Use CSS, XPath, ID, name, and ARIA strategies.</p>
+</div>
+
+<div class="d-flex gap-3 flex-wrap">
+
+  <!-- Individual checkboxes -->
+  <div class="card" style="min-width:240px;">
+    <div class="card-title">Individual Checkboxes</div>
+    <div class="checkbox-group" id="individual-checks">
+      <label><input type="checkbox" id="chk-1" name="check1" class="single-checkbox" data-testid="chk-1" value="one" />   Option One</label>
+      <label><input type="checkbox" id="chk-2" name="check2" class="single-checkbox" data-testid="chk-2" value="two"   checked /> Option Two (pre-checked)</label>
+      <label><input type="checkbox" id="chk-3" name="check3" class="single-checkbox" data-testid="chk-3" value="three" disabled /> Option Three (disabled)</label>
+      <label><input type="checkbox" id="chk-4" name="check4" class="single-checkbox" data-testid="chk-4" value="four" checked disabled /> Option Four (checked + disabled)</label>
+    </div>
+  </div>
+
+  <!-- Grouped with "Select All" -->
+  <div class="card" style="min-width:260px;">
+    <div class="card-title">Languages (Select All)</div>
+    <div class="checkbox-group" id="lang-group">
+      <label><input type="checkbox" id="chk-all-langs" class="select-all-langs" data-testid="chk-all-langs" /> <strong>Select All</strong></label>
+      <hr style="border-color:var(--border);margin:4px 0;" />
+      <label><input type="checkbox" id="chk-js"     name="lang" value="javascript" class="lang-check" data-testid="chk-js"   /> JavaScript</label>
+      <label><input type="checkbox" id="chk-python" name="lang" value="python"     class="lang-check" data-testid="chk-python" checked /> Python</label>
+      <label><input type="checkbox" id="chk-java"   name="lang" value="java"       class="lang-check" data-testid="chk-java"  /> Java</label>
+      <label><input type="checkbox" id="chk-csharp" name="lang" value="csharp"     class="lang-check" data-testid="chk-csharp"/> C#</label>
+      <label><input type="checkbox" id="chk-go"     name="lang" value="go"         class="lang-check" data-testid="chk-go"   /> Go</label>
+    </div>
+    <p id="lang-result" class="mt-2 text-muted" data-testid="lang-result" style="font-size:12px;"></p>
+  </div>
+
+  <!-- Permissions group -->
+  <div class="card" style="min-width:240px;">
+    <div class="card-title">User Permissions</div>
+    <div class="checkbox-group" id="permissions-group" role="group" aria-label="User permissions">
+      <label><input type="checkbox" id="perm-read"   name="permissions" value="read"   class="perm-check" data-testid="perm-read"   checked /> Can Read</label>
+      <label><input type="checkbox" id="perm-write"  name="permissions" value="write"  class="perm-check" data-testid="perm-write"         /> Can Write</label>
+      <label><input type="checkbox" id="perm-delete" name="permissions" value="delete" class="perm-check" data-testid="perm-delete"        /> Can Delete</label>
+      <label><input type="checkbox" id="perm-admin"  name="permissions" value="admin"  class="perm-check" data-testid="perm-admin"  disabled /> Admin Access</label>
+    </div>
+  </div>
+</div>
+
+<!-- Submit form with checkboxes -->
+<div class="card mt-3" style="max-width:480px;">
+  <div class="card-title">Subscribe to Topics</div>
+  <form id="topics-form" action="#" data-testid="topics-form" aria-label="Topics subscription form">
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="topic-news"  name="topics" value="news"    class="topic-check" data-testid="topic-news"  /> Breaking News</label>
+      <label><input type="checkbox" id="topic-tech"  name="topics" value="tech"    class="topic-check" data-testid="topic-tech"  checked /> Technology</label>
+      <label><input type="checkbox" id="topic-sport" name="topics" value="sports"  class="topic-check" data-testid="topic-sport" /> Sports</label>
+      <label><input type="checkbox" id="topic-finance" name="topics" value="finance" class="topic-check" data-testid="topic-finance" /> Finance</label>
+    </div>
+    <button type="submit" id="subscribe-btn" class="btn btn-primary mt-3 btn-sm"
+            data-testid="subscribe-btn" aria-label="Subscribe">Subscribe</button>
+    <p id="subscribe-result" class="mt-2 text-muted" data-testid="subscribe-result" style="font-size:12px;"></p>
+  </form>
+</div>
+
+

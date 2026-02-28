@@ -1,0 +1,81 @@
+<%# File Downloader Page %>
+<div class="page-header">
+  <h2><i class="fas fa-download"></i> File Downloader</h2>
+  <p>Practice clicking download links and verifying download triggers. Locate by href, role, text, and data attributes.</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Available Downloads</div>
+  <div class="table-wrapper">
+    <table class="data-table" id="downloads-table" aria-label="Download files table" data-testid="downloads-table">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Type</th>
+          <th>Size</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="file-row-1" data-testid="file-row-1">
+          <td><i class="fas fa-file-pdf" style="color:#ef4444;"></i> sample-report.pdf</td>
+          <td><span class="badge badge-danger">PDF</span></td>
+          <td>245 KB</td>
+          <td><a href="/files/sample-report.pdf" id="download-pdf" class="btn btn-sm btn-primary download-link"
+                 download data-testid="download-pdf" aria-label="Download sample PDF">
+            <i class="fas fa-download"></i> Download
+          </a></td>
+        </tr>
+        <tr id="file-row-2" data-testid="file-row-2">
+          <td><i class="fas fa-file-excel" style="color:#22c55e;"></i> data-export.csv</td>
+          <td><span class="badge badge-success">CSV</span></td>
+          <td>18 KB</td>
+          <td><a href="/files/data-export.csv" id="download-csv" class="btn btn-sm btn-success download-link"
+                 download data-testid="download-csv" aria-label="Download CSV file">
+            <i class="fas fa-download"></i> Download
+          </a></td>
+        </tr>
+        <tr id="file-row-3" data-testid="file-row-3">
+          <td><i class="fas fa-file-image" style="color:#f59e0b;"></i> screenshot.png</td>
+          <td><span class="badge badge-primary">PNG</span></td>
+          <td>112 KB</td>
+          <td><a href="/files/screenshot.png" id="download-png" class="btn btn-sm btn-warning download-link"
+                 download data-testid="download-png" aria-label="Download PNG image">
+            <i class="fas fa-download"></i> Download
+          </a></td>
+        </tr>
+        <tr id="file-row-4" data-testid="file-row-4">
+          <td><i class="fas fa-file-code" style="color:#6366f1;"></i> app-config.json</td>
+          <td><span class="badge badge-primary">JSON</span></td>
+          <td>4 KB</td>
+          <td><a href="/files/app-config.json" id="download-json" class="btn btn-sm btn-outline download-link"
+                 download data-testid="download-json" aria-label="Download JSON config">
+            <i class="fas fa-download"></i> Download
+          </a></td>
+        </tr>
+        <tr id="file-row-5" data-testid="file-row-5">
+          <td><i class="fas fa-file-alt" style="color:#64748b;"></i> readme.txt</td>
+          <td><span class="badge badge-primary">TXT</span></td>
+          <td>2 KB</td>
+          <td><a href="/files/readme.txt" id="download-txt" class="btn btn-sm btn-outline download-link"
+                 download data-testid="download-txt" aria-label="Download text file">
+            <i class="fas fa-download"></i> Download
+          </a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Dynamically generated download -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Generate &amp; Download</div>
+  <p class="text-muted mb-2" style="font-size:13px;">Click the button to generate and download a text file on the fly:</p>
+  <button id="generate-download-btn" class="btn btn-primary"
+          data-testid="generate-download-btn" aria-label="Generate and download file">
+    <i class="fas fa-magic"></i> Generate &amp; Download
+  </button>
+  <p id="download-status" class="mt-2 text-muted" data-testid="download-status" style="font-size:13px;"></p>
+</div>
+
+

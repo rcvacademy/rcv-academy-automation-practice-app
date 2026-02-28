@@ -1,0 +1,89 @@
+<%# Radio Buttons Page %>
+<div class="page-header">
+  <h2><i class="fas fa-dot-circle"></i> Radio Buttons</h2>
+  <p>All varieties of radio button patterns. Locate by ID, Name, Value, aria-label and group role.</p>
+</div>
+
+<div class="d-flex gap-3 flex-wrap">
+
+  <!-- Group 1: Fruit choice -->
+  <div class="card" style="min-width:240px;">
+    <div class="card-title">Favourite Fruit</div>
+    <div class="radio-group" id="fruit-group" role="radiogroup" aria-labelledby="fruit-legend">
+      <span id="fruit-legend" class="text-muted">Pick one:</span>
+      <label><input type="radio" id="radio-apple"  name="fruit" value="apple"  class="fruit-radio" data-testid="radio-apple"  /> 🍎 Apple</label>
+      <label><input type="radio" id="radio-banana" name="fruit" value="banana" class="fruit-radio" data-testid="radio-banana" /> 🍌 Banana</label>
+      <label><input type="radio" id="radio-cherry" name="fruit" value="cherry" class="fruit-radio" data-testid="radio-cherry" /> 🍒 Cherry</label>
+      <label><input type="radio" id="radio-mango"  name="fruit" value="mango"  class="fruit-radio" data-testid="radio-mango"  /> 🥭 Mango</label>
+    </div>
+    <p id="fruit-result" class="mt-2 text-muted" data-testid="fruit-result" style="font-size:13px;"></p>
+  </div>
+
+  <!-- Group 2: Priority -->
+  <div class="card" style="min-width:240px;">
+    <div class="card-title">Task Priority</div>
+    <div class="radio-group" id="priority-group" role="radiogroup" aria-label="Task priority">
+      <label><input type="radio" id="priority-low"    name="priority" value="low"    class="priority-radio" data-testid="priority-low"    /> Low</label>
+      <label><input type="radio" id="priority-medium" name="priority" value="medium" class="priority-radio" data-testid="priority-medium" checked /> Medium</label>
+      <label><input type="radio" id="priority-high"   name="priority" value="high"   class="priority-radio" data-testid="priority-high"   /> High</label>
+      <label><input type="radio" id="priority-urgent" name="priority" value="urgent" class="priority-radio" data-testid="priority-urgent" disabled /> Urgent (disabled)</label>
+    </div>
+  </div>
+
+  <!-- Group 3: Styled radio buttons using CSS -->
+  <div class="card" style="min-width:240px;">
+    <div class="card-title">Payment Method</div>
+    <div class="radio-group" id="payment-group" role="radiogroup" aria-label="Payment method">
+      <label><input type="radio" id="pay-card"   name="payment" value="card"   class="payment-radio" data-testid="pay-card"   /> 💳 Credit Card</label>
+      <label><input type="radio" id="pay-paypal" name="payment" value="paypal" class="payment-radio" data-testid="pay-paypal" /> 🅿️ PayPal</label>
+      <label><input type="radio" id="pay-crypto" name="payment" value="crypto" class="payment-radio" data-testid="pay-crypto" /> ₿ Crypto</label>
+      <label><input type="radio" id="pay-bank"   name="payment" value="bank"   class="payment-radio" data-testid="pay-bank"   /> 🏦 Bank Transfer</label>
+    </div>
+  </div>
+</div>
+
+<!-- Inline form with radio -->
+<div class="card mt-3">
+  <div class="card-title">Rate This Page</div>
+  <form id="rating-form" data-testid="rating-form" aria-label="Page rating form">
+    <div class="d-flex gap-3 align-center flex-wrap" id="rating-group" role="radiogroup" aria-label="Rating">
+      <% [1,2,3,4,5].forEach(function(n){ %>
+        <label style="cursor:pointer;font-size:14px;">
+          <input type="radio" id="rating-<%= n %>" name="rating" value="<%= n %>"
+                 class="rating-radio" data-testid="rating-<%= n %>" />
+          <%= '⭐'.repeat(n) %>
+        </label>
+      <% }); %>
+    </div>
+    <button type="submit" id="submit-rating" class="btn btn-primary mt-3 btn-sm"
+            data-testid="submit-rating">Submit Rating</button>
+    <p id="rating-result" class="mt-2 text-muted" data-testid="rating-result" style="font-size:13px;"></p>
+  </form>
+</div>
+
+
+
+<script>
+  // Fruit selection display
+  document.querySelectorAll('.fruit-radio').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      var result = document.getElementById('fruit-result');
+      if (result) result.textContent = '🍽️ You selected: ' + this.value;
+    });
+  });
+
+  // Rating form submission
+  document.getElementById('rating-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var selected = document.querySelector('input[name="rating"]:checked');
+    var resultEl = document.getElementById('rating-result');
+    if (!selected) {
+      resultEl.innerHTML = '⚠️ Please select a rating before submitting.';
+      resultEl.style.color = 'var(--danger)';
+      return;
+    }
+    var stars = parseInt(selected.value);
+    resultEl.innerHTML = '✅ Rating submitted! You gave <strong>' + '⭐'.repeat(stars) + ' (' + stars + ' star' + (stars > 1 ? 's' : '') + ')</strong>. Thank you!';
+    resultEl.style.color = 'var(--success)';
+  });
+</script>

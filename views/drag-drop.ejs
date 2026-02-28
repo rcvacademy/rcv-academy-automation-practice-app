@@ -1,0 +1,92 @@
+<%# Drag and Drop Page %>
+<div class="page-header">
+  <h2><i class="fas fa-arrows-alt"></i> Drag and Drop</h2>
+  <p>Drag items between columns. Practice using drag-and-drop actions in Selenium, Playwright, or Cypress.</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Task Board — Drag cards between columns</div>
+
+  <div class="drag-container" id="drag-board">
+
+    <!-- Column 1: To Do -->
+    <div class="drag-zone" id="col-todo" data-column="todo"
+         aria-label="To Do column" data-testid="col-todo">
+      <div class="drag-zone-title"><i class="fas fa-clipboard-list"></i> To Do</div>
+      <div class="draggable-item" id="drag-item-1" draggable="true"
+           data-id="1" class="draggable-item" data-testid="drag-item-1"
+           aria-label="Draggable item: Write tests">
+        <i class="fas fa-grip-vertical" style="color:var(--text-muted);"></i>
+        Write Tests
+      </div>
+      <div class="draggable-item" id="drag-item-2" draggable="true"
+           data-id="2" class="draggable-item" data-testid="drag-item-2"
+           aria-label="Draggable item: Review PR">
+        <i class="fas fa-grip-vertical" style="color:var(--text-muted);"></i>
+        Review PR
+      </div>
+      <div class="draggable-item" id="drag-item-3" draggable="true"
+           data-id="3" class="draggable-item" data-testid="drag-item-3"
+           aria-label="Draggable item: Update docs">
+        <i class="fas fa-grip-vertical" style="color:var(--text-muted);"></i>
+        Update Docs
+      </div>
+    </div>
+
+    <!-- Column 2: In Progress -->
+    <div class="drag-zone" id="col-inprogress" data-column="inprogress"
+         aria-label="In Progress column" data-testid="col-inprogress">
+      <div class="drag-zone-title"><i class="fas fa-spinner"></i> In Progress</div>
+      <div class="draggable-item" id="drag-item-4" draggable="true"
+           data-id="4" class="draggable-item" data-testid="drag-item-4"
+           aria-label="Draggable item: Fix bug #42">
+        <i class="fas fa-grip-vertical" style="color:var(--text-muted);"></i>
+        Fix Bug #42
+      </div>
+    </div>
+
+    <!-- Column 3: Done -->
+    <div class="drag-zone" id="col-done" data-column="done"
+         aria-label="Done column" data-testid="col-done">
+      <div class="drag-zone-title"><i class="fas fa-check"></i> Done</div>
+      <div class="draggable-item" id="drag-item-5" draggable="true"
+           data-id="5" class="draggable-item" data-testid="drag-item-5"
+           aria-label="Draggable item: Deploy v1.0">
+        <i class="fas fa-grip-vertical" style="color:var(--text-muted);"></i>
+        Deploy v1.0
+      </div>
+    </div>
+  </div>
+
+  <button id="reset-drag-btn" class="btn btn-outline mt-3 btn-sm"
+          data-testid="reset-drag" aria-label="Reset drag board">
+    <i class="fas fa-undo"></i> Reset Board
+  </button>
+  <p id="drag-status" class="mt-2 text-muted" data-testid="drag-status" style="font-size:13px;"></p>
+</div>
+
+<!-- Drag by coordinates (box-to-box) -->
+<div class="card">
+  <div class="card-title">Simple Drag Target (coordinate-based)</div>
+  <div class="d-flex gap-3 align-center flex-wrap">
+    <div id="drag-source-box" draggable="true"
+         style="width:100px;height:100px;background:var(--primary);
+                color:#fff;border-radius:var(--radius);display:flex;
+                align-items:center;justify-content:center;cursor:grab;
+                font-weight:700;font-size:14px;"
+         data-testid="drag-source-box" aria-label="Source drag box">
+      SOURCE
+    </div>
+    <i class="fas fa-arrow-right" style="font-size:20px;color:var(--text-muted);"></i>
+    <div id="drag-target-box"
+         style="width:120px;height:100px;border:2px dashed var(--primary);
+                border-radius:var(--radius);display:flex;align-items:center;
+                justify-content:center;color:var(--text-muted);font-size:13px;"
+         data-testid="drag-target-box" aria-label="Target drop box">
+      DROP HERE
+    </div>
+    <p id="drop-result" class="text-muted" data-testid="drop-result" style="font-size:13px;"></p>
+  </div>
+</div>
+
+

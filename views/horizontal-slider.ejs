@@ -1,0 +1,137 @@
+<%# Horizontal Slider Page %>
+<div class="page-header">
+  <h2><i class="fas fa-sliders-h"></i> Horizontal Slider</h2>
+  <p>Practice interacting with range sliders — reading and setting values using keyboard events and mouse drags in automation tools.</p>
+</div>
+
+<div class="d-flex gap-3 flex-wrap">
+
+  <!-- Slider 1: Basic -->
+  <div class="card" style="flex:1;min-width:280px;">
+    <div class="card-title">Basic Range Slider</div>
+    <div class="slider-wrapper">
+      <label class="form-label" for="basic-slider">
+        Value: <span id="basic-slider-value" class="slider-value" data-testid="basic-slider-value">50</span>
+      </label>
+      <input type="range" id="basic-slider" name="basicSlider"
+             class="slider" min="0" max="100" value="50" step="1"
+             aria-label="Basic range slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+             data-testid="basic-slider" />
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+        <span>0</span><span>50</span><span>100</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slider 2: Volume -->
+  <div class="card" style="flex:1;min-width:280px;">
+    <div class="card-title">Volume Control</div>
+    <div class="slider-wrapper">
+      <label class="form-label" for="volume-slider">
+        Volume: <span id="volume-value" data-testid="volume-value">70</span>%
+        <span id="volume-icon" style="margin-left:6px;">🔊</span>
+      </label>
+      <input type="range" id="volume-slider" name="volume"
+             class="slider" min="0" max="100" value="70" step="5"
+             aria-label="Volume control" data-testid="volume-slider" />
+    </div>
+  </div>
+
+  <!-- Slider 3: Temperature -->
+  <div class="card" style="flex:1;min-width:280px;">
+    <div class="card-title">Temperature Picker</div>
+    <div class="slider-wrapper">
+      <label class="form-label" for="temp-slider">
+        Temperature: <span id="temp-value" data-testid="temp-value" class="slider-value">20</span>°C
+      </label>
+      <input type="range" id="temp-slider" name="temperature"
+             class="slider" min="-20" max="50" value="20" step="1"
+             aria-label="Temperature picker" data-testid="temp-slider" />
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+        <span>❄ -20°C</span><span>🌡 50°C</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slider 4: jQuery UI slider -->
+  <div class="card" style="flex:1;min-width:280px;">
+    <div class="card-title">jQuery UI Slider</div>
+    <p class="text-muted mb-2" style="font-size:13px;">
+      Value: <strong id="jqui-slider-value" data-testid="jqui-slider-value">40</strong>
+    </p>
+    <div id="jqui-slider" data-testid="jqui-slider" aria-label="jQuery UI slider"
+         style="margin:10px 0;"></div>
+    <button id="jqui-set-btn" class="btn btn-outline btn-sm mt-2"
+            data-testid="jqui-set-btn">Set to 75</button>
+  </div>
+</div>
+
+<!-- Multi-range / Price range -->
+<div class="card">
+  <div class="card-title">Price Range Filter</div>
+  <div style="max-width:440px;">
+    <label class="form-label">
+      Min: $<span id="price-min-val" data-testid="price-min-val">100</span> —
+      Max: $<span id="price-max-val" data-testid="price-max-val">900</span>
+    </label>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div style="flex:1;">
+        <small class="text-muted">Min Price</small>
+        <input type="range" id="price-min" name="priceMin" class="slider"
+               min="0" max="1000" value="100" step="50"
+               aria-label="Minimum price" data-testid="price-min" />
+      </div>
+      <div style="flex:1;">
+        <small class="text-muted">Max Price</small>
+        <input type="range" id="price-max" name="priceMax" class="slider"
+               min="0" max="1000" value="900" step="50"
+               aria-label="Maximum price" data-testid="price-max" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  // Wire up slider value displays
+  function wireSlider(sliderId, valueId, transform) {
+    const slider = document.getElementById(sliderId);
+    const display = document.getElementById(valueId);
+    if (!slider || !display) return;
+    slider.addEventListener('input', function () {
+      display.textContent = transform ? transform(this.value) : this.value;
+    });
+  }
+  wireSlider('basic-slider',  'basic-slider-value');
+  wireSlider('volume-slider', 'volume-value');
+  wireSlider('temp-slider',   'temp-value');
+
+  // Volume icon
+  document.getElementById('volume-slider').addEventListener('input', function () {
+    const v = parseInt(this.value);
+    document.getElementById('volume-icon').textContent = v === 0 ? '🔇' : v < 50 ? '🔉' : '🔊';
+  });
+
+  // Price range
+  document.getElementById('price-min').addEventListener('input', function () {
+    document.getElementById('price-min-val').textContent = this.value;
+  });
+  document.getElementById('price-max').addEventListener('input', function () {
+    document.getElementById('price-max-val').textContent = this.value;
+  });
+
+  // jQuery UI slider
+  $(function () {
+    $('#jqui-slider').slider({
+      value: 40, min: 0, max: 100,
+      slide: function (e, ui) {
+        $('#jqui-slider-value').text(ui.value);
+      }
+    });
+    $('#jqui-set-btn').on('click', function () {
+      $('#jqui-slider').slider('value', 75);
+      $('#jqui-slider-value').text(75);
+    });
+  });
+</script>

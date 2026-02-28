@@ -1,0 +1,135 @@
+<%# Scrollbars Page %>
+<div class="page-header">
+  <h2><i class="fas fa-scroll"></i> Scrollbars</h2>
+  <p>Practice scrolling within a page, inside overflow containers, and using scroll-to-element strategies.</p>
+</div>
+
+<!-- Vertical scroll -->
+<div class="card">
+  <div class="card-title">Vertical Scrollable Container</div>
+  <div id="vertical-scroll-box" class="scroll-box"
+       data-testid="vertical-scroll-box" aria-label="Vertical scrollable area"
+       tabindex="0" role="region">
+    <% for (let i = 1; i <= 20; i++) { %>
+      <p id="scroll-para-<%= i %>" data-testid="scroll-para-<%= i %>"
+         class="scroll-paragraph" data-index="<%= i %>">
+        <strong>Paragraph <%= i %></strong> — Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+      </p>
+    <% } %>
+  </div>
+  <div class="d-flex gap-2 flex-wrap mt-2">
+    <button id="scroll-to-top-btn" class="btn btn-outline btn-sm"
+            data-testid="scroll-to-top-btn" aria-label="Scroll to top of container">
+      <i class="fas fa-arrow-up"></i> Scroll to Top
+    </button>
+    <button id="scroll-to-bottom-btn" class="btn btn-outline btn-sm"
+            data-testid="scroll-to-bottom-btn" aria-label="Scroll to bottom of container">
+      <i class="fas fa-arrow-down"></i> Scroll to Bottom
+    </button>
+    <button id="scroll-to-para-10-btn" class="btn btn-outline btn-sm"
+            data-testid="scroll-to-para-10-btn" aria-label="Scroll to paragraph 10">
+      Scroll to Para 10
+    </button>
+  </div>
+</div>
+
+<!-- Horizontal scroll -->
+<div class="card">
+  <div class="card-title">Horizontal Scrollable Table</div>
+  <p class="text-muted mb-2" style="font-size:13px;">A wide table — scroll right to see all columns.</p>
+  <div id="horizontal-scroll-box" style="overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);"
+       data-testid="horizontal-scroll-box" aria-label="Horizontal scrollable table container">
+    <table class="data-table" id="wide-table" data-testid="wide-table" style="white-space:nowrap;min-width:1400px;">
+      <thead>
+        <tr>
+          <% ['Col 1','Col 2','Col 3','Col 4','Col 5','Col 6','Col 7','Col 8','Col 9','Col 10',
+              'Col 11','Col 12'].forEach(function(c){ %>
+            <th><%= c %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let r = 1; r <= 5; r++) { %>
+          <tr id="wide-row-<%= r %>" data-testid="wide-row-<%= r %>">
+            <% for (let c = 1; c <= 12; c++) { %>
+              <td id="cell-<%= r %>-<%= c %>" data-testid="cell-<%= r %>-<%= c %>">
+                R<%= r %>C<%= c %>
+              </td>
+            <% } %>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Infinite scroll-like area -->
+<div class="card">
+  <div class="card-title">Scroll to Load More (Lazy Load Simulation)</div>
+  <div id="lazy-scroll-container"
+       style="height:250px;overflow-y:auto;border:1px solid var(--border);
+              border-radius:var(--radius);padding:16px;"
+       data-testid="lazy-scroll-container">
+    <div id="lazy-items" data-testid="lazy-items"></div>
+    <div id="lazy-loading-indicator" data-testid="lazy-loading-indicator"
+         style="text-align:center;padding:12px;display:none;">
+      <i class="fas fa-spinner fa-spin"></i> Loading more…
+    </div>
+  </div>
+  <p class="form-text mt-1" data-testid="lazy-count">Showing: <span id="lazy-count-val">10</span> items</p>
+</div>
+
+
+
+<script>
+  // Vertical scroll helper buttons
+  const vBox = document.getElementById('vertical-scroll-box');
+  document.getElementById('scroll-to-top-btn').addEventListener('click', () => {
+    vBox.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.getElementById('scroll-to-bottom-btn').addEventListener('click', () => {
+    vBox.scrollTo({ top: vBox.scrollHeight, behavior: 'smooth' });
+  });
+  document.getElementById('scroll-to-para-10-btn').addEventListener('click', () => {
+    const para = document.getElementById('scroll-para-10');
+    para.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    para.style.background = '#fef9c3';
+    setTimeout(() => { para.style.background = ''; }, 1500);
+  });
+
+  // Lazy load simulation
+  const lazyContainer = document.getElementById('lazy-scroll-container');
+  const lazyItems = document.getElementById('lazy-items');
+  const lazyIndicator = document.getElementById('lazy-loading-indicator');
+  const lazyCntVal = document.getElementById('lazy-count-val');
+  let lazyCount = 0;
+
+  function addLazyItems(start, end) {
+    for (let i = start; i <= end; i++) {
+      const div = document.createElement('div');
+      div.id = 'lazy-item-' + i;
+      div.setAttribute('data-testid', 'lazy-item-' + i);
+      div.style.cssText = 'padding:10px;border-bottom:1px solid var(--border);font-size:14px;';
+      div.textContent = 'Lazy item #' + i + ' — loaded dynamically on scroll';
+      lazyItems.appendChild(div);
+    }
+    lazyCntVal.textContent = end;
+  }
+
+  addLazyItems(1, 10);
+  lazyCount = 10;
+
+  lazyContainer.addEventListener('scroll', function () {
+    if (this.scrollTop + this.clientHeight >= this.scrollHeight - 20) {
+      if (lazyCount < 50) {
+        lazyIndicator.style.display = 'block';
+        setTimeout(() => {
+          addLazyItems(lazyCount + 1, lazyCount + 10);
+          lazyCount += 10;
+          lazyIndicator.style.display = 'none';
+        }, 600);
+      }
+    }
+  });
+</script>

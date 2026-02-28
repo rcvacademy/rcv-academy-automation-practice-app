@@ -1,0 +1,87 @@
+<%# Multiple Windows Page %>
+<div class="page-header">
+  <h2><i class="fas fa-clone"></i> Multiple Windows</h2>
+  <p>Practice switching between browser windows and tabs. Open new windows, interact with them, and switch back to the original.</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Open New Tabs / Windows</div>
+  <div class="d-flex gap-2 flex-wrap">
+    <button id="open-new-window-btn" class="btn btn-primary"
+            data-testid="open-new-window-btn" aria-label="Open a new browser window">
+      <i class="fas fa-external-link-alt"></i> Open New Window
+    </button>
+    <button id="open-new-tab-btn" class="btn btn-primary"
+            data-testid="open-new-tab-btn" aria-label="Open a new browser tab">
+      <i class="fas fa-plus"></i> Open New Tab
+    </button>
+    <button id="open-multiple-btn" class="btn btn-outline"
+            data-testid="open-multiple-btn" aria-label="Open three new tabs">
+      <i class="fas fa-layer-group"></i> Open 3 Tabs
+    </button>
+  </div>
+  <p id="window-status" class="mt-3 text-muted" data-testid="window-status" style="font-size:13px;"></p>
+</div>
+
+<!-- Anchor tags that open windows -->
+<div class="card">
+  <div class="card-title">Links that Open New Windows</div>
+  <div class="table-wrapper">
+    <table class="data-table" id="windows-table" data-testid="windows-table">
+      <thead>
+        <tr><th>Window Name</th><th>Width × Height</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Popup Window</td>
+          <td>600 × 400</td>
+          <td><a href="/new-window" id="link-popup"
+                 onclick="window.open('/new-window','popup','width=600,height=400,scrollbars=yes'); return false;"
+                 class="btn btn-sm btn-primary" data-testid="link-popup"
+                 aria-label="Open popup window">Open</a></td>
+        </tr>
+        <tr>
+          <td>New Tab (target=_blank)</td>
+          <td>Full Browser Tab</td>
+          <td><a href="/new-window" target="_blank" rel="noopener noreferrer"
+                 id="link-new-tab" class="btn btn-sm btn-primary"
+                 data-testid="link-new-tab" aria-label="Open new tab">Open</a></td>
+        </tr>
+        <tr>
+          <td>Named Window</td>
+          <td>Variable</td>
+          <td><a href="/new-window" id="link-named-window"
+                 onclick="window.open('/new-window','namedWindow'); return false;"
+                 class="btn btn-sm btn-outline" data-testid="link-named-window"
+                 aria-label="Open named window">Open</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Post-action result display -->
+<div class="card" style="max-width:480px;" id="window-interaction-card">
+  <div class="card-title">Interaction Result</div>
+  <p id="window-interaction-result" class="text-muted" data-testid="window-interaction-result"
+     style="font-size:13px;">
+    Open a window or tab, interact with it, then switch back to this tab to verify.
+  </p>
+</div>
+
+
+
+<script>
+  document.getElementById('open-new-window-btn').addEventListener('click', function () {
+    window.open('/new-window', '_blank', 'width=700,height=500,scrollbars=yes,resizable=yes');
+    document.getElementById('window-status').textContent = '✅ New window opened.';
+  });
+  document.getElementById('open-new-tab-btn').addEventListener('click', function () {
+    window.open('/new-window', '_blank');
+    document.getElementById('window-status').textContent = '✅ New tab opened.';
+  });
+  document.getElementById('open-multiple-btn').addEventListener('click', function () {
+    for (let i = 1; i <= 3; i++) window.open('/new-window?tab=' + i, '_blank');
+    document.getElementById('window-status').textContent = '✅ 3 tabs opened.';
+  });
+</script>

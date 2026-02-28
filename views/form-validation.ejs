@@ -1,0 +1,117 @@
+<%# Form Validation Page %>
+<div class="page-header">
+  <h2><i class="fas fa-check-circle"></i> Form Validation</h2>
+  <p>A form with client-side and server-side validation. Locate error messages, valid/invalid states, and success banners.</p>
+</div>
+
+<% if (typeof submitted !== 'undefined' && submitted) { %>
+  <div id="form-success-banner" class="alert alert-success" role="alert" data-testid="form-success-banner">
+    <i class="fas fa-check-circle"></i>
+    <strong>Form submitted successfully!</strong> Here is what we received:
+    <pre style="margin-top:8px;font-size:12px;background:#f0fdf4;padding:10px;border-radius:4px;"><%= JSON.stringify(data, null, 2) %></pre>
+  </div>
+<% } %>
+
+<div class="card" style="max-width:560px;">
+  <div class="card-title">Contact Form (with Validation)</div>
+
+  <form id="validation-form" name="validationForm" class="validation-form"
+        method="POST" action="/form-validation"
+        data-testid="validation-form" novalidate aria-label="Contact form with validation">
+
+    <!-- First name -->
+    <div class="form-group" id="firstname-group">
+      <label class="form-label" for="v-firstname">First Name <span style="color:var(--danger)">*</span></label>
+      <input type="text" id="v-firstname" name="firstName" class="form-control"
+             placeholder="First name" aria-required="true" data-testid="v-firstname"
+             minlength="2" data-validate="minlength" data-minlength="2" required />
+      <div class="invalid-feedback" id="firstname-error" data-testid="firstname-error">
+        First name must be at least 2 characters.
+      </div>
+    </div>
+
+    <!-- Last name -->
+    <div class="form-group" id="lastname-group">
+      <label class="form-label" for="v-lastname">Last Name <span style="color:var(--danger)">*</span></label>
+      <input type="text" id="v-lastname" name="lastName" class="form-control"
+             placeholder="Last name" aria-required="true" data-testid="v-lastname"
+             minlength="2" data-validate="minlength" data-minlength="2" required />
+      <div class="invalid-feedback" id="lastname-error" data-testid="lastname-error">
+        Last name is required.
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group" id="email-group">
+      <label class="form-label" for="v-email">Email <span style="color:var(--danger)">*</span></label>
+      <input type="email" id="v-email" name="email" class="form-control"
+             placeholder="you@example.com" aria-required="true" data-testid="v-email"
+             data-validate="email" required />
+      <div class="invalid-feedback" id="email-error" data-testid="email-error">
+        Please enter a valid email address.
+      </div>
+    </div>
+
+    <!-- Age (number) -->
+    <div class="form-group" id="age-group">
+      <label class="form-label" for="v-age">Age</label>
+      <input type="number" id="v-age" name="age" class="form-control"
+             placeholder="18–99" min="18" max="99" data-testid="v-age"
+             data-validate="age" />
+      <div class="invalid-feedback" id="age-error" data-testid="age-error">
+        Age must be between 18 and 99.
+      </div>
+    </div>
+
+    <!-- Website URL -->
+    <div class="form-group" id="url-group">
+      <label class="form-label" for="v-url">Website URL</label>
+      <input type="url" id="v-url" name="website" class="form-control"
+             placeholder="https://example.com" data-testid="v-url"
+             data-validate="url" />
+      <div class="invalid-feedback" id="url-error" data-testid="url-error">
+        Please enter a valid URL (include https://).
+      </div>
+    </div>
+
+    <!-- Message textarea -->
+    <div class="form-group" id="message-group">
+      <label class="form-label" for="v-message">Message <span style="color:var(--danger)">*</span></label>
+      <textarea id="v-message" name="message" class="form-control"
+                placeholder="Your message…" rows="4"
+                aria-required="true" data-testid="v-message"
+                minlength="10" data-validate="minlength" data-minlength="10" required></textarea>
+      <div class="invalid-feedback" id="message-error" data-testid="message-error">
+        Message must be at least 10 characters.
+      </div>
+      <p class="form-text"><span id="char-count" data-testid="char-count">0</span>/500 characters</p>
+    </div>
+
+    <!-- Priority select -->
+    <div class="form-group">
+      <label class="form-label" for="v-priority">Priority</label>
+      <select id="v-priority" name="priority" class="form-control" data-testid="v-priority">
+        <option value="">-- Select priority --</option>
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+        <option value="critical">Critical</option>
+      </select>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" id="form-submit-btn" class="btn btn-primary"
+              data-testid="form-submit-btn" aria-label="Submit form">
+        <i class="fas fa-paper-plane"></i> Submit
+      </button>
+      <button type="reset" id="form-reset-btn" class="btn btn-outline"
+              data-testid="form-reset-btn" aria-label="Reset form">
+        <i class="fas fa-undo"></i> Reset
+      </button>
+    </div>
+    <div id="form-result" class="alert" role="alert" data-testid="form-result"
+         style="display:none;margin-top:12px;"></div>
+  </form>
+</div>
+
+

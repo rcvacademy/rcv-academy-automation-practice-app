@@ -1,0 +1,97 @@
+<%# Pagination Table – navigate pages, locate rows by current page %>
+<div class="page-header">
+  <h2><i class="fas fa-list-ol"></i> Dynamic Pagination Table</h2>
+  <p>A large dataset split across multiple pages. Practice locating page buttons, row counts, and specific cells.</p>
+</div>
+
+<div class="card">
+  <div class="d-flex align-center gap-2 mb-3" style="flex-wrap:wrap;">
+    <label for="page-size-select" class="form-label" style="margin:0;">Rows per page:</label>
+    <select id="page-size-select" class="form-control" style="width:auto;" data-testid="page-size">
+      <option value="5" selected>5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    <input type="text" id="pag-search" class="form-control" placeholder="Search…"
+           data-testid="pag-search" aria-label="Search pagination table" style="max-width:220px;" />
+    <span id="pag-info" class="badge badge-primary" data-testid="pag-info">Showing 1–5 of 50</span>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="data-table" id="pagination-table" aria-label="Paginated product table" data-testid="pagination-table">
+      <thead>
+        <tr>
+          <th data-col="id">ID</th>
+          <th data-col="product">Product</th>
+          <th data-col="category">Category</th>
+          <th data-col="price">Price</th>
+          <th data-col="stock">Stock</th>
+          <th data-col="rating">Rating</th>
+        </tr>
+      </thead>
+      <tbody id="pag-table-body"></tbody>
+    </table>
+  </div>
+
+  <!-- Pagination controls -->
+  <div class="pagination" id="pagination-controls" role="navigation" aria-label="Table pagination">
+    <button id="pag-prev" class="page-btn" data-testid="pag-prev" aria-label="Previous page">&#8592; Prev</button>
+    <span id="pag-page-numbers" class="d-flex gap-2"></span>
+    <button id="pag-next" class="page-btn" data-testid="pag-next" aria-label="Next page">Next &#8594;</button>
+  </div>
+</div>
+
+<script id="pagination-seed-data" type="application/json">
+[
+  {"id":1,"product":"Wireless Mouse","category":"Electronics","price":"$29.99","stock":142,"rating":"4.5"},
+  {"id":2,"product":"USB-C Hub","category":"Electronics","price":"$49.99","stock":87,"rating":"4.2"},
+  {"id":3,"product":"Mechanical Keyboard","category":"Electronics","price":"$89.99","stock":56,"rating":"4.7"},
+  {"id":4,"product":"27\" Monitor","category":"Electronics","price":"$299.99","stock":34,"rating":"4.6"},
+  {"id":5,"product":"Laptop Stand","category":"Accessories","price":"$39.99","stock":210,"rating":"4.3"},
+  {"id":6,"product":"Webcam HD","category":"Electronics","price":"$69.99","stock":95,"rating":"4.1"},
+  {"id":7,"product":"Desk Lamp","category":"Office","price":"$24.99","stock":178,"rating":"4.4"},
+  {"id":8,"product":"Noise-Cancel Headphones","category":"Electronics","price":"$149.99","stock":62,"rating":"4.8"},
+  {"id":9,"product":"Cable Organiser","category":"Accessories","price":"$12.99","stock":320,"rating":"4.0"},
+  {"id":10,"product":"Ergonomic Chair","category":"Furniture","price":"$399.99","stock":18,"rating":"4.9"},
+  {"id":11,"product":"Mouse Pad XL","category":"Accessories","price":"$19.99","stock":245,"rating":"4.2"},
+  {"id":12,"product":"Blue Light Glasses","category":"Accessories","price":"$34.99","stock":130,"rating":"3.9"},
+  {"id":13,"product":"Portable SSD 1TB","category":"Storage","price":"$109.99","stock":74,"rating":"4.7"},
+  {"id":14,"product":"HDMI Cable 2m","category":"Cables","price":"$9.99","stock":500,"rating":"4.1"},
+  {"id":15,"product":"Smart Power Strip","category":"Electronics","price":"$44.99","stock":88,"rating":"4.5"},
+  {"id":16,"product":"Pen Holder","category":"Office","price":"$8.99","stock":410,"rating":"3.8"},
+  {"id":17,"product":"Whiteboard A3","category":"Office","price":"$22.99","stock":67,"rating":"4.3"},
+  {"id":18,"product":"USB Flash Drive 64GB","category":"Storage","price":"$14.99","stock":390,"rating":"4.0"},
+  {"id":19,"product":"Laptop Sleeve 15\"","category":"Accessories","price":"$27.99","stock":155,"rating":"4.4"},
+  {"id":20,"product":"Screen Cleaner Kit","category":"Accessories","price":"$7.99","stock":280,"rating":"4.2"},
+  {"id":21,"product":"Bluetooth Speaker","category":"Electronics","price":"$59.99","stock":110,"rating":"4.6"},
+  {"id":22,"product":"Sticky Notes (200pk)","category":"Office","price":"$5.99","stock":620,"rating":"4.0"},
+  {"id":23,"product":"Standing Desk Mat","category":"Furniture","price":"$49.99","stock":93,"rating":"4.5"},
+  {"id":24,"product":"4K Webcam","category":"Electronics","price":"$129.99","stock":41,"rating":"4.7"},
+  {"id":25,"product":"Surge Protector","category":"Electronics","price":"$32.99","stock":167,"rating":"4.3"},
+  {"id":26,"product":"Desk Organiser","category":"Office","price":"$18.99","stock":204,"rating":"4.1"},
+  {"id":27,"product":"Wireless Charger","category":"Electronics","price":"$25.99","stock":189,"rating":"4.4"},
+  {"id":28,"product":"Label Maker","category":"Office","price":"$39.99","stock":52,"rating":"4.2"},
+  {"id":29,"product":"Monitor Arm","category":"Furniture","price":"$79.99","stock":38,"rating":"4.6"},
+  {"id":30,"product":"Wrist Rest","category":"Accessories","price":"$16.99","stock":276,"rating":"4.0"},
+  {"id":31,"product":"USB Microphone","category":"Electronics","price":"$99.99","stock":65,"rating":"4.8"},
+  {"id":32,"product":"Foot Rest","category":"Furniture","price":"$29.99","stock":121,"rating":"4.3"},
+  {"id":33,"product":"Docking Station","category":"Electronics","price":"$159.99","stock":44,"rating":"4.5"},
+  {"id":34,"product":"Paper Shredder","category":"Office","price":"$89.99","stock":27,"rating":"4.4"},
+  {"id":35,"product":"Desk Fan","category":"Office","price":"$34.99","stock":98,"rating":"4.2"},
+  {"id":36,"product":"Cable Clips (10pk)","category":"Cables","price":"$6.99","stock":450,"rating":"3.9"},
+  {"id":37,"product":"Trackball Mouse","category":"Electronics","price":"$54.99","stock":73,"rating":"4.6"},
+  {"id":38,"product":"Notebook A5 (3pk)","category":"Office","price":"$11.99","stock":335,"rating":"4.1"},
+  {"id":39,"product":"Privacy Screen Filter","category":"Accessories","price":"$44.99","stock":59,"rating":"4.3"},
+  {"id":40,"product":"LED Strip Lights","category":"Office","price":"$19.99","stock":212,"rating":"4.5"},
+  {"id":41,"product":"Bookend Set","category":"Office","price":"$13.99","stock":188,"rating":"4.0"},
+  {"id":42,"product":"USB Keyboard Numeric","category":"Electronics","price":"$22.99","stock":144,"rating":"4.2"},
+  {"id":43,"product":"Laptop Cooling Pad","category":"Accessories","price":"$37.99","stock":81,"rating":"4.4"},
+  {"id":44,"product":"VESA Mount Bracket","category":"Furniture","price":"$24.99","stock":66,"rating":"4.3"},
+  {"id":45,"product":"Fingerprint Lock","category":"Security","price":"$69.99","stock":35,"rating":"4.7"},
+  {"id":46,"product":"Drawer Organiser","category":"Office","price":"$15.99","stock":290,"rating":"4.1"},
+  {"id":47,"product":"Screen Privacy Hood","category":"Accessories","price":"$79.99","stock":22,"rating":"4.5"},
+  {"id":48,"product":"Electric Stapler","category":"Office","price":"$27.99","stock":103,"rating":"4.3"},
+  {"id":49,"product":"Mesh Wi-Fi System","category":"Electronics","price":"$199.99","stock":29,"rating":"4.8"},
+  {"id":50,"product":"Ergonomic Mouse","category":"Electronics","price":"$44.99","stock":116,"rating":"4.6"}
+]
+</script>

@@ -1,0 +1,36 @@
+{
+  "application": "Software Testing Mentor & RCV Academy Automation Practice Website",
+  "version": "1.0.0",
+  "description": "A sample configuration file for download practice",
+  "server": {
+    "host": "localhost",
+    "port": 3000,
+    "debug": false
+  },
+  "features": {
+    "dynamicTable": true,
+    "pagination": true,
+    "dragDrop": true,
+    "shadowDom": true,
+    "iframes": true,
+    "fileUpload": true
+  },
+  "locatorStrategies": [
+    "CSS Selector",
+    "XPath",
+    "ID",
+    "Name",
+    "Class Name",
+    "Tag Name",
+    "Link Text",
+    "Partial Link Text",
+    "ARIA Role",
+    "data-testid"
+  ],
+  "sampleUsers": [
+    { "id": 1, "name": "Alice Johnson", "role": "admin", "active": true },
+    { "id": 2, "name": "Bob Smith",     "role": "editor", "active": true },
+    { "id": 3, "name": "Carol Davis",   "role": "viewer", "active": false }
+  ],
+  "generatedAt": "2025-01-01T00:00:00Z"
+}

@@ -1,0 +1,81 @@
+<%# JS Alert Page %>
+<div class="page-header">
+  <h2><i class="fas fa-exclamation-triangle"></i> JS Alert</h2>
+  <p>Trigger native browser <code>alert()</code> dialogs. Learn how to handle them in Selenium (<code>switchTo().alert()</code>), Playwright (<code>page.on('dialog')</code>), and Cypress (<code>cy.on('window:alert')</code>).</p>
+</div>
+
+<div class="alert alert-warning" role="note">
+  <i class="fas fa-exclamation-triangle"></i>
+  Your browser's native alert popup will appear. Click <strong>OK</strong> to dismiss it.
+</div>
+
+<!-- Simple alert -->
+<div class="card">
+  <div class="card-title">Simple Alert</div>
+  <p class="text-muted mb-3" style="font-size:13px;">Click the button to trigger a basic <code>window.alert()</code> with a static message.</p>
+  <button id="trigger-alert-btn" class="btn btn-warning"
+          data-testid="trigger-alert-btn" aria-label="Trigger alert dialog">
+    <i class="fas fa-bell"></i> Click for JS Alert
+  </button>
+  <p id="alert-result" class="mt-3 text-muted" data-testid="alert-result" style="font-size:13px;"></p>
+</div>
+
+<!-- Alert with custom message -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Custom Alert Message</div>
+  <div class="form-group">
+    <label class="form-label" for="alert-msg-input">Alert message text:</label>
+    <input type="text" id="alert-msg-input" class="form-control"
+           value="Hello from STM & RCV Academy Automation Practice Website!"
+           data-testid="alert-msg-input" aria-label="Custom alert message text" />
+  </div>
+  <button id="trigger-custom-alert" class="btn btn-warning"
+          data-testid="trigger-custom-alert" aria-label="Trigger custom alert">
+    <i class="fas fa-bell"></i> Trigger Custom Alert
+  </button>
+</div>
+
+<!-- Delayed alert -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Delayed Alert (after 2 s)</div>
+  <p class="text-muted mb-3" style="font-size:13px;">Alert fires 2 seconds after clicking. Practice waiting for dialogs.</p>
+  <button id="trigger-delayed-alert" class="btn btn-warning"
+          data-testid="trigger-delayed-alert" aria-label="Trigger delayed alert">
+    <i class="fas fa-clock"></i> Trigger Delayed Alert (2 s)
+  </button>
+  <span id="delayed-countdown" class="ml-2 text-muted" data-testid="delayed-countdown"
+        style="font-size:13px;margin-left:12px;"></span>
+</div>
+
+
+
+<script>
+  // Simple alert
+  document.getElementById('trigger-alert-btn').addEventListener('click', function () {
+    alert('I am a JS Alert! Click OK to dismiss.');
+    document.getElementById('alert-result').textContent = '✅ Alert was dismissed.';
+  });
+
+  // Custom alert
+  document.getElementById('trigger-custom-alert').addEventListener('click', function () {
+    const msg = document.getElementById('alert-msg-input').value || 'No message!';
+    alert(msg);
+  });
+
+  // Delayed alert
+  document.getElementById('trigger-delayed-alert').addEventListener('click', function () {
+    let count = 2;
+    const span = document.getElementById('delayed-countdown');
+    span.textContent = 'Alert in ' + count + 's…';
+    const iv = setInterval(function () {
+      count--;
+      if (count <= 0) {
+        clearInterval(iv);
+        span.textContent = '';
+        alert('This alert was delayed by 2 seconds!');
+      } else {
+        span.textContent = 'Alert in ' + count + 's…';
+      }
+    }, 1000);
+  });
+</script>

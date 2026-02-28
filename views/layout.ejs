@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Automation Practice Website' %> | Software Testing Mentor & RCV Academy</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- jQuery (for jQuery UI pages) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- jQuery UI -->
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/files/stm-logo-720.png" />
+  <!-- App stylesheet -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <%- typeof extraHead !== 'undefined' ? extraHead : '' %>
+</head>
+<body id="app-body" data-page="<%= activePage %>">
+
+  <!-- ===== Top bar (full width) ===== -->
+  <header class="topbar" role="banner">
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open menu">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Header logo + app title -->
+    <a href="/" class="header-brand" title="Home">
+      <img src="/files/stm-logo-720.png" alt="Software Testing Mentor" class="header-logo-img" />
+      <span class="header-brand-text">STM & RCV Academy<br/><small>Automation Practice Website</small></span>
+    </a>
+
+    <!-- Header navigation links -->
+    <nav class="header-nav" aria-label="Header navigation">
+      <a href="/" class="header-nav-link" id="header-home" data-testid="header-home">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="https://training.rcvacademy.com/" target="_blank" rel="noopener noreferrer"
+         class="header-nav-link" id="header-rcv-portal" data-testid="header-rcv-portal">
+        <i class="fas fa-graduation-cap"></i> RCV Academy eLearning Portal
+      </a>
+    </nav>
+
+    <!-- Header social icons -->
+    <div class="header-social" aria-label="Social media links">
+      <a href="https://www.youtube.com/@softwaretestingmentor" target="_blank" rel="noopener noreferrer"
+         class="header-social-icon" id="header-yt-stm" data-testid="header-yt-stm" aria-label="YouTube - Software Testing Mentor" title="YouTube - STM">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a href="https://www.youtube.com/@rcvacademy" target="_blank" rel="noopener noreferrer"
+         class="header-social-icon" id="header-yt-rcv" data-testid="header-yt-rcv" aria-label="YouTube - RCV Academy" title="YouTube - RCV Academy">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a href="https://www.linkedin.com/company/rcvacademy" target="_blank" rel="noopener noreferrer"
+         class="header-social-icon" id="header-linkedin" data-testid="header-linkedin" aria-label="LinkedIn" title="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="https://www.instagram.com/softwaretestingmentor" target="_blank" rel="noopener noreferrer"
+         class="header-social-icon" id="header-instagram" data-testid="header-instagram" aria-label="Instagram" title="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== Sidebar + Main content row ===== -->
+  <div class="app-row">
+
+  <!-- Sidebar overlay (mobile) -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <!-- ===== Sidebar / Left-hand menu ===== -->
+  <nav id="sidebar" class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <button id="sidebar-collapse-btn" class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse sidebar">
+        <i class="fas fa-bars nav-icon"></i> <span class="sidebar-toggle-text">Collapse Menu</span> <i class="fas fa-chevron-left sidebar-collapse-arrow"></i>
+      </button>
+    </div>
+
+    <ul class="nav-list" role="menubar">
+      <% menuItems.forEach(function(item) { %>
+        <li class="nav-item" role="none">
+          <a href="<%= item.href %>"
+             class="nav-link <%= activePage === item.href.replace('/', '') || (item.href === '/' && activePage === 'index') ? 'active' : '' %>"
+             role="menuitem"
+             id="nav-<%= item.href.replace(/\//g, '') || 'home' %>"
+             title="<%= item.label %>">
+            <i class="fas <%= item.icon %> nav-icon"></i>
+            <span class="nav-label"><%= item.label %></span>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+  </nav><!-- /#sidebar -->
+
+  <!-- ===== Main content area ===== -->
+  <div id="main-wrapper" class="main-wrapper">
+
+    <!-- Page content -->
+    <main id="page-content" class="page-content" role="main">
+      <%- body %>
+    </main>
+
+  </div><!-- /#main-wrapper -->
+
+  </div><!-- /.app-row -->
+
+  <footer class="app-footer" role="contentinfo">
+      <div class="footer-links">
+        <a href="/" class="footer-link" id="footer-home" data-testid="footer-home">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a href="https://training.rcvacademy.com/" target="_blank" rel="noopener noreferrer"
+           class="footer-link" id="footer-rcv-portal" data-testid="footer-rcv-portal">
+          <i class="fas fa-graduation-cap"></i> RCV Academy eLearning Portal
+        </a>
+        <a href="https://training.rcvacademy.com/courses" target="_blank" rel="noopener noreferrer"
+           class="footer-link" id="footer-courses" data-testid="footer-courses">
+          <i class="fas fa-book"></i> Our Courses
+        </a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.youtube.com/@softwaretestingmentor" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-yt-stm" data-testid="social-yt-stm" aria-label="YouTube - Software Testing Mentor">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://www.youtube.com/@rcvacademy" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-yt-rcv" data-testid="social-yt-rcv" aria-label="YouTube - RCV Academy">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/rcvacademy" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-linkedin" data-testid="social-linkedin" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://www.instagram.com/softwaretestingmentor" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-instagram" data-testid="social-instagram" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/rcvacademy47" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-fb-rcv" data-testid="social-fb-rcv" aria-label="Facebook - RCV Academy">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.facebook.com/softwaretestingmentor" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-fb-stm" data-testid="social-fb-stm" aria-label="Facebook - Software Testing Mentor">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://x.com/rcvacademy" target="_blank" rel="noopener noreferrer"
+           class="footer-social-icon" id="social-x" data-testid="social-x" aria-label="X (Twitter)">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+      <p class="footer-copy">Software Testing Mentor &amp; RCV Academy Automation Practice Website &mdash; &copy; 2026 RCV Academy. All rights reserved.</p>
+  </footer>
+
+  <!-- ===== Scripts ===== -->
+  <!-- Main app JS -->
+  <script src="/js/main.js"></script>
+  <%- typeof extraScripts !== 'undefined' ? extraScripts : '' %>
+</body>
+</html>

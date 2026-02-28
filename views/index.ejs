@@ -1,0 +1,38 @@
+<%# Home Page – displays the first 20 feature cards in a responsive grid %>
+<div class="page-header">
+  <h2>Welcome to Software Testing Mentor & RCV Academy Automation Practice Website</h2>
+  <p>
+    An interactive playground to practice every type of UI automation locator strategy —
+    CSS, XPath, ID, Name, Class, Tag, Text, Role and more.
+    Click any card below (or use the left-hand menu) to open a practice page.
+  </p>
+</div>
+
+<!-- ===== Quick-start info bar ===== -->
+<div class="alert alert-info mt-2" role="alert" id="info-banner">
+  <i class="fas fa-info-circle"></i>
+  <span>
+    Use tools like <strong>Selenium</strong>, <strong>Playwright</strong>,
+    <strong>Cypress</strong> or <strong>WebdriverIO</strong> to locate and interact
+    with the elements on each page.
+  </span>
+</div>
+
+<!-- ===== Feature grid (all items, skipping Home itself) ===== -->
+<div class="home-grid" id="feature-grid" role="list">
+  <% const gridItems = menuItems.filter(m => m.href !== '/'); %>
+  <% gridItems.forEach(function(item, idx) { %>
+    <a href="<%= item.href %>"
+       class="grid-card"
+       role="listitem"
+       id="grid-card-<%= idx + 1 %>"
+       data-label="<%= item.label %>"
+       title="Practice: <%= item.label %>">
+      <div class="grid-icon">
+        <i class="fas <%= item.icon %>"></i>
+      </div>
+      <span class="grid-label"><%= item.label %></span>
+    </a>
+  <% }); %>
+</div>
+

@@ -1,0 +1,142 @@
+<%# Calendar / Date Picker Page %>
+<div class="page-header">
+  <h2><i class="fas fa-calendar-alt"></i> Calendar</h2>
+  <p>Date pickers and calendar widgets. Practice selecting dates, navigating months, and reading the selected value.</p>
+</div>
+
+<!-- Native HTML date input -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Native HTML Date Input</div>
+  <p class="text-muted mb-2" style="font-size:13px;">A standard <code>&lt;input type="date"&gt;</code> — the simplest type to automate.</p>
+  <div class="form-group">
+    <label class="form-label" for="native-date">Select a date:</label>
+    <input type="date" id="native-date" name="nativeDate"
+           class="form-control" style="max-width:240px;"
+           aria-label="Native date input" data-testid="native-date"
+           value="" />
+  </div>
+  <p id="native-date-result" class="form-text" data-testid="native-date-result">No date selected.</p>
+</div>
+
+<!-- Date-time local -->
+<div class="card" style="max-width:480px;">
+  <div class="card-title">Date + Time Input</div>
+  <div class="form-group">
+    <label class="form-label" for="datetime-input">Select date and time:</label>
+    <input type="datetime-local" id="datetime-input" name="dateTime"
+           class="form-control" style="max-width:280px;"
+           aria-label="Date and time input" data-testid="datetime-input" />
+  </div>
+  <p id="datetime-result" class="form-text" data-testid="datetime-result">No datetime selected.</p>
+</div>
+
+<!-- jQuery UI Datepicker -->
+<div class="card calendar-section">
+  <div style="min-width:280px;">
+    <div class="card-title">jQuery UI Datepicker</div>
+    <p class="text-muted mb-2" style="font-size:13px;">A calendar popup powered by jQuery UI.</p>
+    <div class="form-group">
+      <label class="form-label" for="jqui-datepicker">Click to pick a date:</label>
+      <input type="text" id="jqui-datepicker" name="jquiDate"
+             class="form-control" placeholder="MM/DD/YYYY" readonly
+             style="max-width:200px;" aria-label="jQuery UI datepicker"
+             data-testid="jqui-datepicker" />
+    </div>
+  </div>
+  <div id="jqui-date-output" class="calendar-output" data-testid="jqui-date-output">
+    <strong>Selected Date Info</strong>
+    <p id="jqui-selected-date"   data-testid="jqui-selected-date"  style="margin-top:8px;">None</p>
+    <p id="jqui-selected-day"    data-testid="jqui-selected-day"   style="font-size:12px;"></p>
+    <p id="jqui-selected-month"  data-testid="jqui-selected-month" style="font-size:12px;"></p>
+  </div>
+</div>
+
+<!-- Inline calendar -->
+<div class="card">
+  <div class="card-title">Inline jQuery UI Calendar</div>
+  <p class="text-muted mb-2" style="font-size:13px;">An always-visible calendar widget — no input field needed.</p>
+  <div id="inline-datepicker" data-testid="inline-datepicker"
+       aria-label="Inline calendar widget"></div>
+  <p id="inline-date-result" class="mt-2 text-muted"
+     data-testid="inline-date-result" style="font-size:13px;"></p>
+</div>
+
+<!-- Date range -->
+<div class="card" style="max-width:540px;">
+  <div class="card-title">Date Range Picker</div>
+  <div class="d-flex gap-3 flex-wrap">
+    <div class="form-group" style="flex:1;min-width:180px;">
+      <label class="form-label" for="range-start">Start Date:</label>
+      <input type="date" id="range-start" name="rangeStart"
+             class="form-control" aria-label="Range start date"
+             data-testid="range-start" />
+    </div>
+    <div class="form-group" style="flex:1;min-width:180px;">
+      <label class="form-label" for="range-end">End Date:</label>
+      <input type="date" id="range-end" name="rangeEnd"
+             class="form-control" aria-label="Range end date"
+             data-testid="range-end" />
+    </div>
+  </div>
+  <button id="calc-range-btn" class="btn btn-primary btn-sm"
+          data-testid="calc-range-btn" aria-label="Calculate date range">
+    <i class="fas fa-calculator"></i> Calculate Range
+  </button>
+  <p id="range-result" class="mt-2 text-muted" data-testid="range-result"
+     style="font-size:13px;"></p>
+</div>
+
+
+
+<script>
+  // Native date display
+  document.getElementById('native-date').addEventListener('change', function () {
+    document.getElementById('native-date-result').textContent =
+      this.value ? 'Selected: ' + this.value : 'No date selected.';
+  });
+
+  // Native datetime display
+  document.getElementById('datetime-input').addEventListener('change', function () {
+    document.getElementById('datetime-result').textContent =
+      this.value ? 'Selected: ' + this.value.replace('T', ' ') : 'No datetime selected.';
+  });
+
+  // Date range calculation
+  document.getElementById('calc-range-btn').addEventListener('click', function () {
+    const start = document.getElementById('range-start').value;
+    const end   = document.getElementById('range-end').value;
+    if (!start || !end) {
+      document.getElementById('range-result').textContent = 'Please select both dates.';
+      return;
+    }
+    const diff = (new Date(end) - new Date(start)) / 86400000;
+    document.getElementById('range-result').textContent = diff >= 0
+      ? '📅 Range: ' + Math.round(diff) + ' day(s)'
+      : '⚠️ End date must be after start date.';
+  });
+
+  // jQuery UI datepicker + inline
+  $(function () {
+    const days  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+
+    $('#jqui-datepicker').datepicker({
+      dateFormat: 'mm/dd/yy',
+      showAnim: 'fadeIn',
+      onSelect: function (dateStr, inst) {
+        document.getElementById('jqui-selected-date').textContent  = 'Date: ' + dateStr;
+        var d = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
+        document.getElementById('jqui-selected-day').textContent   = 'Day: ' + days[d.getDay()];
+        document.getElementById('jqui-selected-month').textContent = 'Month: ' + months[inst.selectedMonth];
+      }
+    });
+
+    $('#inline-datepicker').datepicker({
+      inline: true,
+      onSelect: function (dateStr) {
+        document.getElementById('inline-date-result').textContent = '📅 Selected: ' + dateStr;
+      }
+    });
+  });
+</script>
