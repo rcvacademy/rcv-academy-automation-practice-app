@@ -8,10 +8,10 @@ A beginner-friendly Node.js web application with **32 interactive pages** for pr
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/stm-rcv-automation-practice.git
+git clone https://github.com/rcvacademy/rcv-academy-automation-practice-app.git
 
 # 2. Enter the project directory
-cd stm-rcv-automation-practice
+cd rcv-academy-automation-practice-app
 
 # 3. Install dependencies
 npm install
