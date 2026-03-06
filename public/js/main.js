@@ -495,8 +495,13 @@
       const span = document.createElement('span');
       span.className = 'tag-item';
       span.setAttribute('data-testid', 'tag-' + i);
-      span.innerHTML = t + ' <button class="tag-rm" data-idx="' + i +
-                       '" aria-label="Remove ' + t + '">&times;</button>';
+      span.appendChild(document.createTextNode(t + ' '));
+      var rmBtn = document.createElement('button');
+      rmBtn.className = 'tag-rm';
+      rmBtn.setAttribute('data-idx', i);
+      rmBtn.setAttribute('aria-label', 'Remove ' + t);
+      rmBtn.textContent = '\u00d7';
+      span.appendChild(rmBtn);
       tagList.appendChild(span);
     });
     if (tagHidden) tagHidden.value = tags.join(',');
@@ -820,8 +825,15 @@
       const p = document.createElement('p');
       p.style.cssText = 'margin:4px 0;font-size:13px;';
       p.setAttribute('data-testid', 'uploaded-file');
-      p.innerHTML = '<i class="fas fa-file" style="color:var(--primary);margin-right:6px;"></i>' +
-                    f.name + ' <span style="color:var(--text-muted)">(' + (f.size / 1024).toFixed(1) + ' KB)</span>';
+      var icon = document.createElement('i');
+      icon.className = 'fas fa-file';
+      icon.style.cssText = 'color:var(--primary);margin-right:6px;';
+      p.appendChild(icon);
+      p.appendChild(document.createTextNode(f.name + ' '));
+      var sizeSpan = document.createElement('span');
+      sizeSpan.style.color = 'var(--text-muted)';
+      sizeSpan.textContent = '(' + (f.size / 1024).toFixed(1) + ' KB)';
+      p.appendChild(sizeSpan);
       list.appendChild(p);
     });
   }

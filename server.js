@@ -20,11 +20,26 @@ if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
-  filename:    (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+  filename:    (req, file, cb) => {
+    // Sanitise: strip directory components and non-safe characters
+    const safe = path.basename(file.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
+    cb(null, Date.now() + '-' + safe);
+  }
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }   // 5 MB max
+});
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
+app.disable('x-powered-by');      // hide Express fingerprint
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(ejsLayouts);              // wraps every view in views/layout.ejs
@@ -68,6 +83,7 @@ const menuItems = [
   { label: 'Exit Intent',            href: '/exit-intent',         icon: 'fa-sign-out-alt' },
   { label: 'Scrollbars',             href: '/scrollbars',          icon: 'fa-scroll' },
   { label: 'Calendar',               href: '/calendar',            icon: 'fa-calendar-alt' },
+  { label: 'Multi-Login Sections',    href: '/multi-login',         icon: 'fa-layer-group' },
 ];
 
 // Helper: render a view with common locals
@@ -109,6 +125,7 @@ app.get('/contact-us',       (req, res) => render(res, 'contact-us'));
 app.get('/exit-intent',      (req, res) => render(res, 'exit-intent'));
 app.get('/scrollbars',       (req, res) => render(res, 'scrollbars'));
 app.get('/calendar',         (req, res) => render(res, 'calendar'));
+app.get('/multi-login',      (req, res) => render(res, 'multi-login'));
 
 // POST: login (demo – always succeeds so testers can practice the flow)
 app.post('/login', (req, res) => {
