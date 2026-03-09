@@ -1,12 +1,12 @@
-<%# Challenging DOM Page – dynamic IDs, deeply nested elements, obfuscated markup %>
+﻿<%# Challenging DOM Page – dynamic IDs, deeply nested elements, obfuscated markup %>
 <div class="page-header">
-  <h2><i class="fas fa-puzzle-piece"></i> Challenging DOM</h2>
+  <h2><i class="fas fa-puzzle-piece" aria-hidden="true"></i> Challenging DOM</h2>
   <p>Elements with dynamic IDs, obfuscated class names, nested structures, and changing content. Practice robust XPath and CSS strategies.</p>
 </div>
 
 <!-- Buttons with randomised IDs (regenerated on load by JS) -->
 <div class="card">
-  <div class="card-title">Buttons with Dynamic IDs</div>
+  <h3 class="card-title">Buttons with Dynamic IDs</h3>
   <p class="text-muted mb-2" style="font-size:13px;">The button IDs change on every page reload. Use stable locators instead.</p>
   <div class="d-flex gap-2 flex-wrap" id="dynamic-btn-group" data-testid="dynamic-btn-group">
     <!-- Rendered by JS with random IDs -->
@@ -16,7 +16,7 @@
 
 <!-- Table with challenging row structure -->
 <div class="card">
-  <div class="card-title">Table with Tricky Row/Column Access</div>
+  <h3 class="card-title">Table with Tricky Row/Column Access</h3>
   <div class="table-wrapper">
     <table class="data-table challenging-table" id="challenging-table"
            data-testid="challenging-table" aria-label="Challenging data table">
@@ -34,7 +34,7 @@
 
 <!-- Deeply nested element -->
 <div class="card" id="outer-wrapper">
-  <div class="card-title">Deeply Nested Element</div>
+  <h3 class="card-title">Deeply Nested Element</h3>
   <div id="level-1" class="nest-level" data-depth="1">
     <div id="level-2" class="nest-level" data-depth="2">
       <div id="level-3" class="nest-level" data-depth="3">
@@ -50,7 +50,7 @@
 
 <!-- Elements that look similar / repeated -->
 <div class="card">
-  <div class="card-title">Repeated Similar Elements</div>
+  <h3 class="card-title">Repeated Similar Elements</h3>
   <p class="text-muted mb-2" style="font-size:13px;">All items share the same class. Distinguish them by index, text, or data attributes.</p>
   <ul id="similar-items" data-testid="similar-items" style="display:flex;flex-direction:column;gap:8px;">
     <% ['First Item','Second Item','Third Item','Fourth Item','Fifth Item'].forEach(function(txt, i){ %>

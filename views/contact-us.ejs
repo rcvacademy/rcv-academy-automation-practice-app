@@ -1,12 +1,12 @@
-<%# Contact Us Page %>
+﻿<%# Contact Us Page %>
 <div class="page-header">
-  <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+  <h2><i class="fas fa-envelope" aria-hidden="true"></i> Contact Us</h2>
   <p>A complete contact form with multiple field types. All elements have rich locator-friendly attributes.</p>
 </div>
 
 <% if (typeof message !== 'undefined' && message) { %>
   <div id="contact-success" class="alert alert-success" role="alert" data-testid="contact-success">
-    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-check-circle" aria-hidden="true"></i>
     <span><%= message.text %></span>
   </div>
 <% } %>
@@ -15,7 +15,7 @@
   <!-- Contact form -->
   <div style="flex:2;min-width:320px;">
     <div class="card">
-      <div class="card-title">Send Us a Message</div>
+      <h3 class="card-title">Send Us a Message</h3>
       <form id="contact-form" name="contactForm" class="contact-form"
             method="POST" action="/contact-us"
             data-testid="contact-form" aria-label="Contact us form" novalidate>
@@ -94,11 +94,11 @@
         <div class="d-flex gap-2">
           <button type="submit" id="contact-submit-btn" class="btn btn-primary"
                   data-testid="contact-submit" aria-label="Send message">
-            <i class="fas fa-paper-plane"></i> Send Message
+            <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message
           </button>
           <button type="reset" id="contact-reset-btn" class="btn btn-outline"
                   data-testid="contact-reset" aria-label="Reset form">
-            <i class="fas fa-undo"></i> Reset
+            <i class="fas fa-undo" aria-hidden="true"></i> Reset
           </button>
         </div>
       </form>
@@ -108,22 +108,22 @@
   <!-- Contact details sidebar -->
   <div style="flex:1;min-width:220px;">
     <div class="card" id="contact-info-card" data-testid="contact-info-card">
-      <div class="card-title"><i class="fas fa-map-marker-alt"></i> Contact Info</div>
+      <h3 class="card-title"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Contact Info</h3>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;font-size:13.5px;overflow:hidden;">
         <li id="contact-email-info" data-testid="contact-email-info" style="display:flex;align-items:flex-start;gap:8px;word-break:break-all;">
-          <i class="fas fa-envelope" style="color:var(--primary);min-width:20px;margin-top:3px;"></i>
+          <i class="fas fa-envelope" style="color:var(--primary);min-width:20px;margin-top:3px;" aria-hidden="true"></i>
           <a href="mailto:admin@rcvacademy.com">admin@rcvacademy.com</a>
         </li>
         <li id="contact-email-info-2" data-testid="contact-email-info-2" style="display:flex;align-items:flex-start;gap:8px;word-break:break-all;">
-          <i class="fas fa-envelope" style="color:var(--primary);min-width:20px;margin-top:3px;"></i>
+          <i class="fas fa-envelope" style="color:var(--primary);min-width:20px;margin-top:3px;" aria-hidden="true"></i>
           <a href="mailto:admin@softwaretestingmentor.com">admin@softwaretestingmentor.com</a>
         </li>
         <li id="contact-address-info" data-testid="contact-address-info" style="display:flex;align-items:flex-start;gap:8px;">
-          <i class="fas fa-map-marker-alt" style="color:var(--primary);min-width:20px;margin-top:3px;"></i>
+          <i class="fas fa-map-marker-alt" style="color:var(--primary);min-width:20px;margin-top:3px;" aria-hidden="true"></i>
           <span>Melbourne, 3000, VIC, Australia</span>
         </li>
         <li id="contact-hours-info" data-testid="contact-hours-info" style="display:flex;align-items:flex-start;gap:8px;">
-          <i class="fas fa-clock" style="color:var(--primary);min-width:20px;margin-top:3px;"></i>
+          <i class="fas fa-clock" style="color:var(--primary);min-width:20px;margin-top:3px;" aria-hidden="true"></i>
           <span>Mon–Fri: 9 AM – 6 PM AEST</span>
         </li>
       </ul>

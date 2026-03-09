@@ -1,6 +1,6 @@
-<%# Login Page – practice locators: ID, Name, Class, CSS, XPath, Role, Placeholder %>
+﻿<%# Login Page – practice locators: ID, Name, Class, CSS, XPath, Role, Placeholder %>
 <div class="page-header">
-  <h2><i class="fas fa-sign-in-alt"></i> Login Page</h2>
+  <h2><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login Page</h2>
   <p>Practice locating form elements using ID, Name, Class, CSS selector, XPath, Role, Placeholder, and Label locators.</p>
 </div>
 
@@ -10,13 +10,13 @@
        class="alert alert-<%= message.type === 'success' ? 'success' : 'error' %>"
        role="alert"
        data-testid="login-message">
-    <i class="fas fa-<%= message.type === 'success' ? 'check-circle' : 'exclamation-circle' %>"></i>
+    <i class="fas fa-<%= message.type === 'success' ? 'check-circle' : 'exclamation-circle' %>" aria-hidden="true"></i>
     <span><%= message.text %></span>
   </div>
 <% } %>
 
 <div class="card" id="login-card" style="max-width:480px;">
-  <div class="card-title">Sign In to Your Account</div>
+  <h3 class="card-title">Sign In to Your Account</h3>
 
   <!-- The form itself has many locator-friendly attributes -->
   <form id="login-form"
@@ -31,7 +31,7 @@
     <!-- Username field -->
     <div class="form-group" id="username-group">
       <label class="form-label" for="username" id="username-label">
-        <i class="fas fa-user"></i> Username
+        <i class="fas fa-user" aria-hidden="true"></i> Username
       </label>
       <input type="text"
              id="username"
@@ -49,7 +49,7 @@
     <!-- Password field -->
     <div class="form-group" id="password-group">
       <label class="form-label" for="password" id="password-label">
-        <i class="fas fa-lock"></i> Password
+        <i class="fas fa-lock" aria-hidden="true"></i> Password
       </label>
       <input type="password"
              id="password"
@@ -85,7 +85,7 @@
             role="button"
             data-testid="login-submit"
             aria-label="Sign in">
-      <i class="fas fa-sign-in-alt"></i> Sign In
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
     </button>
   </form>
 

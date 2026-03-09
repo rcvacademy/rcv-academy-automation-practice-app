@@ -1,6 +1,6 @@
-<%# Horizontal Slider Page %>
+﻿<%# Horizontal Slider Page %>
 <div class="page-header">
-  <h2><i class="fas fa-sliders-h"></i> Horizontal Slider</h2>
+  <h2><i class="fas fa-sliders-h" aria-hidden="true"></i> Horizontal Slider</h2>
   <p>Practice interacting with range sliders — reading and setting values using keyboard events and mouse drags in automation tools.</p>
 </div>
 
@@ -8,7 +8,7 @@
 
   <!-- Slider 1: Basic -->
   <div class="card" style="flex:1;min-width:280px;">
-    <div class="card-title">Basic Range Slider</div>
+    <h3 class="card-title">Basic Range Slider</h3>
     <div class="slider-wrapper">
       <label class="form-label" for="basic-slider">
         Value: <span id="basic-slider-value" class="slider-value" data-testid="basic-slider-value">50</span>
@@ -25,7 +25,7 @@
 
   <!-- Slider 2: Volume -->
   <div class="card" style="flex:1;min-width:280px;">
-    <div class="card-title">Volume Control</div>
+    <h3 class="card-title">Volume Control</h3>
     <div class="slider-wrapper">
       <label class="form-label" for="volume-slider">
         Volume: <span id="volume-value" data-testid="volume-value">70</span>%
@@ -39,7 +39,7 @@
 
   <!-- Slider 3: Temperature -->
   <div class="card" style="flex:1;min-width:280px;">
-    <div class="card-title">Temperature Picker</div>
+    <h3 class="card-title">Temperature Picker</h3>
     <div class="slider-wrapper">
       <label class="form-label" for="temp-slider">
         Temperature: <span id="temp-value" data-testid="temp-value" class="slider-value">20</span>°C
@@ -55,7 +55,7 @@
 
   <!-- Slider 4: jQuery UI slider -->
   <div class="card" style="flex:1;min-width:280px;">
-    <div class="card-title">jQuery UI Slider</div>
+    <h3 class="card-title">jQuery UI Slider</h3>
     <p class="text-muted mb-2" style="font-size:13px;">
       Value: <strong id="jqui-slider-value" data-testid="jqui-slider-value">40</strong>
     </p>
@@ -68,7 +68,7 @@
 
 <!-- Multi-range / Price range -->
 <div class="card">
-  <div class="card-title">Price Range Filter</div>
+  <h3 class="card-title">Price Range Filter</h3>
   <div style="max-width:440px;">
     <label class="form-label">
       Min: $<span id="price-min-val" data-testid="price-min-val">100</span> —

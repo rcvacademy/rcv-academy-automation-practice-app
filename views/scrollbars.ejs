@@ -1,12 +1,12 @@
-<%# Scrollbars Page %>
+﻿<%# Scrollbars Page %>
 <div class="page-header">
-  <h2><i class="fas fa-scroll"></i> Scrollbars</h2>
+  <h2><i class="fas fa-scroll" aria-hidden="true"></i> Scrollbars</h2>
   <p>Practice scrolling within a page, inside overflow containers, and using scroll-to-element strategies.</p>
 </div>
 
 <!-- Vertical scroll -->
 <div class="card">
-  <div class="card-title">Vertical Scrollable Container</div>
+  <h3 class="card-title">Vertical Scrollable Container</h3>
   <div id="vertical-scroll-box" class="scroll-box"
        data-testid="vertical-scroll-box" aria-label="Vertical scrollable area"
        tabindex="0" role="region">
@@ -21,11 +21,11 @@
   <div class="d-flex gap-2 flex-wrap mt-2">
     <button id="scroll-to-top-btn" class="btn btn-outline btn-sm"
             data-testid="scroll-to-top-btn" aria-label="Scroll to top of container">
-      <i class="fas fa-arrow-up"></i> Scroll to Top
+      <i class="fas fa-arrow-up" aria-hidden="true"></i> Scroll to Top
     </button>
     <button id="scroll-to-bottom-btn" class="btn btn-outline btn-sm"
             data-testid="scroll-to-bottom-btn" aria-label="Scroll to bottom of container">
-      <i class="fas fa-arrow-down"></i> Scroll to Bottom
+      <i class="fas fa-arrow-down" aria-hidden="true"></i> Scroll to Bottom
     </button>
     <button id="scroll-to-para-10-btn" class="btn btn-outline btn-sm"
             data-testid="scroll-to-para-10-btn" aria-label="Scroll to paragraph 10">
@@ -36,7 +36,7 @@
 
 <!-- Horizontal scroll -->
 <div class="card">
-  <div class="card-title">Horizontal Scrollable Table</div>
+  <h3 class="card-title">Horizontal Scrollable Table</h3>
   <p class="text-muted mb-2" style="font-size:13px;">A wide table — scroll right to see all columns.</p>
   <div id="horizontal-scroll-box" style="overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);"
        data-testid="horizontal-scroll-box" aria-label="Horizontal scrollable table container">
@@ -66,7 +66,7 @@
 
 <!-- Infinite scroll-like area -->
 <div class="card">
-  <div class="card-title">Scroll to Load More (Lazy Load Simulation)</div>
+  <h3 class="card-title">Scroll to Load More (Lazy Load Simulation)</h3>
   <div id="lazy-scroll-container"
        style="height:250px;overflow-y:auto;border:1px solid var(--border);
               border-radius:var(--radius);padding:16px;"
@@ -74,7 +74,7 @@
     <div id="lazy-items" data-testid="lazy-items"></div>
     <div id="lazy-loading-indicator" data-testid="lazy-loading-indicator"
          style="text-align:center;padding:12px;display:none;">
-      <i class="fas fa-spinner fa-spin"></i> Loading more…
+      <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Loading more…
     </div>
   </div>
   <p class="form-text mt-1" data-testid="lazy-count">Showing: <span id="lazy-count-val">10</span> items</p>

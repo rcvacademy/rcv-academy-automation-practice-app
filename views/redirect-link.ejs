@@ -1,27 +1,27 @@
-<%# Redirect Link Page %>
+﻿<%# Redirect Link Page %>
 <div class="page-header">
-  <h2><i class="fas fa-external-link-alt"></i> Redirect Link</h2>
+  <h2><i class="fas fa-external-link-alt" aria-hidden="true"></i> Redirect Link</h2>
   <p>Practice following redirects and verifying the destination URL. Links may redirect immediately, after a delay, or through multiple hops.</p>
 </div>
 
 <!-- Basic redirect -->
 <div class="card">
-  <div class="card-title">Immediate Redirect</div>
+  <h3 class="card-title">Immediate Redirect</h3>
   <p class="text-muted mb-3" style="font-size:13px;">Clicking this link navigates to <code>/redirected</code> — a separate page with its own content.</p>
   <a href="/redirected" id="redirect-link-basic" class="btn btn-primary redirect-link"
      target="_blank" rel="noopener noreferrer"
      data-testid="redirect-link-basic" aria-label="Follow redirect to target page">
-    <i class="fas fa-arrow-right"></i> Go to Redirect Target
+    <i class="fas fa-arrow-right" aria-hidden="true"></i> Go to Redirect Target
   </a>
 </div>
 
 <!-- Delayed redirect via JS -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Delayed Redirect (3 s countdown)</div>
+  <h3 class="card-title">Delayed Redirect (3 s countdown)</h3>
   <p class="text-muted mb-3" style="font-size:13px;">After clicking, the page redirects automatically after 3 seconds.</p>
   <button id="delayed-redirect-btn" class="btn btn-warning"
           data-testid="delayed-redirect-btn" aria-label="Start delayed redirect">
-    <i class="fas fa-clock"></i> Start Delayed Redirect
+    <i class="fas fa-clock" aria-hidden="true"></i> Start Delayed Redirect
   </button>
   <p id="redirect-countdown" class="mt-2 text-muted" data-testid="redirect-countdown"
      style="font-size:14px;"></p>
@@ -29,25 +29,25 @@
 
 <!-- Open-in-new-tab links -->
 <div class="card">
-  <div class="card-title">Open in New Tab</div>
+  <h3 class="card-title">Open in New Tab</h3>
   <p class="text-muted mb-2" style="font-size:13px;">These links open in a new browser tab (<code>target="_blank"</code>).</p>
   <div class="d-flex gap-2 flex-wrap">
     <a href="/redirected" target="_blank" rel="noopener noreferrer"
        id="new-tab-link-1" class="btn btn-outline new-tab-link"
        data-testid="new-tab-link-1" aria-label="Open redirect page in new tab">
-      <i class="fas fa-external-link-alt"></i> New Tab (internal)
+      <i class="fas fa-external-link-alt" aria-hidden="true"></i> New Tab (internal)
     </a>
     <a href="https://example.com" target="_blank" rel="noopener noreferrer"
        id="new-tab-external" class="btn btn-outline new-tab-link"
        data-testid="new-tab-external" aria-label="Open example.com in new tab">
-      <i class="fas fa-external-link-alt"></i> example.com
+      <i class="fas fa-external-link-alt" aria-hidden="true"></i> example.com
     </a>
   </div>
 </div>
 
 <!-- Status code redirect demo -->
 <div class="card">
-  <div class="card-title">Links to Practice Following</div>
+  <h3 class="card-title">Links to Practice Following</h3>
   <table class="data-table" id="redirect-links-table" data-testid="redirect-links-table">
     <thead>
       <tr><th>Link Label</th><th>Description</th><th>Action</th></tr>

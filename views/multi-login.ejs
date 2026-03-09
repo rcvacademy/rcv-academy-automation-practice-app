@@ -1,170 +1,183 @@
-<%# Multi-Login Page – 6 sections with varied form elements for locator practice %>
+﻿<%# Multi-Login Page – 6 sections with varied form elements for locator practice %>
 <div class="page-header">
-  <h2><i class="fas fa-layer-group"></i> Multi-Login Sections</h2>
+  <h2><i class="fas fa-layer-group" aria-hidden="true"></i> Multi-Login Sections</h2>
   <p>Practice locating similar elements across multiple sections. Each section has username &amp; password fields plus unique form elements. Pay attention to different button labels, IDs, and attributes.</p>
 </div>
 
-<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;">
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;" role="group" aria-label="Multi-login sections">
 
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- SECTION 1 – Basic Login with Radio Buttons                                 -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div class="card mb-3" id="section-1" data-testid="section-1">
-  <div class="card-title">Section 1 &mdash; Account Type Login</div>
+<div class="card mb-3" id="section-1" data-testid="section-1" role="region" aria-label="Section 1 Account Type Login">
+  <h3 class="card-title" id="section-1-title" aria-label="Section 1 Account Type Login">Section 1 &mdash; Account Type Login</h3>
 
-  <form id="login-form-1" name="loginForm1" class="login-form" data-testid="login-form-1" novalidate>
+  <form id="login-form-1" name="loginForm1" class="login-form" data-testid="login-form-1" aria-label="Section 1 Account Type Login form" novalidate>
 
     <div class="form-group">
-      <label class="form-label" for="username1"><i class="fas fa-user"></i> Username</label>
+      <label class="form-label" for="username1"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
       <input type="text" id="username1" name="username" class="form-control"
-             placeholder="Enter username" aria-label="Username" data-testid="username-1" required />
+             placeholder="Enter username" data-testid="username-1" required aria-required="true"
+             aria-label="Section 1 Username" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password1"><i class="fas fa-lock"></i> Password</label>
+      <label class="form-label" for="password1"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
       <input type="password" id="password1" name="password" class="form-control"
-             placeholder="Enter password" aria-label="Password" data-testid="password-1" required />
+             placeholder="Enter password" data-testid="password-1" required aria-required="true"
+             aria-label="Section 1 Password" />
     </div>
 
     <!-- Radio buttons: account type -->
     <div class="form-group" id="account-type-group">
-      <label class="form-label">Account Type</label>
-      <div class="d-flex gap-2" style="flex-wrap:wrap;">
+      <span class="form-label" id="account-type-label">Account Type</span>
+      <div class="d-flex gap-2" style="flex-wrap:wrap;" role="radiogroup" aria-label="Account Type">
         <label class="radio-label" for="personal-account">
           <input type="radio" id="personal-account" name="accountType" value="personal"
-                 data-testid="radio-personal" checked /> Personal
+                 data-testid="radio-personal" checked aria-label="Personal account" /> Personal
         </label>
         <label class="radio-label" for="business-account">
           <input type="radio" id="business-account" name="accountType" value="business"
-                 data-testid="radio-business" /> Business
+                 data-testid="radio-business" aria-label="Business account" /> Business
         </label>
         <label class="radio-label" for="enterprise-account">
           <input type="radio" id="enterprise-account" name="accountType" value="enterprise"
-                 data-testid="radio-enterprise" /> Enterprise
+                 data-testid="radio-enterprise" aria-label="Enterprise account" /> Enterprise
         </label>
       </div>
     </div>
 
     <button type="button" id="signin-btn-1" class="btn btn-primary"
-            data-testid="signin-btn-1" onclick="showMessage('section-1-msg','Sign in successful for Section 1!')">
-      <i class="fas fa-sign-in-alt"></i> Sign In
+            data-testid="signin-btn-1" aria-label="Sign In Section 1"
+            onclick="showMessage('section-1-msg','Sign in successful for Section 1!')">
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
     </button>
-    <div id="section-1-msg" class="alert alert-success mt-2" style="display:none;" role="alert"></div>
+    <div id="section-1-msg" class="alert alert-success mt-2" style="display:none;" role="alert" aria-live="assertive" aria-label="Section 1 status message"></div>
   </form>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- SECTION 2 – Login with Extra Text Fields                                   -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div class="card mb-3" id="section-2" data-testid="section-2">
-  <div class="card-title">Section 2 &mdash; Extended Login</div>
+<div class="card mb-3" id="section-2" data-testid="section-2" role="region" aria-label="Section 2 Extended Login">
+  <h3 class="card-title" id="section-2-title" aria-label="Section 2 Extended Login">Section 2 &mdash; Extended Login</h3>
 
-  <form id="login-form-2" name="loginForm2" class="login-form" data-testid="login-form-2" novalidate>
+  <form id="login-form-2" name="loginForm2" class="login-form" data-testid="login-form-2" aria-label="Section 2 Extended Login form" novalidate>
 
     <div class="form-group">
-      <label class="form-label" for="username2"><i class="fas fa-user"></i> Username</label>
+      <label class="form-label" for="username2"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
       <input type="text" id="username2" name="username" class="form-control"
-             placeholder="Your username" aria-label="Username" data-testid="username-2" required />
+             placeholder="Your username" data-testid="username-2" required aria-required="true"
+             aria-label="Section 2 Username" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password2"><i class="fas fa-lock"></i> Password</label>
+      <label class="form-label" for="password2"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
       <input type="password" id="password2" name="password" class="form-control"
-             placeholder="Your password" aria-label="Password" data-testid="password-2" required />
+             placeholder="Your password" data-testid="password-2" required aria-required="true"
+             aria-label="Section 2 Password" />
     </div>
 
     <!-- Extra text fields -->
     <div class="form-group">
-      <label class="form-label" for="email2"><i class="fas fa-envelope"></i> Email Address</label>
+      <label class="form-label" for="email2"><i class="fas fa-envelope" aria-hidden="true"></i> Email Address</label>
       <input type="email" id="email2" name="email" class="form-control"
-             placeholder="you@example.com" aria-label="Email" data-testid="email-2" />
+             placeholder="you@example.com" data-testid="email-2"
+             aria-label="Section 2 Email Address" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="phone2"><i class="fas fa-phone"></i> Phone Number</label>
+      <label class="form-label" for="phone2"><i class="fas fa-phone" aria-hidden="true"></i> Phone Number</label>
       <input type="tel" id="phone2" name="phone" class="form-control"
-             placeholder="+1 (555) 000-0000" aria-label="Phone" data-testid="phone-2" />
+             placeholder="+1 (555) 000-0000" data-testid="phone-2"
+             aria-label="Section 2 Phone Number" />
     </div>
 
     <button type="button" id="login-btn-2" class="btn btn-primary"
-            data-testid="login-btn-2" onclick="showMessage('section-2-msg','Login successful for Section 2!')">
-      <i class="fas fa-sign-in-alt"></i> Login
+            data-testid="login-btn-2" aria-label="Login Section 2"
+            onclick="showMessage('section-2-msg','Login successful for Section 2!')">
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
     </button>
-    <div id="section-2-msg" class="alert alert-success mt-2" style="display:none;" role="alert"></div>
+    <div id="section-2-msg" class="alert alert-success mt-2" style="display:none;" role="alert" aria-live="assertive" aria-label="Section 2 status message"></div>
   </form>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- SECTION 3 – Login with Checkboxes                                          -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div class="card mb-3" id="section-3" data-testid="section-3">
-  <div class="card-title">Section 3 &mdash; Preferences Login</div>
+<div class="card mb-3" id="section-3" data-testid="section-3" role="region" aria-label="Section 3 Preferences Login">
+  <h3 class="card-title" id="section-3-title" aria-label="Section 3 Preferences Login">Section 3 &mdash; Preferences Login</h3>
 
-  <form id="login-form-3" name="loginForm3" class="login-form" data-testid="login-form-3" novalidate>
+  <form id="login-form-3" name="loginForm3" class="login-form" data-testid="login-form-3" aria-label="Section 3 Preferences Login form" novalidate>
 
     <div class="form-group">
-      <label class="form-label" for="username3"><i class="fas fa-user"></i> Username</label>
+      <label class="form-label" for="username3"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
       <input type="text" id="username3" name="username" class="form-control"
-             placeholder="Username" aria-label="Username" data-testid="username-3" required />
+             placeholder="Username" data-testid="username-3" required aria-required="true"
+             aria-label="Section 3 Username" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password3"><i class="fas fa-lock"></i> Password</label>
+      <label class="form-label" for="password3"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
       <input type="password" id="password3" name="password" class="form-control"
-             placeholder="Password" aria-label="Password" data-testid="password-3" required />
+             placeholder="Password" data-testid="password-3" required aria-required="true"
+             aria-label="Section 3 Password" />
     </div>
 
     <!-- Checkboxes -->
-    <div class="form-group" id="preferences-group">
-      <label class="form-label">Login Preferences</label>
+    <div class="form-group" id="preferences-group" role="group" aria-label="Login Preferences">
+      <span class="form-label" id="preferences-label">Login Preferences</span>
       <div>
         <label style="display:block;margin-bottom:6px;cursor:pointer;">
           <input type="checkbox" id="remember-me-3" name="rememberMe" value="true"
-                 data-testid="checkbox-remember-3" /> Remember me
+                 data-testid="checkbox-remember-3" aria-label="Remember me" /> Remember me
         </label>
         <label style="display:block;margin-bottom:6px;cursor:pointer;">
           <input type="checkbox" id="stay-signed-in-3" name="staySignedIn" value="true"
-                 data-testid="checkbox-stay-signed-3" /> Keep me signed in
+                 data-testid="checkbox-stay-signed-3" aria-label="Keep me signed in" /> Keep me signed in
         </label>
         <label style="display:block;margin-bottom:6px;cursor:pointer;">
           <input type="checkbox" id="agree-terms-3" name="agreeTerms" value="true"
-                 data-testid="checkbox-terms-3" /> I agree to the Terms &amp; Conditions
+                 data-testid="checkbox-terms-3" aria-label="I agree to the Terms and Conditions" /> I agree to the Terms &amp; Conditions
         </label>
       </div>
     </div>
 
     <button type="button" id="signin-btn-3" class="btn btn-primary"
-            data-testid="signin-btn-3" onclick="showMessage('section-3-msg','Sign in successful for Section 3!')">
-      <i class="fas fa-sign-in-alt"></i> Sign In
+            data-testid="signin-btn-3" aria-label="Sign In Section 3"
+            onclick="showMessage('section-3-msg','Sign in successful for Section 3!')">
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
     </button>
-    <div id="section-3-msg" class="alert alert-success mt-2" style="display:none;" role="alert"></div>
+    <div id="section-3-msg" class="alert alert-success mt-2" style="display:none;" role="alert" aria-live="assertive" aria-label="Section 3 status message"></div>
   </form>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- SECTION 4 – Login with Dropdown Select                                     -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div class="card mb-3" id="section-4" data-testid="section-4">
-  <div class="card-title">Section 4 &mdash; Role-Based Login</div>
+<div class="card mb-3" id="section-4" data-testid="section-4" role="region" aria-label="Section 4 Role-Based Login">
+  <h3 class="card-title" id="section-4-title" aria-label="Section 4 Role-Based Login">Section 4 &mdash; Role-Based Login</h3>
 
-  <form id="login-form-4" name="loginForm4" class="login-form" data-testid="login-form-4" novalidate>
+  <form id="login-form-4" name="loginForm4" class="login-form" data-testid="login-form-4" aria-label="Section 4 Role-Based Login form" novalidate>
 
     <div class="form-group">
-      <label class="form-label" for="username4"><i class="fas fa-user"></i> Username</label>
+      <label class="form-label" for="username4"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
       <input type="text" id="username4" name="username" class="form-control"
-             placeholder="Enter username" aria-label="Username" data-testid="username-4" required />
+             placeholder="Enter username" data-testid="username-4" required aria-required="true"
+             aria-label="Section 4 Username" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password4"><i class="fas fa-lock"></i> Password</label>
+      <label class="form-label" for="password4"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
       <input type="password" id="password4" name="password" class="form-control"
-             placeholder="Enter password" aria-label="Password" data-testid="password-4" required />
+             placeholder="Enter password" data-testid="password-4" required aria-required="true"
+             aria-label="Section 4 Password" />
     </div>
 
     <!-- Dropdown -->
     <div class="form-group">
-      <label class="form-label" for="role-select-4"><i class="fas fa-user-tag"></i> User Role</label>
-      <select id="role-select-4" name="role" class="form-control" data-testid="role-select-4">
+      <label class="form-label" for="role-select-4"><i class="fas fa-user-tag" aria-hidden="true"></i> User Role</label>
+      <select id="role-select-4" name="role" class="form-control" data-testid="role-select-4" aria-label="Section 4 User Role">
         <option value="">-- Select Role --</option>
         <option value="admin">Administrator</option>
         <option value="editor">Editor</option>
@@ -175,107 +188,116 @@
 
     <!-- Extra text area -->
     <div class="form-group">
-      <label class="form-label" for="notes-4"><i class="fas fa-sticky-note"></i> Notes</label>
+      <label class="form-label" for="notes-4"><i class="fas fa-sticky-note" aria-hidden="true"></i> Notes</label>
       <textarea id="notes-4" name="notes" class="form-control" rows="3"
-                placeholder="Any additional notes..." aria-label="Notes"
-                data-testid="notes-4"></textarea>
+                placeholder="Any additional notes..."
+                data-testid="notes-4" aria-label="Section 4 Notes"></textarea>
     </div>
 
     <button type="button" id="login-btn-4" class="btn btn-primary"
-            data-testid="login-btn-4" onclick="showMessage('section-4-msg','Login successful for Section 4!')">
-      <i class="fas fa-sign-in-alt"></i> Login
+            data-testid="login-btn-4" aria-label="Login Section 4"
+            onclick="showMessage('section-4-msg','Login successful for Section 4!')">
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
     </button>
-    <div id="section-4-msg" class="alert alert-success mt-2" style="display:none;" role="alert"></div>
+    <div id="section-4-msg" class="alert alert-success mt-2" style="display:none;" role="alert" aria-live="assertive" aria-label="Section 4 status message"></div>
   </form>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- SECTION 5 – Login with Date Picker & Range Slider                          -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div class="card mb-3" id="section-5" data-testid="section-5">
-  <div class="card-title">Section 5 &mdash; Secure Login</div>
+<div class="card mb-3" id="section-5" data-testid="section-5" role="region" aria-label="Section 5 Secure Login">
+  <h3 class="card-title" id="section-5-title" aria-label="Section 5 Secure Login">Section 5 &mdash; Secure Login</h3>
 
-  <form id="login-form-5" name="loginForm5" class="login-form" data-testid="login-form-5" novalidate>
+  <form id="login-form-5" name="loginForm5" class="login-form" data-testid="login-form-5" aria-label="Section 5 Secure Login form" novalidate>
 
     <div class="form-group">
-      <label class="form-label" for="username5"><i class="fas fa-user"></i> Username</label>
+      <label class="form-label" for="username5"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
       <input type="text" id="username5" name="username" class="form-control"
-             placeholder="Username" aria-label="Username" data-testid="username-5" required />
+             placeholder="Username" data-testid="username-5" required aria-required="true"
+             aria-label="Section 5 Username" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password5"><i class="fas fa-lock"></i> Password</label>
+      <label class="form-label" for="password5"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
       <input type="password" id="password5" name="password" class="form-control"
-             placeholder="Password" aria-label="Password" data-testid="password-5" required />
+             placeholder="Password" data-testid="password-5" required aria-required="true"
+             aria-label="Section 5 Password" />
     </div>
 
     <!-- Date picker -->
     <div class="form-group">
-      <label class="form-label" for="dob-5"><i class="fas fa-calendar-alt"></i> Date of Birth</label>
+      <label class="form-label" for="dob-5"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Date of Birth</label>
       <input type="date" id="dob-5" name="dob" class="form-control"
-             aria-label="Date of Birth" data-testid="dob-5" />
+             data-testid="dob-5" aria-label="Section 5 Date of Birth" />
     </div>
 
     <!-- Range slider -->
     <div class="form-group">
-      <label class="form-label" for="security-level-5"><i class="fas fa-shield-alt"></i> Security Level:
+      <label class="form-label" for="security-level-5"><i class="fas fa-shield-alt" aria-hidden="true"></i> Security Level:
         <span id="security-level-value-5">5</span>
       </label>
       <input type="range" id="security-level-5" name="securityLevel" class="form-control"
              min="1" max="10" value="5" data-testid="security-slider-5"
-             oninput="document.getElementById('security-level-value-5').textContent=this.value" />
+             aria-label="Section 5 Security Level" aria-valuemin="1" aria-valuemax="10" aria-valuenow="5"
+             oninput="document.getElementById('security-level-value-5').textContent=this.value;this.setAttribute('aria-valuenow',this.value)" />
     </div>
 
     <button type="button" id="signin-btn-5" class="btn btn-primary"
-            data-testid="signin-btn-5" onclick="showMessage('section-5-msg','Sign in successful for Section 5!')">
-      <i class="fas fa-sign-in-alt"></i> Sign In
+            data-testid="signin-btn-5" aria-label="Sign In Section 5"
+            onclick="showMessage('section-5-msg','Sign in successful for Section 5!')">
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
     </button>
-    <div id="section-5-msg" class="alert alert-success mt-2" style="display:none;" role="alert"></div>
+    <div id="section-5-msg" class="alert alert-success mt-2" style="display:none;" role="alert" aria-live="assertive" aria-label="Section 5 status message"></div>
   </form>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- SECTION 6 – Login with Color Picker & File Input                           -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div class="card mb-3" id="section-6" data-testid="section-6">
-  <div class="card-title">Section 6 &mdash; Profile Login</div>
+<div class="card mb-3" id="section-6" data-testid="section-6" role="region" aria-label="Section 6 Profile Login">
+  <h3 class="card-title" id="section-6-title" aria-label="Section 6 Profile Login">Section 6 &mdash; Profile Login</h3>
 
-  <form id="login-form-6" name="loginForm6" class="login-form" data-testid="login-form-6" novalidate>
+  <form id="login-form-6" name="loginForm6" class="login-form" data-testid="login-form-6" aria-label="Section 6 Profile Login form" novalidate>
 
     <div class="form-group">
-      <label class="form-label" for="username6"><i class="fas fa-user"></i> Username</label>
+      <label class="form-label" for="username6"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
       <input type="text" id="username6" name="username" class="form-control"
-             placeholder="Enter your username" aria-label="Username" data-testid="username-6" required />
+             placeholder="Enter your username" data-testid="username-6" required aria-required="true"
+             aria-label="Section 6 Username" />
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="password6"><i class="fas fa-lock"></i> Password</label>
+      <label class="form-label" for="password6"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
       <input type="password" id="password6" name="password" class="form-control"
-             placeholder="Enter your password" aria-label="Password" data-testid="password-6" required />
+             placeholder="Enter your password" data-testid="password-6" required aria-required="true"
+             aria-label="Section 6 Password" />
     </div>
 
     <!-- Color picker -->
     <div class="form-group">
-      <label class="form-label" for="fav-color-6"><i class="fas fa-palette"></i> Favourite Theme Colour</label>
+      <label class="form-label" for="fav-color-6"><i class="fas fa-palette" aria-hidden="true"></i> Favourite Theme Colour</label>
       <input type="color" id="fav-color-6" name="favColor" value="#4f46e5"
-             data-testid="color-picker-6" style="width:60px;height:36px;cursor:pointer;" />
+             data-testid="color-picker-6" aria-label="Section 6 Favourite Theme Colour"
+             style="width:60px;height:36px;cursor:pointer;" />
     </div>
 
     <!-- File input (avatar) -->
     <div class="form-group">
-      <label class="form-label" for="avatar-6"><i class="fas fa-image"></i> Upload Avatar</label>
+      <label class="form-label" for="avatar-6"><i class="fas fa-image" aria-hidden="true"></i> Upload Avatar</label>
       <input type="file" id="avatar-6" name="avatar" class="form-control"
-             accept="image/*" data-testid="avatar-upload-6" />
+             accept="image/*" data-testid="avatar-upload-6" aria-label="Section 6 Upload Avatar" />
     </div>
 
     <!-- Hidden field (for locator practice) -->
     <input type="hidden" id="token-6" name="csrfToken" value="abc123xyz" data-testid="hidden-token-6" />
 
     <button type="button" id="login-btn-6" class="btn btn-primary"
-            data-testid="login-btn-6" onclick="showMessage('section-6-msg','Login successful for Section 6!')">
-      <i class="fas fa-sign-in-alt"></i> Login
+            data-testid="login-btn-6" aria-label="Login Section 6"
+            onclick="showMessage('section-6-msg','Login successful for Section 6!')">
+      <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
     </button>
-    <div id="section-6-msg" class="alert alert-success mt-2" style="display:none;" role="alert"></div>
+    <div id="section-6-msg" class="alert alert-success mt-2" style="display:none;" role="alert" aria-live="assertive" aria-label="Section 6 status message"></div>
   </form>
 </div>
 

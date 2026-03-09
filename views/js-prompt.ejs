@@ -1,39 +1,39 @@
-<%# JS Prompt Page %>
+﻿<%# JS Prompt Page %>
 <div class="page-header">
-  <h2><i class="fas fa-comment-dots"></i> JS Prompt</h2>
+  <h2><i class="fas fa-comment-dots" aria-hidden="true"></i> JS Prompt</h2>
   <p>Trigger <code>window.prompt()</code> dialogs that accept user text input. Practice reading the returned value and handling dismissal.</p>
 </div>
 
 <div class="alert alert-info" role="note">
-  <i class="fas fa-info-circle"></i>
+  <i class="fas fa-info-circle" aria-hidden="true"></i>
   A browser text-entry prompt will appear. Type a value and click <strong>OK</strong>, or <strong>Cancel</strong> to return null.
 </div>
 
 <!-- Basic prompt -->
 <div class="card">
-  <div class="card-title">Simple Name Prompt</div>
+  <h3 class="card-title">Simple Name Prompt</h3>
   <p class="text-muted mb-3" style="font-size:13px;">Enter your name in the browser prompt. The result is displayed below.</p>
   <button id="trigger-prompt-btn" class="btn btn-primary"
           data-testid="trigger-prompt-btn" aria-label="Trigger name prompt">
-    <i class="fas fa-user"></i> Enter Your Name
+    <i class="fas fa-user" aria-hidden="true"></i> Enter Your Name
   </button>
   <p id="prompt-result" class="mt-3" data-testid="prompt-result" style="font-size:14px;"></p>
 </div>
 
 <!-- Prompt with default value -->
 <div class="card">
-  <div class="card-title">Prompt with Default Value</div>
+  <h3 class="card-title">Prompt with Default Value</h3>
   <p class="text-muted mb-3" style="font-size:13px;">A prompt pre-filled with a default value. You can modify it or accept it as-is.</p>
   <button id="trigger-default-prompt" class="btn btn-primary"
           data-testid="trigger-default-prompt" aria-label="Trigger prompt with default value">
-    <i class="fas fa-edit"></i> Edit Your City
+    <i class="fas fa-edit" aria-hidden="true"></i> Edit Your City
   </button>
   <p id="default-prompt-result" class="mt-3 text-muted" data-testid="default-prompt-result" style="font-size:14px;"></p>
 </div>
 
 <!-- Prompt in form flow -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Prompt as Part of a Form</div>
+  <h3 class="card-title">Prompt as Part of a Form</h3>
   <p class="text-muted mb-2" style="font-size:13px;">Clicking Submit triggers a prompt asking for a coupon code before the form proceeds.</p>
   <form id="prompt-form" data-testid="prompt-form" aria-label="Order form with coupon prompt">
     <div class="form-group">
@@ -46,7 +46,7 @@
     </div>
     <button type="submit" id="order-submit-btn" class="btn btn-primary"
             data-testid="order-submit-btn" aria-label="Submit order">
-      <i class="fas fa-shopping-cart"></i> Place Order
+      <i class="fas fa-shopping-cart" aria-hidden="true"></i> Place Order
     </button>
   </form>
   <p id="order-result" class="mt-3 text-muted" data-testid="order-result" style="font-size:14px;"></p>

@@ -1,13 +1,13 @@
-<%# Redirect landing page — used by redirect-link.ejs %>
+﻿<%# Redirect landing page — used by redirect-link.ejs %>
 <div class="page-header">
-  <h2><i class="fas fa-check-circle" style="color:#22c55e;"></i> Redirect Successful!</h2>
+  <h2><i class="fas fa-check-circle" style="color:#22c55e;" aria-hidden="true"></i> Redirect Successful!</h2>
   <p>You have been successfully redirected to this page.</p>
 </div>
 
 <div class="card" style="max-width:540px;text-align:center;">
   <div id="redirect-confirm-box" data-testid="redirect-confirm-box"
        aria-live="polite" style="padding:32px 16px;">
-    <i class="fas fa-map-marker-alt" style="font-size:3rem;color:#4f46e5;"></i>
+    <i class="fas fa-map-marker-alt" style="font-size:3rem;color:#4f46e5;" aria-hidden="true"></i>
     <h3 id="redirect-heading" data-testid="redirect-heading"
         style="margin:16px 0 8px;">You Arrived Here via Redirect</h3>
     <p id="redirect-message" data-testid="redirect-message"
@@ -21,7 +21,7 @@
     <a id="back-to-redirects" data-testid="back-to-redirects"
        href="/redirect-link" class="btn btn-primary" style="margin-top:16px;"
        aria-label="Go back to redirect examples">
-      <i class="fas fa-arrow-left"></i> Back to Redirect Examples
+      <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Redirect Examples
     </a>
   </div>
 </div>

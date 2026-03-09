@@ -1,4 +1,4 @@
-<%# Home Page – displays the first 20 feature cards in a responsive grid %>
+﻿<%# Home Page – displays the first 20 feature cards in a responsive grid %>
 <div class="page-header">
   <h2>Welcome to Software Testing Mentor & RCV Academy Automation Practice Website</h2>
   <p>
@@ -10,7 +10,7 @@
 
 <!-- ===== Quick-start info bar ===== -->
 <div class="alert alert-info mt-2" role="alert" id="info-banner">
-  <i class="fas fa-info-circle"></i>
+  <i class="fas fa-info-circle" aria-hidden="true"></i>
   <span>
     Use tools like <strong>Selenium</strong>, <strong>Playwright</strong>,
     <strong>Cypress</strong> or <strong>WebdriverIO</strong> to locate and interact
@@ -29,7 +29,7 @@
        data-label="<%= item.label %>"
        title="Practice: <%= item.label %>">
       <div class="grid-icon">
-        <i class="fas <%= item.icon %>"></i>
+        <i class="fas <%= item.icon %>" aria-hidden="true"></i>
       </div>
       <span class="grid-label"><%= item.label %></span>
     </a>

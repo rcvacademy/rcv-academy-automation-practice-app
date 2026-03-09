@@ -1,12 +1,12 @@
-<%# Autocomplete Page %>
+﻿<%# Autocomplete Page %>
 <div class="page-header">
-  <h2><i class="fas fa-search"></i> Autocomplete</h2>
+  <h2><i class="fas fa-search" aria-hidden="true"></i> Autocomplete</h2>
   <p>Type-ahead / autocomplete input widgets. Practice locating suggestion lists, highlight highlights, and selection events.</p>
 </div>
 
 <!-- Country autocomplete -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Country Search</div>
+  <h3 class="card-title">Country Search</h3>
   <div class="autocomplete-wrapper" id="country-ac-wrapper">
     <label class="form-label" for="country-ac-input">Start typing a country name:</label>
     <input type="text" id="country-ac-input" class="form-control" name="countrySearch"
@@ -23,7 +23,7 @@
 
 <!-- Technology autocomplete (jQuery UI) -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Technology Search (jQuery UI Autocomplete)</div>
+  <h3 class="card-title">Technology Search (jQuery UI Autocomplete)</h3>
   <div id="tech-ac-wrapper">
     <label class="form-label" for="tech-ac-input">Search technologies:</label>
     <input type="text" id="tech-ac-input" class="form-control" name="techSearch"
@@ -36,7 +36,7 @@
 
 <!-- Multi-tag input -->
 <div class="card" style="max-width:560px;">
-  <div class="card-title">Multi-tag Input</div>
+  <h3 class="card-title">Multi-tag Input</h3>
   <p class="text-muted mb-2" style="font-size:13px;">Type and press Enter or comma to add a tag. Click × to remove.</p>
   <div id="tag-input-wrapper" style="border:1px solid var(--border);border-radius:var(--radius);
        padding:6px;display:flex;flex-wrap:wrap;gap:6px;min-height:46px;background:#fff;"

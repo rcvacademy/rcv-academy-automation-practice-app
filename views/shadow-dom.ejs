@@ -1,12 +1,12 @@
-<%# Shadow DOM Page %>
+﻿<%# Shadow DOM Page %>
 <div class="page-header">
-  <h2><i class="fas fa-ghost"></i> Shadow DOM</h2>
+  <h2><i class="fas fa-ghost" aria-hidden="true"></i> Shadow DOM</h2>
   <p>Elements inside Shadow DOM boundaries. Regular CSS/XPath selectors can't cross shadow roots — learn how each tool handles it.</p>
 </div>
 
 <!-- Visual explanation card -->
 <div class="alert alert-info" role="note" data-testid="shadow-dom-info">
-  <i class="fas fa-info-circle"></i>
+  <i class="fas fa-info-circle" aria-hidden="true"></i>
   <span>
     <strong>About Shadow DOM:</strong> Elements inside a shadow root are encapsulated.
     Playwright uses <code>page.locator('custom-el').locator('inner')</code> or
@@ -17,7 +17,7 @@
 
 <!-- Shadow host 1 -->
 <div class="card">
-  <div class="card-title">Shadow Host: Login Widget</div>
+  <h3 class="card-title">Shadow Host: Login Widget</h3>
   <p class="text-muted mb-2" style="font-size:13px;">The elements below are inside a real shadow root attached to <code>#shadow-host-1</code>.</p>
   <div id="shadow-host-1" class="shadow-host" data-testid="shadow-host-1"
        aria-label="Shadow DOM login widget"></div>
@@ -25,7 +25,7 @@
 
 <!-- Shadow host 2 -->
 <div class="card">
-  <div class="card-title">Shadow Host: Custom Counter</div>
+  <h3 class="card-title">Shadow Host: Custom Counter</h3>
   <p class="text-muted mb-2" style="font-size:13px;">A counter component rendered completely inside a shadow root.</p>
   <div id="shadow-host-2" class="shadow-host" data-testid="shadow-host-2"
        aria-label="Shadow DOM counter"></div>
@@ -33,7 +33,7 @@
 
 <!-- Shadow host 3 – nested shadow -->
 <div class="card">
-  <div class="card-title">Nested Shadow DOM</div>
+  <h3 class="card-title">Nested Shadow DOM</h3>
   <p class="text-muted mb-2" style="font-size:13px;">The outer host contains an inner host, creating two shadow root boundaries.</p>
   <div id="shadow-host-outer" class="shadow-host" data-testid="shadow-host-outer"
        aria-label="Outer shadow DOM host"></div>

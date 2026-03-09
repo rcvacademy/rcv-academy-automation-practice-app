@@ -1,6 +1,6 @@
-<%# Checkboxes Page %>
+﻿<%# Checkboxes Page %>
 <div class="page-header">
-  <h2><i class="fas fa-check-square"></i> Checkboxes</h2>
+  <h2><i class="fas fa-check-square" aria-hidden="true"></i> Checkboxes</h2>
   <p>Standalone, grouped, indeterminate, and disabled checkboxes. Use CSS, XPath, ID, name, and ARIA strategies.</p>
 </div>
 
@@ -8,7 +8,7 @@
 
   <!-- Individual checkboxes -->
   <div class="card" style="min-width:240px;">
-    <div class="card-title">Individual Checkboxes</div>
+    <h3 class="card-title">Individual Checkboxes</h3>
     <div class="checkbox-group" id="individual-checks">
       <label><input type="checkbox" id="chk-1" name="check1" class="single-checkbox" data-testid="chk-1" value="one" />   Option One</label>
       <label><input type="checkbox" id="chk-2" name="check2" class="single-checkbox" data-testid="chk-2" value="two"   checked /> Option Two (pre-checked)</label>
@@ -19,7 +19,7 @@
 
   <!-- Grouped with "Select All" -->
   <div class="card" style="min-width:260px;">
-    <div class="card-title">Languages (Select All)</div>
+    <h3 class="card-title">Languages (Select All)</h3>
     <div class="checkbox-group" id="lang-group">
       <label><input type="checkbox" id="chk-all-langs" class="select-all-langs" data-testid="chk-all-langs" /> <strong>Select All</strong></label>
       <hr style="border-color:var(--border);margin:4px 0;" />
@@ -34,7 +34,7 @@
 
   <!-- Permissions group -->
   <div class="card" style="min-width:240px;">
-    <div class="card-title">User Permissions</div>
+    <h3 class="card-title">User Permissions</h3>
     <div class="checkbox-group" id="permissions-group" role="group" aria-label="User permissions">
       <label><input type="checkbox" id="perm-read"   name="permissions" value="read"   class="perm-check" data-testid="perm-read"   checked /> Can Read</label>
       <label><input type="checkbox" id="perm-write"  name="permissions" value="write"  class="perm-check" data-testid="perm-write"         /> Can Write</label>
@@ -46,7 +46,7 @@
 
 <!-- Submit form with checkboxes -->
 <div class="card mt-3" style="max-width:480px;">
-  <div class="card-title">Subscribe to Topics</div>
+  <h3 class="card-title">Subscribe to Topics</h3>
   <form id="topics-form" action="#" data-testid="topics-form" aria-label="Topics subscription form">
     <div class="checkbox-group">
       <label><input type="checkbox" id="topic-news"  name="topics" value="news"    class="topic-check" data-testid="topic-news"  /> Breaking News</label>

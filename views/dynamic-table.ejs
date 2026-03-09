@@ -1,6 +1,6 @@
-<%# Dynamic Table – rows can be added/deleted; sortable columns %>
+﻿<%# Dynamic Table – rows can be added/deleted; sortable columns %>
 <div class="page-header">
-  <h2><i class="fas fa-table"></i> Dynamic Table</h2>
+  <h2><i class="fas fa-table" aria-hidden="true"></i> Dynamic Table</h2>
   <p>A table whose rows change at runtime. Add, delete, and search rows. Locate rows by text, position, attribute, and data-* attributes.</p>
 </div>
 
@@ -10,11 +10,11 @@
            aria-label="Search table" data-testid="table-search" style="max-width:260px;" />
     <button id="add-row-btn" class="btn btn-success" data-testid="add-row-btn"
             aria-label="Add a new row">
-      <i class="fas fa-plus"></i> Add Row
+      <i class="fas fa-plus" aria-hidden="true"></i> Add Row
     </button>
     <button id="clear-table-btn" class="btn btn-danger btn-sm" data-testid="clear-table-btn"
             aria-label="Clear all rows">
-      <i class="fas fa-trash"></i> Clear All
+      <i class="fas fa-trash" aria-hidden="true"></i> Clear All
     </button>
     <span class="badge badge-primary" id="row-count-badge" data-testid="row-count">Rows: 5</span>
   </div>
@@ -23,11 +23,11 @@
     <table class="data-table" id="dynamic-table" aria-label="Dynamic employee table" data-testid="dynamic-table">
       <thead id="table-head">
         <tr>
-          <th data-col="id"         class="sortable" aria-sort="ascending">  ID <i class="fas fa-sort sort-icon"></i></th>
-          <th data-col="name"       class="sortable" aria-sort="none">        Name <i class="fas fa-sort sort-icon"></i></th>
-          <th data-col="department" class="sortable" aria-sort="none">        Department <i class="fas fa-sort sort-icon"></i></th>
-          <th data-col="salary"     class="sortable" aria-sort="none">        Salary <i class="fas fa-sort sort-icon"></i></th>
-          <th data-col="status"     class="sortable" aria-sort="none">        Status <i class="fas fa-sort sort-icon"></i></th>
+          <th data-col="id"         class="sortable" aria-sort="ascending">  ID <i class="fas fa-sort sort-icon" aria-hidden="true"></i></th>
+          <th data-col="name"       class="sortable" aria-sort="none">        Name <i class="fas fa-sort sort-icon" aria-hidden="true"></i></th>
+          <th data-col="department" class="sortable" aria-sort="none">        Department <i class="fas fa-sort sort-icon" aria-hidden="true"></i></th>
+          <th data-col="salary"     class="sortable" aria-sort="none">        Salary <i class="fas fa-sort sort-icon" aria-hidden="true"></i></th>
+          <th data-col="status"     class="sortable" aria-sort="none">        Status <i class="fas fa-sort sort-icon" aria-hidden="true"></i></th>
           <th>Actions</th>
         </tr>
       </thead>

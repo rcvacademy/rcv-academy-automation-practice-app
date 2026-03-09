@@ -1,12 +1,12 @@
-<%# Calendar / Date Picker Page %>
+﻿<%# Calendar / Date Picker Page %>
 <div class="page-header">
-  <h2><i class="fas fa-calendar-alt"></i> Calendar</h2>
+  <h2><i class="fas fa-calendar-alt" aria-hidden="true"></i> Calendar</h2>
   <p>Date pickers and calendar widgets. Practice selecting dates, navigating months, and reading the selected value.</p>
 </div>
 
 <!-- Native HTML date input -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Native HTML Date Input</div>
+  <h3 class="card-title">Native HTML Date Input</h3>
   <p class="text-muted mb-2" style="font-size:13px;">A standard <code>&lt;input type="date"&gt;</code> — the simplest type to automate.</p>
   <div class="form-group">
     <label class="form-label" for="native-date">Select a date:</label>
@@ -20,7 +20,7 @@
 
 <!-- Date-time local -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Date + Time Input</div>
+  <h3 class="card-title">Date + Time Input</h3>
   <div class="form-group">
     <label class="form-label" for="datetime-input">Select date and time:</label>
     <input type="datetime-local" id="datetime-input" name="dateTime"
@@ -33,7 +33,7 @@
 <!-- jQuery UI Datepicker -->
 <div class="card calendar-section">
   <div style="min-width:280px;">
-    <div class="card-title">jQuery UI Datepicker</div>
+    <h3 class="card-title">jQuery UI Datepicker</h3>
     <p class="text-muted mb-2" style="font-size:13px;">A calendar popup powered by jQuery UI.</p>
     <div class="form-group">
       <label class="form-label" for="jqui-datepicker">Click to pick a date:</label>
@@ -53,7 +53,7 @@
 
 <!-- Inline calendar -->
 <div class="card">
-  <div class="card-title">Inline jQuery UI Calendar</div>
+  <h3 class="card-title">Inline jQuery UI Calendar</h3>
   <p class="text-muted mb-2" style="font-size:13px;">An always-visible calendar widget — no input field needed.</p>
   <div id="inline-datepicker" data-testid="inline-datepicker"
        aria-label="Inline calendar widget"></div>
@@ -63,7 +63,7 @@
 
 <!-- Date range -->
 <div class="card" style="max-width:540px;">
-  <div class="card-title">Date Range Picker</div>
+  <h3 class="card-title">Date Range Picker</h3>
   <div class="d-flex gap-3 flex-wrap">
     <div class="form-group" style="flex:1;min-width:180px;">
       <label class="form-label" for="range-start">Start Date:</label>
@@ -80,7 +80,7 @@
   </div>
   <button id="calc-range-btn" class="btn btn-primary btn-sm"
           data-testid="calc-range-btn" aria-label="Calculate date range">
-    <i class="fas fa-calculator"></i> Calculate Range
+    <i class="fas fa-calculator" aria-hidden="true"></i> Calculate Range
   </button>
   <p id="range-result" class="mt-2 text-muted" data-testid="range-result"
      style="font-size:13px;"></p>

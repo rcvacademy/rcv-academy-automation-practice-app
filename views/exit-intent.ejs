@@ -1,25 +1,25 @@
-<%# Exit Intent Page %>
+﻿<%# Exit Intent Page %>
 <div class="page-header">
-  <h2><i class="fas fa-sign-out-alt"></i> Exit Intent</h2>
+  <h2><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Exit Intent</h2>
   <p>Move your mouse cursor above the viewport (towards the browser address bar) to trigger the exit-intent overlay. Practice locating modal elements and dismiss buttons.</p>
 </div>
 
 <div class="alert alert-info" role="note" data-testid="exit-intent-info">
-  <i class="fas fa-info-circle"></i>
+  <i class="fas fa-info-circle" aria-hidden="true"></i>
   The exit-intent popup fires when the mouse leaves the top of the page. You can also trigger it manually below.
 </div>
 
 <!-- Trigger controls -->
 <div class="card">
-  <div class="card-title">Manual Triggers</div>
+  <h3 class="card-title">Manual Triggers</h3>
   <div class="d-flex gap-2 flex-wrap">
     <button id="show-exit-overlay-btn" class="btn btn-danger"
             data-testid="show-exit-overlay-btn" aria-label="Show exit intent overlay">
-      <i class="fas fa-sign-out-alt"></i> Show Exit Popup
+      <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Show Exit Popup
     </button>
     <button id="reset-exit-btn" class="btn btn-outline"
             data-testid="reset-exit-btn" aria-label="Reset exit intent trigger">
-      <i class="fas fa-redo"></i> Reset Trigger
+      <i class="fas fa-redo" aria-hidden="true"></i> Reset Trigger
     </button>
   </div>
   <p id="exit-trigger-state" class="mt-2 text-muted" data-testid="exit-trigger-state"
@@ -30,7 +30,7 @@
 
 <!-- Result tracking -->
 <div class="card" style="max-width:480px;">
-  <div class="card-title">Interaction Log</div>
+  <h3 class="card-title">Interaction Log</h3>
   <ul id="exit-log" data-testid="exit-log" style="font-size:13px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;">
     <li class="text-muted">No interactions yet.</li>
   </ul>
@@ -64,7 +64,7 @@
     <div class="d-flex gap-2" style="justify-content:center;flex-wrap:wrap;">
       <button id="exit-stay-btn" class="btn btn-primary"
               data-testid="exit-stay-btn" aria-label="Stay on page and accept offer">
-        <i class="fas fa-heart"></i> I'll Stay!
+        <i class="fas fa-heart" aria-hidden="true"></i> I'll Stay!
       </button>
       <button id="exit-leave-btn" class="btn btn-outline"
               data-testid="exit-leave-btn" aria-label="Decline exit offer and leave">

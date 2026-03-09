@@ -1,6 +1,6 @@
-<%# jQuery UI Menu Page %>
+﻿<%# jQuery UI Menu Page %>
 <div class="page-header">
-  <h2><i class="fas fa-bars"></i> jQuery UI Menu</h2>
+  <h2><i class="fas fa-bars" aria-hidden="true"></i> jQuery UI Menu</h2>
   <p>A fully functional jQuery UI hierarchical menu. Practice locating menu items, sub-menus, and hover states.</p>
 </div>
 
@@ -8,7 +8,7 @@
 
   <!-- Horizontal jQuery UI menu -->
   <div class="card" style="flex:1;min-width:300px;">
-    <div class="card-title">jQuery UI Horizontal Menu</div>
+    <h3 class="card-title">jQuery UI Horizontal Menu</h3>
     <nav id="jquery-menu-nav" aria-label="jQuery UI demo menu">
       <ul id="jquery-menu" data-testid="jquery-menu">
         <li id="menu-file"><a href="#" id="menu-file-link" data-testid="menu-file">File</a>
@@ -59,7 +59,7 @@
 
   <!-- Simple custom styled navigation menu -->
   <div class="card" style="flex:1;min-width:260px;">
-    <div class="card-title">Custom CSS Navigation Menu</div>
+    <h3 class="card-title">Custom CSS Navigation Menu</h3>
     <nav id="custom-nav-menu" aria-label="Custom navigation menu" data-testid="custom-nav-menu">
       <ul style="list-style:none;display:flex;flex-direction:column;gap:2px;">
         <% ['Dashboard','Reports','Analytics','Settings','Profile','Logout'].forEach(function(item){ %>

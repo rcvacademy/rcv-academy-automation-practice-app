@@ -1,19 +1,19 @@
-<%# Form Validation Page %>
+﻿<%# Form Validation Page %>
 <div class="page-header">
-  <h2><i class="fas fa-check-circle"></i> Form Validation</h2>
+  <h2><i class="fas fa-check-circle" aria-hidden="true"></i> Form Validation</h2>
   <p>A form with client-side and server-side validation. Locate error messages, valid/invalid states, and success banners.</p>
 </div>
 
 <% if (typeof submitted !== 'undefined' && submitted) { %>
   <div id="form-success-banner" class="alert alert-success" role="alert" data-testid="form-success-banner">
-    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-check-circle" aria-hidden="true"></i>
     <strong>Form submitted successfully!</strong> Here is what we received:
     <pre style="margin-top:8px;font-size:12px;background:#f0fdf4;padding:10px;border-radius:4px;"><%= JSON.stringify(data, null, 2) %></pre>
   </div>
 <% } %>
 
 <div class="card" style="max-width:560px;">
-  <div class="card-title">Contact Form (with Validation)</div>
+  <h3 class="card-title">Contact Form (with Validation)</h3>
 
   <form id="validation-form" name="validationForm" class="validation-form"
         method="POST" action="/form-validation"
@@ -102,11 +102,11 @@
     <div class="d-flex gap-2">
       <button type="submit" id="form-submit-btn" class="btn btn-primary"
               data-testid="form-submit-btn" aria-label="Submit form">
-        <i class="fas fa-paper-plane"></i> Submit
+        <i class="fas fa-paper-plane" aria-hidden="true"></i> Submit
       </button>
       <button type="reset" id="form-reset-btn" class="btn btn-outline"
               data-testid="form-reset-btn" aria-label="Reset form">
-        <i class="fas fa-undo"></i> Reset
+        <i class="fas fa-undo" aria-hidden="true"></i> Reset
       </button>
     </div>
     <div id="form-result" class="alert" role="alert" data-testid="form-result"

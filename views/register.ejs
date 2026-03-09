@@ -1,17 +1,17 @@
-<%# Register Page – rich form with many locatable fields %>
+﻿<%# Register Page – rich form with many locatable fields %>
 <div class="page-header">
-  <h2><i class="fas fa-user-plus"></i> Register Page</h2>
+  <h2><i class="fas fa-user-plus" aria-hidden="true"></i> Register Page</h2>
   <p>A full registration form. Practice locating inputs by ID, Name, Type, Placeholder, aria-label, data-testid and more.</p>
 </div>
 
 <% if (typeof message !== 'undefined' && message) { %>
   <div id="register-message" class="alert alert-<%= message.type === 'success' ? 'success' : 'error' %>" role="alert" data-testid="register-message">
-    <i class="fas fa-check-circle"></i> <%= message.text %>
+    <i class="fas fa-check-circle" aria-hidden="true"></i> <%= message.text %>
   </div>
 <% } %>
 
 <div class="card" id="register-card" style="max-width:560px;">
-  <div class="card-title">Create a New Account</div>
+  <h3 class="card-title">Create a New Account</h3>
 
   <form id="register-form" name="registerForm" class="register-form" method="POST" action="/register" data-testid="register-form" novalidate>
 
@@ -100,7 +100,7 @@
 
     <button type="submit" id="register-btn" name="registerButton" class="btn btn-primary" style="width:100%;"
             role="button" data-testid="register-submit" aria-label="Register">
-      <i class="fas fa-user-plus"></i> Create Account
+      <i class="fas fa-user-plus" aria-hidden="true"></i> Create Account
     </button>
   </form>
 

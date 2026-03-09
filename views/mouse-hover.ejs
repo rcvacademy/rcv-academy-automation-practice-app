@@ -1,12 +1,12 @@
-<%# Mouse Hover Page %>
+﻿<%# Mouse Hover Page %>
 <div class="page-header">
-  <h2><i class="fas fa-hand-pointer"></i> Mouse Hover</h2>
+  <h2><i class="fas fa-hand-pointer" aria-hidden="true"></i> Mouse Hover</h2>
   <p>Practice triggering hover states, revealing hidden elements, and verifying hover-activated content with automation tools.</p>
 </div>
 
 <!-- Colour-change boxes -->
 <div class="card">
-  <div class="card-title">Hover to Change Style</div>
+  <h3 class="card-title">Hover to Change Style</h3>
   <div class="d-flex gap-3 flex-wrap">
     <div id="hover-box-1" class="hover-box" data-testid="hover-box-1"
          aria-label="Hover box 1">
@@ -30,7 +30,7 @@
 
 <!-- Dropdown revealed on hover -->
 <div class="card">
-  <div class="card-title">Hover Dropdown Menu</div>
+  <h3 class="card-title">Hover Dropdown Menu</h3>
   <p class="text-muted mb-3" style="font-size:13px;">Hover over the button to reveal the dropdown. Options disappear when you move away.</p>
   <div id="hover-dropdown-wrapper" class="hover-dropdown-wrapper"
        style="position:relative;display:inline-block;"
@@ -39,7 +39,7 @@
             data-testid="hover-dropdown-trigger" aria-haspopup="true"
             aria-expanded="false" aria-label="Hover dropdown trigger"
             style="position:relative;z-index:2;">
-      Account <i class="fas fa-chevron-down"></i>
+      Account <i class="fas fa-chevron-down" aria-hidden="true"></i>
     </button>
     <ul id="hover-dropdown-menu"
         style="display:none;position:absolute;top:100%;left:0;
@@ -50,20 +50,20 @@
       <li><a href="#" id="hdd-profile" class="hover-dd-item" role="menuitem"
              data-testid="hdd-profile"
              style="display:block;padding:9px 16px;font-size:13.5px;color:var(--text);">
-        <i class="fas fa-user"></i> Profile</a></li>
+        <i class="fas fa-user" aria-hidden="true"></i> Profile</a></li>
       <li><a href="#" id="hdd-settings" class="hover-dd-item" role="menuitem"
              data-testid="hdd-settings"
              style="display:block;padding:9px 16px;font-size:13.5px;color:var(--text);">
-        <i class="fas fa-cog"></i> Settings</a></li>
+        <i class="fas fa-cog" aria-hidden="true"></i> Settings</a></li>
       <li><a href="#" id="hdd-billing" class="hover-dd-item" role="menuitem"
              data-testid="hdd-billing"
              style="display:block;padding:9px 16px;font-size:13.5px;color:var(--text);">
-        <i class="fas fa-credit-card"></i> Billing</a></li>
+        <i class="fas fa-credit-card" aria-hidden="true"></i> Billing</a></li>
       <li style="border-top:1px solid var(--border);">
         <a href="#" id="hdd-logout" class="hover-dd-item" role="menuitem"
            data-testid="hdd-logout"
            style="display:block;padding:9px 16px;font-size:13.5px;color:var(--danger);">
-          <i class="fas fa-sign-out-alt"></i> Logout</a></li>
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</a></li>
     </ul>
   </div>
   <p id="hover-dd-result" class="mt-3 text-muted" data-testid="hover-dd-result" style="font-size:13px;"></p>
@@ -71,7 +71,7 @@
 
 <!-- Image hover overlay -->
 <div class="card">
-  <div class="card-title">Image with Hover Overlay</div>
+  <h3 class="card-title">Image with Hover Overlay</h3>
   <div class="d-flex gap-3 flex-wrap">
     <% ['Product A','Product B','Product C'].forEach(function(name, i){ %>
       <div id="img-hover-<%= i+1 %>"
@@ -89,7 +89,7 @@
                     justify-content:center;gap:6px;opacity:0;transition:.3s;color:#fff;
                     font-size:13px;"
              data-testid="overlay-<%= i+1 %>">
-          <i class="fas fa-eye" style="font-size:20px;"></i>
+          <i class="fas fa-eye" style="font-size:20px;" aria-hidden="true"></i>
           <span>View Details</span>
         </div>
       </div>
