@@ -1,0 +1,62 @@
+{
+  "diamond": [
+    {
+      "name": "RCV Academy eLearning Portal",
+      "image": "/files/sponsors/diamond-rcv.svg",
+      "url": "https://training.rcvacademy.com/",
+      "alt": "RCV Academy eLearning Portal — Diamond Sponsor"
+    }
+  ],
+  "platinum": [
+    {
+      "name": "RCV Academy eLearning",
+      "image": "/files/sponsors/platinum-1.svg",
+      "url": "https://training.rcvacademy.com/",
+      "alt": "RCV Academy eLearning — Platinum Sponsor"
+    },
+    {
+      "name": "Platinum Sponsor 2",
+      "image": "/files/sponsors/platinum-2.svg",
+      "url": "#",
+      "alt": "Platinum Sponsor 2"
+    },
+    {
+      "name": "Platinum Sponsor 3",
+      "image": "/files/sponsors/platinum-3.svg",
+      "url": "#",
+      "alt": "Platinum Sponsor 3"
+    }
+  ],
+  "gold": [
+    { "name": "Gold Sponsor 1", "image": "/files/sponsors/gold-1.svg", "url": "#", "alt": "Gold Sponsor 1" },
+    { "name": "Gold Sponsor 2", "image": "/files/sponsors/gold-2.svg", "url": "#", "alt": "Gold Sponsor 2" },
+    { "name": "Gold Sponsor 3", "image": "/files/sponsors/gold-3.svg", "url": "#", "alt": "Gold Sponsor 3" },
+    { "name": "Gold Sponsor 4", "image": "/files/sponsors/gold-4.svg", "url": "#", "alt": "Gold Sponsor 4" },
+    { "name": "Gold Sponsor 5", "image": "/files/sponsors/gold-5.svg", "url": "#", "alt": "Gold Sponsor 5" },
+    { "name": "Gold Sponsor 6", "image": "/files/sponsors/gold-6.svg", "url": "#", "alt": "Gold Sponsor 6" },
+    { "name": "Gold Sponsor 7", "image": "/files/sponsors/gold-7.svg", "url": "#", "alt": "Gold Sponsor 7" },
+    { "name": "Gold Sponsor 8", "image": "/files/sponsors/gold-8.svg", "url": "#", "alt": "Gold Sponsor 8" }
+  ],
+  "silver": [
+    { "name": "Silver 1",  "image": "/files/sponsors/silver-1.svg",  "url": "#", "alt": "Silver Sponsor 1" },
+    { "name": "Silver 2",  "image": "/files/sponsors/silver-2.svg",  "url": "#", "alt": "Silver Sponsor 2" },
+    { "name": "Silver 3",  "image": "/files/sponsors/silver-3.svg",  "url": "#", "alt": "Silver Sponsor 3" },
+    { "name": "Silver 4",  "image": "/files/sponsors/silver-4.svg",  "url": "#", "alt": "Silver Sponsor 4" },
+    { "name": "Silver 5",  "image": "/files/sponsors/silver-5.svg",  "url": "#", "alt": "Silver Sponsor 5" },
+    { "name": "Silver 6",  "image": "/files/sponsors/silver-6.svg",  "url": "#", "alt": "Silver Sponsor 6" },
+    { "name": "Silver 7",  "image": "/files/sponsors/silver-7.svg",  "url": "#", "alt": "Silver Sponsor 7" },
+    { "name": "Silver 8",  "image": "/files/sponsors/silver-8.svg",  "url": "#", "alt": "Silver Sponsor 8" },
+    { "name": "Silver 9",  "image": "/files/sponsors/silver-9.svg",  "url": "#", "alt": "Silver Sponsor 9" },
+    { "name": "Silver 10", "image": "/files/sponsors/silver-10.svg", "url": "#", "alt": "Silver Sponsor 10" },
+    { "name": "Silver 11", "image": "/files/sponsors/silver-11.svg", "url": "#", "alt": "Silver Sponsor 11" },
+    { "name": "Silver 12", "image": "/files/sponsors/silver-12.svg", "url": "#", "alt": "Silver Sponsor 12" },
+    { "name": "Silver 13", "image": "/files/sponsors/silver-13.svg", "url": "#", "alt": "Silver Sponsor 13" },
+    { "name": "Silver 14", "image": "/files/sponsors/silver-14.svg", "url": "#", "alt": "Silver Sponsor 14" },
+    { "name": "Silver 15", "image": "/files/sponsors/silver-15.svg", "url": "#", "alt": "Silver Sponsor 15" },
+    { "name": "Silver 16", "image": "/files/sponsors/silver-16.svg", "url": "#", "alt": "Silver Sponsor 16" },
+    { "name": "Silver 17", "image": "/files/sponsors/silver-17.svg", "url": "#", "alt": "Silver Sponsor 17" },
+    { "name": "Silver 18", "image": "/files/sponsors/silver-18.svg", "url": "#", "alt": "Silver Sponsor 18" },
+    { "name": "Silver 19", "image": "/files/sponsors/silver-19.svg", "url": "#", "alt": "Silver Sponsor 19" },
+    { "name": "Silver 20", "image": "/files/sponsors/silver-20.svg", "url": "#", "alt": "Silver Sponsor 20" }
+  ]
+}

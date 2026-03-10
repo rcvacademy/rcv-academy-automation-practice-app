@@ -1,0 +1,152 @@
+<%# RCV Academy eStore – Orders List Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-orders-page" data-testid="store-orders-page">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="orders-breadcrumb" data-testid="orders-breadcrumb">
+    <a href="/store" id="bc-home" data-testid="bc-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">My Orders</span>
+  </nav>
+
+  <h1 class="store-section-heading" id="orders-heading" data-testid="orders-heading">
+    <i class="fas fa-box" aria-hidden="true" style="color:var(--store-primary);"></i>
+    My Orders
+    <span class="heading-line"></span>
+  </h1>
+
+  <!-- Filter tabs -->
+  <div style="display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;" id="orders-filter-tabs" data-testid="orders-filter-tabs"
+       role="tablist" aria-label="Filter orders by status">
+
+    <% ['all','processing','shipped','delivered','cancelled'].forEach(function(status) { %>
+      <button role="tab"
+              class="store-filter-btn <%= activeStatus === status ? 'active' : '' %>"
+              id="orders-tab-<%= status %>" data-testid="orders-tab-<%= status %>"
+              data-status="<%= status %>"
+              aria-selected="<%= activeStatus === status ? 'true' : 'false' %>"
+              aria-label="Show <%= status === 'all' ? 'all orders' : status + ' orders' %>"
+              onclick="filterOrders('<%= status %>', this)">
+        <%= status.charAt(0).toUpperCase() + status.slice(1) %>
+      </button>
+    <% }); %>
+
+  </div>
+
+  <% if (orders.length === 0) { %>
+    <div class="wishlist-empty" id="orders-empty" data-testid="orders-empty" role="status">
+      <i class="fas fa-box-open" aria-hidden="true"></i>
+      <h3>No orders yet</h3>
+      <p style="margin-bottom:24px;">Once you place an order, it will appear here.</p>
+      <a href="/store" class="store-btn store-btn-primary" id="shop-now-empty" data-testid="shop-now-empty"
+         aria-label="Start shopping">
+        <i class="fas fa-shopping-bag" aria-hidden="true"></i> Start Shopping
+      </a>
+    </div>
+
+  <% } else { %>
+
+    <div id="orders-list" data-testid="orders-list" role="list" aria-label="Orders list">
+
+      <% orders.forEach(function(order, idx) { %>
+        <div class="order-card"
+             id="order-card-<%= order.id %>" data-testid="order-card-<%= order.id %>"
+             data-status="<%= order.status %>"
+             role="listitem"
+             aria-label="Order <%= order.id %>, status <%= order.status %>">
+
+          <div>
+            <div class="order-card-header">
+              <span class="order-num" id="order-num-<%= order.id %>" data-testid="order-num-<%= order.id %>">
+                Order #<%= order.id %>
+              </span>
+              <span class="order-date" id="order-date-<%= order.id %>" data-testid="order-date-<%= order.id %>">
+                <i class="fas fa-calendar-alt" aria-hidden="true"></i> <%= order.date %>
+              </span>
+              <span class="order-status-badge status-<%= order.status %>"
+                    id="order-status-<%= order.id %>" data-testid="order-status-<%= order.id %>">
+                <%= order.status %>
+              </span>
+            </div>
+
+            <!-- Item thumbnails -->
+            <div class="order-items-preview" id="order-items-<%= order.id %>" data-testid="order-items-<%= order.id %>"
+                 role="list" aria-label="Items in order <%= order.id %>">
+              <% order.items.forEach(function(item, i) { %>
+                <img src="<%= item.image %>" alt="<%= item.name %>"
+                     class="order-item-thumb"
+                     id="order-thumb-<%= order.id %>-<%= i+1 %>" data-testid="order-thumb-<%= order.id %>-<%= i+1 %>"
+                     title="<%= item.name %>" role="listitem" />
+              <% }); %>
+            </div>
+
+            <div style="font-size:13px;color:#64748b;margin-top:8px;"
+                 id="order-summary-text-<%= order.id %>" data-testid="order-summary-text-<%= order.id %>">
+              <%= order.items.length %> item<%= order.items.length > 1 ? 's' : '' %> ·
+              <%= order.shippingMethod %> ·
+              Est. delivery: <strong id="order-delivery-<%= order.id %>" data-testid="order-delivery-<%= order.id %>"><%= order.estDelivery %></strong>
+            </div>
+          </div>
+
+          <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+            <div class="order-total" id="order-total-<%= order.id %>" data-testid="order-total-<%= order.id %>"
+                 aria-label="Order total: $<%= order.total.toFixed(2) %>">
+              $<%= order.total.toFixed(2) %>
+            </div>
+            <a href="/store/orders/<%= order.id %>"
+               class="order-action-btn"
+               id="view-order-<%= order.id %>" data-testid="view-order-<%= order.id %>"
+               aria-label="View order <%= order.id %> details">
+              <i class="fas fa-eye" aria-hidden="true"></i> View Details
+            </a>
+            <% if (order.status === 'processing') { %>
+              <form action="/store/orders/<%= order.id %>/cancel" method="POST" style="display:inline;">
+                <button type="submit"
+                        class="order-action-btn" style="color:#ef4444;border-color:#fecaca;"
+                        id="cancel-order-<%= order.id %>" data-testid="cancel-order-<%= order.id %>"
+                        aria-label="Cancel order <%= order.id %>"
+                        onclick="return confirm('Are you sure you want to cancel this order?')">
+                  <i class="fas fa-times" aria-hidden="true"></i> Cancel
+                </button>
+              </form>
+            <% } %>
+          </div>
+
+        </div><!-- /.order-card -->
+      <% }); %>
+
+    </div><!-- /#orders-list -->
+
+    <!-- No results after filtering -->
+    <div id="orders-no-filter-result" data-testid="orders-no-filter-result" role="status"
+         style="display:none;text-align:center;padding:40px;color:#9ca3af;">
+      <i class="fas fa-filter" aria-hidden="true" style="font-size:36px;margin-bottom:12px;display:block;"></i>
+      <p>No orders with this status.</p>
+    </div>
+
+  <% } %>
+
+</div><!-- /.store-body -->
+
+<script>
+function filterOrders(status, btn) {
+  document.querySelectorAll('[data-status-tab]').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected','false');
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+
+  const cards = document.querySelectorAll('[data-status]');
+  let visible = 0;
+  cards.forEach(c => {
+    if (!c.classList.contains('order-card')) return;
+    const show = status === 'all' || c.dataset.status === status;
+    c.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  const noResult = document.getElementById('orders-no-filter-result');
+  noResult.style.display = (visible === 0 && status !== 'all') ? 'block' : 'none';
+}
+</script>

@@ -1,0 +1,178 @@
+<%# RCV Academy eStore – Home / Product Listing Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-home" data-testid="store-home">
+
+  <!-- Hero Banner -->
+  <div class="store-hero-banner" id="store-hero-banner" data-testid="store-hero-banner" role="banner">
+    <div class="hero-text">
+      <h1>Top Electronics &amp; Gadgets <span>Deals</span></h1>
+      <p>Trusted brands. Best prices. Fast delivery. Practice your automation skills on a real e-commerce flow.</p>
+      <a href="#product-list" class="hero-tag" id="hero-shop-now" data-testid="hero-shop-now" aria-label="Shop now">
+        <i class="fas fa-bolt" aria-hidden="true"></i> Shop Now
+      </a>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="store-filter-bar" id="store-filter-bar" data-testid="store-filter-bar" role="navigation" aria-label="Product category filters">
+    <label id="filter-label">Category:</label>
+    <button class="store-filter-btn <%= typeof activeCategory === 'undefined' || activeCategory === 'all' ? 'active' : '' %>"
+            id="filter-all" data-testid="filter-all" data-category="all"
+            aria-label="Show all products" aria-pressed="<%= typeof activeCategory === 'undefined' || activeCategory === 'all' ? 'true' : 'false' %>">
+      All
+    </button>
+    <% ['Smartphones','Laptops','Audio','Cameras','Accessories','Gaming','Wearables','Networking'].forEach(cat => { %>
+      <button class="store-filter-btn <%= typeof activeCategory !== 'undefined' && activeCategory === cat ? 'active' : '' %>"
+              id="filter-<%= cat.toLowerCase() %>" data-testid="filter-<%= cat.toLowerCase() %>"
+              data-category="<%= cat %>"
+              aria-label="Filter by <%= cat %>"
+              aria-pressed="<%= typeof activeCategory !== 'undefined' && activeCategory === cat ? 'true' : 'false' %>">
+        <%= cat %>
+      </button>
+    <% }); %>
+  </div>
+
+  <!-- Results bar -->
+  <div class="store-results-bar" id="store-results-bar" data-testid="store-results-bar">
+    <span class="store-results-count" id="results-count" data-testid="results-count">
+      Showing <strong id="visible-count" data-testid="visible-count"><%= products.length %></strong> of <strong><%= products.length %></strong> products
+    </span>
+    <select class="store-sort-select" id="store-sort-select" data-testid="store-sort-select"
+            aria-label="Sort products by">
+      <option value="featured">Sort: Featured</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="rating">Top Rated</option>
+      <option value="newest">Newest First</option>
+    </select>
+  </div>
+
+  <!-- Product grid -->
+  <div class="store-product-grid" id="product-list" data-testid="product-list" role="list" aria-label="Products">
+
+    <% products.forEach(function(p) {
+         const wishlisted = storeUser && storeUser.wishlist && storeUser.wishlist.includes(p.id);
+         const inCart = storeUser && storeUser.cart && storeUser.cart.some(c => c.productId === p.id);
+         const discountPct = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+    %>
+      <article class="store-product-card"
+               id="product-card-<%= p.id %>" data-testid="product-card-<%= p.id %>"
+               data-category="<%= p.category %>" data-price="<%= p.price %>"
+               data-rating="<%= p.rating %>" data-id="<%= p.id %>"
+               role="listitem"
+               aria-label="<%= p.name %>, $<%= p.price %>">
+
+        <!-- Wishlist button -->
+        <% if (storeUser) { %>
+          <form action="/store/wishlist/toggle" method="POST" style="display:contents;">
+            <input type="hidden" name="productId" value="<%= p.id %>" />
+            <input type="hidden" name="redirect" value="/store" />
+            <button type="submit" class="product-wishlist-btn <%= wishlisted ? 'wishlisted' : '' %>"
+                    id="wishlist-btn-<%= p.id %>" data-testid="wishlist-btn-<%= p.id %>"
+                    aria-label="<%= wishlisted ? 'Remove from wishlist' : 'Add to wishlist' %>: <%= p.name %>">
+              <i class="fas fa-heart" aria-hidden="true"></i>
+            </button>
+          </form>
+        <% } %>
+
+        <!-- Product image -->
+        <a href="/store/product/<%= p.id %>" aria-label="View <%= p.name %> details" tabindex="-1">
+          <div class="product-img-wrap">
+            <img src="<%= p.image %>" alt="<%= p.name %>" loading="lazy"
+                 id="product-img-<%= p.id %>" data-testid="product-img-<%= p.id %>" />
+          </div>
+        </a>
+
+        <!-- Product info -->
+        <div class="product-info">
+          <span class="product-category-tag" id="cat-<%= p.id %>" data-testid="cat-<%= p.id %>"><%= p.category %></span>
+
+          <div class="product-name">
+            <a href="/store/product/<%= p.id %>" id="product-name-<%= p.id %>" data-testid="product-name-<%= p.id %>">
+              <%= p.name %>
+            </a>
+          </div>
+
+          <div class="product-rating" id="product-rating-<%= p.id %>" data-testid="product-rating-<%= p.id %>"
+               aria-label="Rating: <%= p.rating %> out of 5, <%= p.reviews %> reviews">
+            <span class="stars" aria-hidden="true">
+              <% for(let s=1;s<=5;s++) { %><i class="fas fa-star<%= s <= Math.floor(p.rating) ? '' : (s - p.rating < 1 ? '-half-alt' : '') %>" aria-hidden="true"></i><% } %>
+            </span>
+            <span class="rating-count">(<%= p.reviews %>)</span>
+          </div>
+
+          <div class="product-price-row">
+            <span class="product-price" id="product-price-<%= p.id %>" data-testid="product-price-<%= p.id %>">$<%= p.price.toFixed(2) %></span>
+            <% if (p.originalPrice) { %>
+              <span class="product-original-price" id="product-orig-price-<%= p.id %>" data-testid="product-orig-price-<%= p.id %>">$<%= p.originalPrice.toFixed(2) %></span>
+              <span class="product-discount-badge" id="product-discount-<%= p.id %>" data-testid="product-discount-<%= p.id %>">-<%= discountPct %>%</span>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Add to cart -->
+        <% if (storeUser) { %>
+          <form action="/store/cart/add" method="POST" style="display:contents;">
+            <input type="hidden" name="productId" value="<%= p.id %>" />
+            <input type="hidden" name="qty" value="1" />
+            <input type="hidden" name="redirect" value="/store" />
+            <button type="submit"
+                    class="product-add-btn <%= inCart ? 'in-cart' : '' %>"
+                    id="add-to-cart-<%= p.id %>" data-testid="add-to-cart-<%= p.id %>"
+                    aria-label="<%= inCart ? 'Already in cart' : 'Add to cart' %>: <%= p.name %>">
+              <i class="fas fa-<%= inCart ? 'check' : 'cart-plus' %>" aria-hidden="true"></i>
+              <%= inCart ? 'In Cart' : 'Add to Cart' %>
+            </button>
+          </form>
+        <% } else { %>
+          <a href="/store/login" class="product-add-btn" id="add-to-cart-<%= p.id %>"
+             data-testid="add-to-cart-<%= p.id %>"
+             aria-label="Sign in to add <%= p.name %> to cart">
+            <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign in to Buy
+          </a>
+        <% } %>
+
+      </article>
+    <% }); %>
+
+  </div><!-- /#product-list -->
+
+</div><!-- /.store-body -->
+
+<script>
+// ── Category filter ──────────────────────────────────────
+document.querySelectorAll('.store-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const cat = btn.dataset.category;
+    document.querySelectorAll('.store-filter-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+
+    const cards = document.querySelectorAll('.store-product-card');
+    let visible = 0;
+    cards.forEach(c => {
+      const show = cat === 'all' || c.dataset.category === cat;
+      c.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('visible-count').textContent = visible;
+  });
+});
+
+// ── Sort ─────────────────────────────────────────────────
+document.getElementById('store-sort-select').addEventListener('change', function() {
+  const grid = document.getElementById('product-list');
+  const cards = Array.from(grid.querySelectorAll('.store-product-card'));
+  const val = this.value;
+  cards.sort((a, b) => {
+    if (val === 'price-asc')  return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+    if (val === 'price-desc') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+    if (val === 'rating')     return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+});
+</script>

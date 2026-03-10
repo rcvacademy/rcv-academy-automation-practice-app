@@ -10,13 +10,43 @@ const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
 const ejsLayouts = require('express-ejs-layouts');
+const cookieParser = require('cookie-parser');
+const crypto = require('crypto');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const GA_MEASUREMENT_ID = process.env.GA_MEASUREMENT_ID || '';
+
+// ─── Load sponsor banners from JSON config ────────────────────────────────────
+let sponsors = { diamond: [], platinum: [], gold: [], silver: [] };
+try {
+  const raw = fs.readFileSync(path.join(__dirname, 'public', 'files', 'sponsors.json'), 'utf8');
+  const parsed = JSON.parse(raw);
+  sponsors.diamond  = Array.isArray(parsed.diamond)  ? parsed.diamond  : [];
+  sponsors.platinum = Array.isArray(parsed.platinum) ? parsed.platinum : [];
+  sponsors.gold     = Array.isArray(parsed.gold)     ? parsed.gold     : [];
+  sponsors.silver   = Array.isArray(parsed.silver)   ? parsed.silver   : [];
+} catch (_) { /* sponsors.json missing or invalid – banners simply won't show */ }
 
 // ─── Multer (file upload) configuration ───────────────────────────────────────
 const uploadDir = path.join(__dirname, 'public', 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+// Auto-cleanup: keep at most 100 files, delete oldest when limit is reached
+function pruneUploads() {
+  fs.readdir(uploadDir, (err, names) => {
+    if (err || names.length <= 100) return;
+    const files = names.map(n => {
+      const full = path.join(uploadDir, n);
+      try { return { path: full, mtime: fs.statSync(full).mtimeMs }; }
+      catch (_) { return null; }
+    }).filter(Boolean);
+    files.sort((a, b) => a.mtime - b.mtime);           // oldest first
+    const toDelete = files.slice(0, files.length - 100);
+    toDelete.forEach(f => fs.unlink(f.path, () => {}));
+  });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
@@ -28,7 +58,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }   // 5 MB max
+  limits: { fileSize: 100 * 1024 },   // 100 KB max
+  fileFilter: (req, file, cb) => {
+    const allowed = /\.(jpe?g|png|gif|bmp|webp|pdf|docx?|xlsx?|pptx?|txt|csv)$/i;
+    if (!allowed.test(file.originalname)) {
+      return cb(new Error('File type not allowed. Only images and documents are accepted.'), false);
+    }
+    cb(null, true);
+  }
 });
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
@@ -38,6 +75,20 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader('Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' https://code.jquery.com https://www.googletagmanager.com; " +
+    "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://code.jquery.com; " +
+    "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; " +
+    "img-src 'self' https://placehold.co data:; " +
+    "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; " +
+    "frame-src 'self'; " +
+    "frame-ancestors 'self'; " +
+    "form-action 'self'; " +
+    "object-src 'none'; " +
+    "base-uri 'self';"
+  );
   next();
 });
 app.set('view engine', 'ejs');
@@ -47,11 +98,55 @@ app.set('layout', 'layout');      // use layout.ejs as the default wrapper
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
+
+// ─── CSRF Protection (double-submit cookie) ──────────────────────────────────
+// Routes that use multer (multipart) must check CSRF after parsing; all others checked here.
+const MULTIPART_CSRF_EXEMPT = new Set(['/file-upload', '/file-upload-multi']);
+app.use((req, res, next) => {
+  if (!req.cookies._csrf) {
+    const token = crypto.randomBytes(24).toString('hex');
+    res.cookie('_csrf', token, { sameSite: 'Strict', secure: process.env.NODE_ENV === 'production', maxAge: 24 * 60 * 60 * 1000 });
+    req.cookies._csrf = token;
+  }
+  res.locals.csrfToken = req.cookies._csrf;
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
+    const ct = req.headers['content-type'] || '';
+    const isMultipart = ct.startsWith('multipart/');
+    // Only skip CSRF for known file-upload routes (they check after multer)
+    if (isMultipart && MULTIPART_CSRF_EXEMPT.has(req.path)) {
+      return next();
+    }
+    if (!req.body._csrf || req.body._csrf !== req.cookies._csrf) {
+      return res.status(403).send('Forbidden – invalid CSRF token.');
+    }
+  }
+  next();
+});
+
+// ─── Rate limiting ────────────────────────────────────────────────────────────
+const globalLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, max: 100,
+  message: 'Too many requests. Please slow down and try again shortly.',
+  standardHeaders: true, legacyHeaders: false
+});
+app.use(globalLimiter);
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, max: 10,
+  message: 'Too many attempts. Please try again later.',
+  standardHeaders: true, legacyHeaders: false
+});
+
+// ─── RCV Academy eStore ────────────────────────────────────────────────────────────────
+const storeRouter = require('./routes/store');
+app.use('/store', storeRouter);
 
 // ─── Navigation menu items (used in layout) ───────────────────────────────────
 // Each item: { label, href, icon }
 const menuItems = [
   { label: 'Home',                   href: '/',                    icon: 'fa-home' },
+  { label: 'RCV Academy eStore',     href: '/store',               icon: 'fa-store' },
   { label: 'Login Page',             href: '/login',               icon: 'fa-sign-in-alt' },
   { label: 'Register Page',          href: '/register',            icon: 'fa-user-plus' },
   { label: 'Dynamic Table',          href: '/dynamic-table',       icon: 'fa-table' },
@@ -86,6 +181,13 @@ const menuItems = [
   { label: 'Multi-Login Sections',    href: '/multi-login',         icon: 'fa-layer-group' },
 ];
 
+// Make menuItems available to all views (including the store router)
+app.locals.menuItems = menuItems;
+
+// Make GA ID and sponsors available to all views
+app.locals.gaId = GA_MEASUREMENT_ID;
+app.locals.sponsors = sponsors;
+
 // Helper: render a view with common locals
 function render(res, view, extras = {}) {
   res.render(view, { menuItems, activePage: view, ...extras });
@@ -94,6 +196,8 @@ function render(res, view, extras = {}) {
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
 app.get('/',                 (req, res) => render(res, 'index'));
+app.get('/terms',            (req, res) => render(res, 'terms'));
+app.get('/privacy-policy',   (req, res) => render(res, 'privacy-policy'));
 app.get('/login',            (req, res) => render(res, 'login'));
 app.get('/register',         (req, res) => render(res, 'register'));
 app.get('/dynamic-table',    (req, res) => render(res, 'dynamic-table'));
@@ -128,7 +232,7 @@ app.get('/calendar',         (req, res) => render(res, 'calendar'));
 app.get('/multi-login',      (req, res) => render(res, 'multi-login'));
 
 // POST: login (demo – always succeeds so testers can practice the flow)
-app.post('/login', (req, res) => {
+app.post('/login', authLimiter, (req, res) => {
   const { username, password } = req.body;
   render(res, 'login', {
     message: username === 'admin' && password === 'password'
@@ -147,10 +251,49 @@ app.post('/form-validation', (req, res) => {
   render(res, 'form-validation', { submitted: true, data: req.body });
 });
 
-// POST: file upload
-app.post('/file-upload', upload.single('uploadFile'), (req, res) => {
-  render(res, 'file-upload', {
-    uploadedFile: req.file ? req.file.originalname : null
+// POST: file upload (single)
+app.post('/file-upload', (req, res, next) => {
+  upload.single('uploadFile')(req, res, (err) => {
+    if (err) {
+      return render(res, 'file-upload', {
+        uploadError: err.code === 'LIMIT_FILE_SIZE'
+          ? 'File is too large. Maximum allowed size is 100 KB.'
+          : err.message || 'Upload failed. Please try a different file.'
+      });
+    }
+    // CSRF check after multer parses the multipart body
+    if (!req.body._csrf || req.body._csrf !== req.cookies._csrf) {
+      if (req.file) fs.unlink(req.file.path, () => {});
+      return res.status(403).send('Forbidden \u2013 invalid CSRF token.');
+    }
+    if (req.file) pruneUploads();
+    render(res, 'file-upload', {
+      uploadedFile: req.file ? req.file.originalname : null
+    });
+  });
+});
+
+// POST: file upload (multiple)
+app.post('/file-upload-multi', (req, res, next) => {
+  upload.array('files', 10)(req, res, (err) => {
+    if (err) {
+      return render(res, 'file-upload', {
+        uploadError: err.code === 'LIMIT_FILE_SIZE'
+          ? 'One or more files are too large. Maximum allowed size is 100 KB each.'
+          : err.code === 'LIMIT_UNEXPECTED_FILE'
+          ? 'Too many files. Maximum 10 files allowed at once.'
+          : err.message || 'Upload failed. Please try different files.'
+      });
+    }
+    // CSRF check after multer parses the multipart body
+    if (!req.body._csrf || req.body._csrf !== req.cookies._csrf) {
+      if (req.files) req.files.forEach(f => fs.unlink(f.path, () => {}));
+      return res.status(403).send('Forbidden \u2013 invalid CSRF token.');
+    }
+    if (req.files && req.files.length) pruneUploads();
+    render(res, 'file-upload', {
+      uploadedFiles: req.files ? req.files.map(f => f.originalname) : []
+    });
   });
 });
 
@@ -172,6 +315,37 @@ app.get('/new-window', (req, res) => {
 // GET: iframe inner page (standalone – no shared layout, passes ?frame= query param)
 app.get('/iframe-inner', (req, res) => {
   res.render('iframe-inner', { layout: false, query: req.query });
+});
+
+// ─── 404 catch-all ────────────────────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).send(
+    '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>404 – Page Not Found</title>' +
+    '<style>body{font-family:Inter,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;' +
+    'min-height:100vh;margin:0;background:#f5f7fa;color:#333;text-align:center;}' +
+    '.box{max-width:440px;padding:40px;}.code{font-size:72px;font-weight:700;color:#64748b;margin:0;}' +
+    'p{color:#555;margin:12px 0 24px;}a{color:#2563eb;text-decoration:none;font-weight:500;}' +
+    'a:hover{text-decoration:underline;}</style></head>' +
+    '<body><div class="box"><p class="code">404</p><h2>Page Not Found</h2>' +
+    '<p>The page you requested does not exist.</p>' +
+    '<a href="/">← Back to Home</a></div></body></html>'
+  );
+});
+
+// ─── Global error handler ─────────────────────────────────────────────────────
+app.use((err, req, res, _next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).send(
+    '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>500 – Server Error</title>' +
+    '<style>body{font-family:Inter,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;' +
+    'min-height:100vh;margin:0;background:#f5f7fa;color:#333;text-align:center;}' +
+    '.box{max-width:440px;padding:40px;}.code{font-size:72px;font-weight:700;color:#ef4444;margin:0;}' +
+    'p{color:#555;margin:12px 0 24px;}a{color:#2563eb;text-decoration:none;font-weight:500;}' +
+    'a:hover{text-decoration:underline;}</style></head>' +
+    '<body><div class="box"><p class="code">500</p><h2>Something Went Wrong</h2>' +
+    '<p>An unexpected error occurred. Please try again later.</p>' +
+    '<a href="/">← Back to Home</a></div></body></html>'
+  );
 });
 
 // ─── Start server ─────────────────────────────────────────────────────────────

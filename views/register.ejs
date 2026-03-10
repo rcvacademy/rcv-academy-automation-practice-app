@@ -88,7 +88,15 @@
     <div class="form-group d-flex align-center gap-2">
       <input type="checkbox" id="terms" name="terms" value="true" data-testid="terms-checkbox" required />
       <label for="terms" style="font-size:14px;cursor:pointer;">
-        I agree to the <a href="#" id="terms-link">Terms & Conditions</a>
+        I agree to the <a href="/terms" id="terms-link">Terms & Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>
+      </label>
+    </div>
+
+    <!-- GDPR consent -->
+    <div class="form-group d-flex align-center gap-2">
+      <input type="checkbox" id="gdpr-consent" name="gdprConsent" value="true" data-testid="gdpr-consent-checkbox" required />
+      <label for="gdpr-consent" style="font-size:14px;cursor:pointer;">
+        I consent to the processing of my personal data in accordance with GDPR and applicable data protection regulations. I understand I can withdraw consent at any time.
       </label>
     </div>
 

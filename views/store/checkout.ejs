@@ -1,0 +1,499 @@
+<%# RCV Academy eStore – Checkout Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-checkout" data-testid="store-checkout">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="checkout-breadcrumb" data-testid="checkout-breadcrumb">
+    <a href="/store" id="bc-home" data-testid="bc-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <a href="/store/cart" id="bc-cart" data-testid="bc-cart">Cart</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">Checkout</span>
+  </nav>
+
+  <!-- Progress bar -->
+  <div class="checkout-steps" role="navigation" aria-label="Checkout steps progress" id="checkout-steps" data-testid="checkout-steps">
+    <div class="checkout-step done" id="step-cart" data-testid="step-cart" aria-label="Cart step, completed">
+      <div class="step-circle"><i class="fas fa-check" aria-hidden="true"></i></div>
+      <span class="step-label">Cart</span>
+    </div>
+    <div class="checkout-step active" id="step-details" data-testid="step-details" aria-label="Details step, current">
+      <div class="step-circle">2</div>
+      <span class="step-label">Details</span>
+    </div>
+    <div class="checkout-step" id="step-payment" data-testid="step-payment" aria-label="Payment step">
+      <div class="step-circle">3</div>
+      <span class="step-label">Payment</span>
+    </div>
+    <div class="checkout-step" id="step-confirm" data-testid="step-confirm" aria-label="Confirmation step">
+      <div class="step-circle">4</div>
+      <span class="step-label">Confirm</span>
+    </div>
+  </div>
+
+  <form action="/store/checkout/place" method="POST" id="checkout-form" data-testid="checkout-form"
+        novalidate aria-label="Checkout form">
+
+    <div class="store-checkout-layout" id="checkout-layout" data-testid="checkout-layout">
+
+      <!-- Left column: shipping + payment -->
+      <div id="checkout-forms-col" data-testid="checkout-forms-col">
+
+        <!-- ① Shipping Address -->
+        <div class="store-form-card" id="shipping-form-card" data-testid="shipping-form-card"
+             role="region" aria-label="Shipping address">
+          <h3><span class="step-num" aria-hidden="true">1</span> Shipping Address</h3>
+
+          <div class="form-grid-2">
+
+            <div class="store-form-group">
+              <label for="ship-first-name">First Name <span class="req">*</span></label>
+              <input type="text" id="ship-first-name" name="shipFirstName"
+                     value="<%= storeUser.firstName || '' %>"
+                     placeholder="First name" aria-label="Shipping first name" aria-required="true"
+                     data-testid="ship-first-name" autocomplete="given-name" />
+              <span class="field-error" id="err-ship-first-name" data-testid="err-ship-first-name">Required</span>
+            </div>
+
+            <div class="store-form-group">
+              <label for="ship-last-name">Last Name <span class="req">*</span></label>
+              <input type="text" id="ship-last-name" name="shipLastName"
+                     value="<%= storeUser.lastName || '' %>"
+                     placeholder="Last name" aria-label="Shipping last name" aria-required="true"
+                     data-testid="ship-last-name" autocomplete="family-name" />
+              <span class="field-error" id="err-ship-last-name" data-testid="err-ship-last-name">Required</span>
+            </div>
+
+            <div class="store-form-group span-2">
+              <label for="ship-email">Email <span class="req">*</span></label>
+              <input type="email" id="ship-email" name="shipEmail"
+                     value="<%= storeUser.email %>"
+                     placeholder="Order confirmation email" aria-label="Order confirmation email" aria-required="true"
+                     data-testid="ship-email" autocomplete="email" />
+              <span class="field-error" id="err-ship-email" data-testid="err-ship-email">Valid email required</span>
+            </div>
+
+            <div class="store-form-group span-2">
+              <label for="ship-phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="ship-phone" name="shipPhone"
+                     value="<%= storeUser.phone || '' %>"
+                     placeholder="+1 (555) 000-0000" aria-label="Phone number" aria-required="true"
+                     data-testid="ship-phone" autocomplete="tel" />
+              <span class="field-error" id="err-ship-phone" data-testid="err-ship-phone">Required</span>
+            </div>
+
+            <div class="store-form-group span-2">
+              <label for="ship-address1">Address Line 1 <span class="req">*</span></label>
+              <input type="text" id="ship-address1" name="shipAddress1"
+                     value="<%= storeUser.address1 || '' %>"
+                     placeholder="Street address" aria-label="Address line 1" aria-required="true"
+                     data-testid="ship-address1" autocomplete="address-line1" />
+              <span class="field-error" id="err-ship-address1" data-testid="err-ship-address1">Required</span>
+            </div>
+
+            <div class="store-form-group span-2">
+              <label for="ship-address2">Address Line 2</label>
+              <input type="text" id="ship-address2" name="shipAddress2"
+                     value="<%= storeUser.address2 || '' %>"
+                     placeholder="Apt, suite, floor (optional)" aria-label="Address line 2"
+                     data-testid="ship-address2" autocomplete="address-line2" />
+            </div>
+
+            <div class="store-form-group">
+              <label for="ship-city">City <span class="req">*</span></label>
+              <input type="text" id="ship-city" name="shipCity"
+                     value="<%= storeUser.city || '' %>"
+                     placeholder="City" aria-label="City" aria-required="true"
+                     data-testid="ship-city" autocomplete="address-level2" />
+              <span class="field-error" id="err-ship-city" data-testid="err-ship-city">Required</span>
+            </div>
+
+            <div class="store-form-group">
+              <label for="ship-state">State / Province <span class="req">*</span></label>
+              <input type="text" id="ship-state" name="shipState"
+                     value="<%= storeUser.state || '' %>"
+                     placeholder="State" aria-label="State or province" aria-required="true"
+                     data-testid="ship-state" autocomplete="address-level1" />
+              <span class="field-error" id="err-ship-state" data-testid="err-ship-state">Required</span>
+            </div>
+
+            <div class="store-form-group">
+              <label for="ship-zip">ZIP / Postal Code <span class="req">*</span></label>
+              <input type="text" id="ship-zip" name="shipZip"
+                     value="<%= storeUser.zip || '' %>"
+                     placeholder="ZIP code" aria-label="ZIP or postal code" aria-required="true"
+                     data-testid="ship-zip" autocomplete="postal-code" />
+              <span class="field-error" id="err-ship-zip" data-testid="err-ship-zip">Required</span>
+            </div>
+
+            <div class="store-form-group">
+              <label for="ship-country">Country <span class="req">*</span></label>
+              <select id="ship-country" name="shipCountry" aria-label="Country" aria-required="true"
+                      data-testid="ship-country" autocomplete="country">
+                <option value="">Select country…</option>
+                <option value="US" selected>United States</option>
+                <option value="CA">Canada</option>
+                <option value="GB">United Kingdom</option>
+                <option value="AU">Australia</option>
+                <option value="IN">India</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="JP">Japan</option>
+                <option value="SG">Singapore</option>
+                <option value="OTHER">Other</option>
+              </select>
+              <span class="field-error" id="err-ship-country" data-testid="err-ship-country">Required</span>
+            </div>
+
+          </div><!-- /.form-grid-2 -->
+
+          <!-- Shipping method -->
+          <div style="margin-top:18px;" id="shipping-method-section" data-testid="shipping-method-section">
+            <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:10px;">
+              Shipping Method <span class="req">*</span>
+            </label>
+            <div role="radiogroup" aria-label="Shipping method" style="display:flex;flex-direction:column;gap:8px;">
+
+              <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--store-border);border-radius:8px;cursor:pointer;transition:border-color .2s;"
+                     id="ship-method-standard-label" data-testid="ship-method-standard-label"
+                     onmouseenter="this.style.borderColor='var(--store-primary)'"
+                     onmouseleave="this.style.borderColor=document.getElementById('ship-standard').checked?'var(--store-primary)':'var(--store-border)'">
+                <input type="radio" name="shippingMethod" id="ship-standard" value="standard"
+                       data-testid="ship-method-standard" aria-label="Standard shipping, 5 to 7 days, free" checked />
+                <span style="flex:1;">
+                  <strong>Standard Shipping</strong>
+                  <span style="color:#64748b;font-size:13px;"> — 5-7 business days</span>
+                </span>
+                <span style="font-weight:700;color:#22c55e;">FREE</span>
+              </label>
+
+              <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--store-border);border-radius:8px;cursor:pointer;transition:border-color .2s;"
+                     id="ship-method-express-label" data-testid="ship-method-express-label"
+                     onmouseenter="this.style.borderColor='var(--store-primary)'"
+                     onmouseleave="this.style.borderColor=document.getElementById('ship-express').checked?'var(--store-primary)':'var(--store-border)'">
+                <input type="radio" name="shippingMethod" id="ship-express" value="express"
+                       data-testid="ship-method-express" aria-label="Express shipping, 2 to 3 days, $9.99" />
+                <span style="flex:1;">
+                  <strong>Express Shipping</strong>
+                  <span style="color:#64748b;font-size:13px;"> — 2-3 business days</span>
+                </span>
+                <span style="font-weight:700;">$9.99</span>
+              </label>
+
+              <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--store-border);border-radius:8px;cursor:pointer;transition:border-color .2s;"
+                     id="ship-method-overnight-label" data-testid="ship-method-overnight-label"
+                     onmouseenter="this.style.borderColor='var(--store-primary)'"
+                     onmouseleave="this.style.borderColor=document.getElementById('ship-overnight').checked?'var(--store-primary)':'var(--store-border)'">
+                <input type="radio" name="shippingMethod" id="ship-overnight" value="overnight"
+                       data-testid="ship-method-overnight" aria-label="Overnight shipping, next day, $19.99" />
+                <span style="flex:1;">
+                  <strong>Overnight</strong>
+                  <span style="color:#64748b;font-size:13px;"> — Next business day</span>
+                </span>
+                <span style="font-weight:700;">$19.99</span>
+              </label>
+
+            </div>
+          </div>
+
+        </div><!-- /.shipping-form-card -->
+
+        <!-- ② Payment -->
+        <div class="store-form-card" id="payment-form-card" data-testid="payment-form-card"
+             role="region" aria-label="Payment information">
+          <h3><span class="step-num" aria-hidden="true">2</span> Payment</h3>
+
+          <!-- Payment method selection -->
+          <div class="pay-method-row" role="radiogroup" aria-label="Payment method" id="pay-method-row" data-testid="pay-method-row">
+
+            <div class="pay-method-option">
+              <input type="radio" name="paymentMethod" id="pay-card" value="card"
+                     data-testid="pay-method-card" aria-label="Credit or debit card" checked />
+              <label for="pay-card" id="pay-card-label" data-testid="pay-card-label">
+                <i class="fas fa-credit-card" aria-hidden="true"></i> Credit/Debit Card
+              </label>
+            </div>
+
+            <div class="pay-method-option">
+              <input type="radio" name="paymentMethod" id="pay-paypal" value="paypal"
+                     data-testid="pay-method-paypal" aria-label="PayPal" />
+              <label for="pay-paypal" id="pay-paypal-label" data-testid="pay-paypal-label">
+                <i class="fab fa-paypal" aria-hidden="true"></i> PayPal
+              </label>
+            </div>
+
+            <div class="pay-method-option">
+              <input type="radio" name="paymentMethod" id="pay-wallet" value="wallet"
+                     data-testid="pay-method-wallet" aria-label="Digital wallet" />
+              <label for="pay-wallet" id="pay-wallet-label" data-testid="pay-wallet-label">
+                <i class="fas fa-wallet" aria-hidden="true"></i> Digital Wallet
+              </label>
+            </div>
+
+            <div class="pay-method-option">
+              <input type="radio" name="paymentMethod" id="pay-cod" value="cod"
+                     data-testid="pay-method-cod" aria-label="Cash on delivery" />
+              <label for="pay-cod" id="pay-cod-label" data-testid="pay-cod-label">
+                <i class="fas fa-money-bill-wave" aria-hidden="true"></i> Cash on Delivery
+              </label>
+            </div>
+
+          </div>
+
+          <!-- Card fields (shown when card method selected) -->
+          <div id="card-fields" data-testid="card-fields">
+
+            <div class="store-form-group" style="margin-bottom:14px;">
+              <label for="card-name">Name on Card <span class="req">*</span></label>
+              <input type="text" id="card-name" name="cardName"
+                     placeholder="Full name as on card"
+                     aria-label="Name on card" aria-required="true"
+                     data-testid="card-name" autocomplete="cc-name" />
+              <span class="field-error" id="err-card-name" data-testid="err-card-name">Required</span>
+            </div>
+
+            <div class="store-form-group" style="margin-bottom:14px;">
+              <label for="card-number">Card Number <span class="req">*</span></label>
+              <input type="text" id="card-number" name="cardNumber"
+                     placeholder="1234 5678 9012 3456"
+                     maxlength="19"
+                     aria-label="Card number" aria-required="true"
+                     data-testid="card-number" autocomplete="cc-number"
+                     oninput="formatCardNumber(this)" />
+              <span class="field-error" id="err-card-number" data-testid="err-card-number">Enter a valid 16-digit card number</span>
+            </div>
+
+            <div class="form-grid-2">
+
+              <div class="store-form-group">
+                <label for="card-expiry">Expiry Date <span class="req">*</span></label>
+                <input type="text" id="card-expiry" name="cardExpiry"
+                       placeholder="MM / YY" maxlength="7"
+                       aria-label="Card expiry date" aria-required="true"
+                       data-testid="card-expiry" autocomplete="cc-exp"
+                       oninput="formatExpiry(this)" />
+                <span class="field-error" id="err-card-expiry" data-testid="err-card-expiry">Format: MM / YY</span>
+              </div>
+
+              <div class="store-form-group">
+                <label for="card-cvv">CVV / CVC <span class="req">*</span>
+                  <span style="font-size:11px;color:#9ca3af;font-weight:400;" title="3 or 4 digit security code on the back of your card">
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                  </span>
+                </label>
+                <input type="text" id="card-cvv" name="cardCvv"
+                       placeholder="123" maxlength="4"
+                       aria-label="CVV security code" aria-required="true"
+                       data-testid="card-cvv" autocomplete="cc-csc" />
+                <span class="field-error" id="err-card-cvv" data-testid="err-card-cvv">Enter 3-4 digit CVV</span>
+              </div>
+
+            </div>
+
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-top:12px;font-weight:400;">
+              <input type="checkbox" id="save-card" name="saveCard" value="yes"
+                     aria-label="Save card for future purchases" data-testid="save-card" />
+              Save card for future purchases
+            </label>
+
+          </div><!-- /#card-fields -->
+
+          <!-- PayPal notice -->
+          <div id="paypal-notice" data-testid="paypal-notice" style="display:none;padding:16px;background:#f0f7ff;border-radius:8px;font-size:14px;color:#1e40af;">
+            <i class="fab fa-paypal" aria-hidden="true"></i> You will be redirected to PayPal to complete payment. <em>(Demo mode — no actual redirect)</em>
+          </div>
+
+          <!-- Wallet notice -->
+          <div id="wallet-notice" data-testid="wallet-notice" style="display:none;padding:16px;background:#f0fdf4;border-radius:8px;font-size:14px;color:#166534;">
+            <i class="fas fa-wallet" aria-hidden="true"></i> Your wallet balance will be debited. <em>(Demo mode)</em>
+          </div>
+
+          <!-- COD notice -->
+          <div id="cod-notice" data-testid="cod-notice" style="display:none;padding:16px;background:#fffbeb;border-radius:8px;font-size:14px;color:#92400e;">
+            <i class="fas fa-money-bill-wave" aria-hidden="true"></i> Pay when your order arrives at your door.
+          </div>
+
+          <!-- Billing same as shipping -->
+          <div style="margin-top:16px;" id="billing-same-row" data-testid="billing-same-row">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:400;">
+              <input type="checkbox" id="billing-same" name="billingSame" value="yes" checked
+                     aria-label="Billing address same as shipping" data-testid="billing-same"
+                     onchange="toggleBillingAddr(this)" />
+              Billing address same as shipping address
+            </label>
+          </div>
+
+          <!-- Billing address (hidden by default) -->
+          <div id="billing-addr-section" data-testid="billing-addr-section" style="display:none;margin-top:16px;">
+            <div class="form-grid-2" style="gap:14px;">
+              <div class="store-form-group span-2">
+                <label for="bill-address1">Billing Address</label>
+                <input type="text" id="bill-address1" name="billAddress1"
+                       placeholder="Billing street address" aria-label="Billing address line 1"
+                       data-testid="bill-address1" autocomplete="billing address-line1" />
+              </div>
+              <div class="store-form-group">
+                <label for="bill-city">City</label>
+                <input type="text" id="bill-city" name="billCity"
+                       placeholder="City" aria-label="Billing city"
+                       data-testid="bill-city" autocomplete="billing address-level2" />
+              </div>
+              <div class="store-form-group">
+                <label for="bill-zip">ZIP</label>
+                <input type="text" id="bill-zip" name="billZip"
+                       placeholder="ZIP code" aria-label="Billing ZIP code"
+                       data-testid="bill-zip" autocomplete="billing postal-code" />
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.payment-form-card -->
+
+        <!-- ③ Order notes -->
+        <div class="store-form-card" id="order-notes-card" data-testid="order-notes-card">
+          <h3><span class="step-num" aria-hidden="true">3</span> Order Notes <span style="font-size:13px;font-weight:400;color:#9ca3af;">Optional</span></h3>
+          <div class="store-form-group">
+            <label for="order-notes">Special instructions for your order</label>
+            <textarea id="order-notes" name="orderNotes"
+                      data-testid="order-notes" rows="3"
+                      placeholder="Any specific delivery instructions, gift messages, etc."
+                      aria-label="Order notes"
+                      style="resize:vertical;"></textarea>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;" id="checkout-submit-row" data-testid="checkout-submit-row">
+          <button type="submit" id="place-order-btn" data-testid="place-order-btn"
+                  class="store-btn store-btn-primary" style="padding:14px 36px;font-size:16px;"
+                  aria-label="Place order">
+            <i class="fas fa-lock" aria-hidden="true"></i> Place Order
+          </button>
+          <span style="font-size:12px;color:#9ca3af;">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i> Your payment info is secure
+          </span>
+        </div>
+
+      </div><!-- /.checkout-forms-col -->
+
+      <!-- Right column: order summary -->
+      <aside class="store-summary-panel" id="checkout-order-summary" data-testid="checkout-order-summary"
+             role="complementary" aria-label="Order summary">
+
+        <h3 id="checkout-summary-heading">Your Order (<%= cartItems.length %> item<%= cartItems.length !== 1 ? 's' : '' %>)</h3>
+
+        <% cartItems.forEach(function(item) { %>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--store-border);"
+               id="co-item-<%= item.product.id %>" data-testid="co-item-<%= item.product.id %>">
+            <img src="<%= item.product.image %>" alt="<%= item.product.name %>"
+                 style="width:52px;height:52px;object-fit:contain;background:#f8f9fb;border-radius:6px;padding:4px;border:1px solid var(--store-border);flex-shrink:0;"
+                 id="co-img-<%= item.product.id %>" data-testid="co-img-<%= item.product.id %>" />
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:600;" id="co-name-<%= item.product.id %>" data-testid="co-name-<%= item.product.id %>">
+                <%= item.product.name %>
+              </div>
+              <div style="font-size:12px;color:#64748b;">Qty: <%= item.qty %></div>
+            </div>
+            <div style="font-weight:700;font-size:14px;" id="co-price-<%= item.product.id %>" data-testid="co-price-<%= item.product.id %>">
+              $<%= (item.product.price * item.qty).toFixed(2) %>
+            </div>
+          </div>
+        <% }); %>
+
+        <div class="summary-row" id="co-subtotal-row" data-testid="co-subtotal-row">
+          <span>Subtotal</span>
+          <span id="co-subtotal" data-testid="co-subtotal">$<%= subtotal.toFixed(2) %></span>
+        </div>
+        <div class="summary-row" id="co-shipping-row" data-testid="co-shipping-row">
+          <span>Shipping</span>
+          <span id="co-shipping" data-testid="co-shipping">
+            <% if (shipping === 0) { %><span style="color:#22c55e;">FREE</span><% } else { %>$<%= shipping.toFixed(2) %><% } %>
+          </span>
+        </div>
+        <div class="summary-row" id="co-tax-row" data-testid="co-tax-row">
+          <span>Tax (8%)</span>
+          <span id="co-tax" data-testid="co-tax">$<%= tax.toFixed(2) %></span>
+        </div>
+        <% if (discount > 0) { %>
+          <div class="summary-row discount" id="co-discount-row" data-testid="co-discount-row">
+            <span>Promo Discount</span>
+            <span id="co-discount" data-testid="co-discount">-$<%= discount.toFixed(2) %></span>
+          </div>
+        <% } %>
+        <div class="summary-row total" id="co-total-row" data-testid="co-total-row">
+          <span>Total</span>
+          <span id="co-total" data-testid="co-total">$<%= total.toFixed(2) %></span>
+        </div>
+
+        <p style="font-size:11px;color:#9ca3af;margin-top:16px;line-height:1.6;">
+          By placing your order you agree to our <a href="/terms" style="color:var(--store-primary);">Terms of Service</a>.
+        </p>
+
+      </aside>
+
+    </div><!-- /.store-checkout-layout -->
+
+  </form><!-- /#checkout-form -->
+
+</div><!-- /.store-body -->
+
+<script>
+// Payment method toggle
+document.querySelectorAll('[name="paymentMethod"]').forEach(r => {
+  r.addEventListener('change', function() {
+    document.getElementById('card-fields').style.display    = this.value === 'card'    ? 'block' : 'none';
+    document.getElementById('paypal-notice').style.display  = this.value === 'paypal'  ? 'block' : 'none';
+    document.getElementById('wallet-notice').style.display  = this.value === 'wallet'  ? 'block' : 'none';
+    document.getElementById('cod-notice').style.display     = this.value === 'cod'     ? 'block' : 'none';
+  });
+});
+
+function toggleBillingAddr(cb) {
+  document.getElementById('billing-addr-section').style.display = cb.checked ? 'none' : 'block';
+}
+
+function formatCardNumber(inp) {
+  inp.value = inp.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim();
+}
+
+function formatExpiry(inp) {
+  let v = inp.value.replace(/\D/g,'');
+  if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2,4);
+  inp.value = v;
+}
+
+// Client-side validation
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+  let valid = true;
+  const req = ['ship-first-name','ship-last-name','ship-email','ship-phone','ship-address1','ship-city','ship-state','ship-zip','ship-country'];
+  req.forEach(id => {
+    const el = document.getElementById(id);
+    const grp = el.closest('.store-form-group');
+    const ok = el.value.trim().length > 0;
+    grp.classList.toggle('has-error', !ok);
+    if (!ok) valid = false;
+  });
+
+  const method = document.querySelector('[name="paymentMethod"]:checked')?.value;
+  if (method === 'card') {
+    const cardChecks = [
+      ['card-name',   v => v.trim().length > 1],
+      ['card-number', v => v.replace(/\s/g,'').length === 16],
+      ['card-expiry', v => /^\d{2}\s*\/\s*\d{2}$/.test(v.trim())],
+      ['card-cvv',    v => /^\d{3,4}$/.test(v.trim())],
+    ];
+    cardChecks.forEach(([id, fn]) => {
+      const el = document.getElementById(id);
+      const grp = el.closest('.store-form-group');
+      const ok = fn(el.value);
+      grp.classList.toggle('has-error', !ok);
+      if (!ok) valid = false;
+    });
+  }
+
+  if (!valid) {
+    e.preventDefault();
+    document.querySelector('.has-error')?.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+});
+</script>

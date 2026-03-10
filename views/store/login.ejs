@@ -1,0 +1,115 @@
+<%# RCV Academy eStore – Login Page %>
+<%- include('layout') %>
+<div class="store-auth-wrapper">
+  <div class="store-auth-card" role="main" id="store-login-card" data-testid="store-login-card">
+
+    <div class="auth-logo">
+      <div class="logo-text">RCV <span>Store</span></div>
+    </div>
+    <h2 id="login-heading">Welcome back!</h2>
+    <p class="auth-sub">Sign in to your RCV Academy eStore account</p>
+
+    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+      <div class="store-alert store-alert-error" role="alert" id="login-error-msg" data-testid="login-error-msg">
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i> <%= errorMessage %>
+      </div>
+    <% } %>
+
+    <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+      <div class="store-alert store-alert-success" role="status" id="login-success-msg" data-testid="login-success-msg">
+        <i class="fas fa-check-circle" aria-hidden="true"></i> <%= successMessage %>
+      </div>
+    <% } %>
+
+    <form action="/store/login" method="POST" id="store-login-form" data-testid="store-login-form"
+          novalidate aria-label="Store sign in form">
+
+      <div class="store-form-group" style="margin-bottom:14px;">
+        <label for="login-email">Email Address <span class="req">*</span></label>
+        <input type="email" id="login-email" name="email"
+               placeholder="you@example.com"
+               value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"
+               aria-label="Email address" aria-required="true"
+               data-testid="login-email" autocomplete="email" />
+        <span class="field-error" id="err-login-email" data-testid="err-login-email">Please enter your email</span>
+      </div>
+
+      <div class="store-form-group" style="margin-bottom:6px;">
+        <label for="login-password">Password <span class="req">*</span></label>
+        <div style="position:relative;">
+          <input type="password" id="login-password" name="password"
+                 placeholder="Enter your password"
+                 aria-label="Password" aria-required="true"
+                 data-testid="login-password" autocomplete="current-password"
+                 style="width:100%;padding-right:44px;" />
+          <button type="button" id="toggle-login-password" data-testid="toggle-login-password"
+                  aria-label="Show or hide password"
+                  onclick="togglePwd('login-password', this)"
+                  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;font-size:16px;">
+            <i class="fas fa-eye" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="field-error" id="err-login-password" data-testid="err-login-password">Please enter your password</span>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;font-size:13px;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:400;">
+          <input type="checkbox" id="login-remember" name="remember" value="yes"
+                 aria-label="Remember me" data-testid="login-remember"
+                 style="width:15px;height:15px;" />
+          Remember me
+        </label>
+        <a href="#" id="forgot-password-link" data-testid="forgot-password-link"
+           style="color:var(--store-primary);text-decoration:none;" 
+           onclick="alert('Password reset: check your email (demo mode — no email sent)')">
+          Forgot password?
+        </a>
+      </div>
+
+      <button type="submit" id="login-submit-btn" data-testid="login-submit-btn"
+              class="store-btn store-btn-primary" style="width:100%;justify-content:center;padding:13px;"
+              aria-label="Sign in to your account">
+        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+      </button>
+
+    </form>
+
+    <div class="store-auth-footer">
+      New to RCV Academy eStore? <a href="/store/register" id="go-to-register" data-testid="go-to-register">Create account</a>
+    </div>
+
+    <!-- Demo credentials notice -->
+    <div style="margin-top:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;font-size:12px;color:#64748b;text-align:center;">
+      <strong style="color:#374151;">Demo hint:</strong> Register a new account, then sign in with those credentials.
+    </div>
+
+  </div>
+</div>
+
+<script>
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  const icon = btn.querySelector('i');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+document.getElementById('store-login-form').addEventListener('submit', function(e) {
+  let valid = true;
+  [['login-email', 'err-login-email', v => /\S+@\S+\.\S+/.test(v)],
+   ['login-password', 'err-login-password', v => v.length > 0]
+  ].forEach(([id, errId, fn]) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const ok = fn(el.value);
+    el.closest('.store-form-group').classList.toggle('has-error', !ok);
+    if (!ok) valid = false;
+  });
+  if (!valid) e.preventDefault();
+});
+</script>

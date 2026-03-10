@@ -188,17 +188,23 @@
     menuItem.addEventListener('click', function () {
       var action = menuItem.getAttribute('data-action');
 
+      // Helper to safely set result text (prevents DOM XSS)
+      function setResult(emoji, label, detail) {
+        result.textContent = '';
+        result.appendChild(document.createTextNode(emoji + ' ' + label + ' ' + detail));
+      }
+
       if (action === 'copy' && rightClickedEl) {
         clipboard = { text: rightClickedEl.getAttribute('data-value'), mode: 'copy', sourceEl: rightClickedEl };
         rightClickedEl.style.background = '#dbeafe';
         setTimeout(function () { rightClickedEl.style.background = '#fff'; }, 600);
-        result.innerHTML = '📋 <strong>Copied:</strong> "' + clipboard.text + '" — now right-click the target area and choose Paste.';
+        setResult('\ud83d\udccb', 'Copied:', '"' + clipboard.text + '" \u2014 now right-click the target area and choose Paste.');
       }
       else if (action === 'cut' && rightClickedEl) {
         clipboard = { text: rightClickedEl.getAttribute('data-value'), mode: 'cut', sourceEl: rightClickedEl };
         rightClickedEl.style.opacity = '0.4';
         rightClickedEl.style.textDecoration = 'line-through';
-        result.innerHTML = '✂️ <strong>Cut:</strong> "' + clipboard.text + '" — now right-click the target area and choose Paste.';
+        setResult('\u2702\ufe0f', 'Cut:', '"' + clipboard.text + '" \u2014 now right-click the target area and choose Paste.');
       }
       else if (action === 'edit' && rightClickedEl) {
         var currentText = rightClickedEl.getAttribute('data-value');
@@ -208,7 +214,7 @@
           rightClickedEl.querySelector('.ctx-item-text').textContent = newText.trim();
           rightClickedEl.style.background = '#fef9c3';
           setTimeout(function () { rightClickedEl.style.background = '#fff'; }, 800);
-          result.innerHTML = '✏️ <strong>Edited:</strong> "' + currentText + '" → "' + newText.trim() + '"';
+          setResult('\u270f\ufe0f', 'Edited:', '"' + currentText + '" \u2192 "' + newText.trim() + '"');
         }
       }
       else if (action === 'paste' && clipboard) {
@@ -216,7 +222,7 @@
         if (clipboard.mode === 'cut' && clipboard.sourceEl) {
           clipboard.sourceEl.remove();
         }
-        result.innerHTML = '📌 <strong>Pasted:</strong> "' + clipboard.text + '" into the target column.';
+        setResult('\ud83d\udccc', 'Pasted:', '"' + clipboard.text + '" into the target column.');
         if (clipboard.mode === 'cut') clipboard = null; // one-time for cut
       }
       else if (action === 'delete' && rightClickedEl) {
@@ -224,20 +230,20 @@
         rightClickedEl.style.opacity = '0';
         rightClickedEl.style.transform = 'translateX(-20px)';
         setTimeout(function () { rightClickedEl.remove(); }, 250);
-        result.innerHTML = '🗑️ <strong>Deleted:</strong> "' + delText + '"';
+        setResult('\ud83d\uddd1\ufe0f', 'Deleted:', '"' + delText + '"');
         if (clipboard && clipboard.sourceEl === rightClickedEl) clipboard = null;
       }
       else if (action === 'inspect' && rightClickedEl) {
         var tag = rightClickedEl.tagName.toLowerCase();
         var id  = rightClickedEl.id;
         var cls = rightClickedEl.className;
-        result.innerHTML = '🔍 <strong>Inspect:</strong> &lt;' + tag + ' id="' + id + '" class="' + cls + '"&gt; — data-value="' + rightClickedEl.getAttribute('data-value') + '"';
+        setResult('\ud83d\udd0d', 'Inspect:', '<' + tag + ' id="' + id + '" class="' + cls + '"> \u2014 data-value="' + rightClickedEl.getAttribute('data-value') + '"');
       }
       else if (!rightClickedEl && action !== 'paste') {
-        result.innerHTML = '⚠️ No item selected. Right-click on a source item first.';
+        result.textContent = '\u26a0\ufe0f No item selected. Right-click on a source item first.';
       }
       else if (action === 'paste' && !clipboard) {
-        result.innerHTML = '⚠️ Clipboard is empty. Copy or Cut an item first.';
+        result.textContent = '\u26a0\ufe0f Clipboard is empty. Copy or Cut an item first.';
       }
 
       rightClickedEl = null;
@@ -254,7 +260,6 @@
     // Clear clipboard
     clipboard = null;
     rightClickedEl = null;
-    result.innerHTML = '🔄 <strong>Reset:</strong> All items restored to their original state.';
-  });
+    result.textContent = '\ud83d\udd04 Reset: All items restored to their original state.';\n  });
 })();
 </script>

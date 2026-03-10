@@ -1,0 +1,170 @@
+<%# RCV Academy eStore – Wishlist Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-wishlist-page" data-testid="store-wishlist-page">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="wishlist-breadcrumb" data-testid="wishlist-breadcrumb">
+    <a href="/store" id="bc-home" data-testid="bc-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">Wishlist</span>
+  </nav>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+    <h1 style="font-size:22px;font-weight:700;margin:0;" id="wishlist-heading" data-testid="wishlist-heading">
+      <i class="fas fa-heart" aria-hidden="true" style="color:#ef4444;margin-right:8px;"></i>
+      My Wishlist
+      <span style="font-size:14px;font-weight:400;color:#64748b;margin-left:8px;"
+            id="wishlist-count" data-testid="wishlist-count">
+        (<%= wishlistItems.length %> item<%= wishlistItems.length !== 1 ? 's' : '' %>)
+      </span>
+    </h1>
+    <% if (wishlistItems.length > 0) { %>
+      <form action="/store/wishlist/clear" method="POST" style="display:inline;" id="clear-wishlist-form">
+        <button type="submit" id="clear-wishlist-btn" data-testid="clear-wishlist-btn"
+                class="store-btn store-btn-outline"
+                aria-label="Remove all items from wishlist"
+                onclick="return confirm('Clear entire wishlist?')">
+          <i class="fas fa-trash-alt" aria-hidden="true"></i> Clear Wishlist
+        </button>
+      </form>
+    <% } %>
+  </div>
+
+  <% if (wishlistItems.length === 0) { %>
+    <!-- Empty wishlist state -->
+    <div class="store-empty-state" id="wishlist-empty" data-testid="wishlist-empty" role="status"
+         aria-label="Wishlist is empty">
+      <div class="empty-icon" aria-hidden="true">
+        <i class="fas fa-heart-broken"></i>
+      </div>
+      <h2 class="empty-title">Your wishlist is empty</h2>
+      <p class="empty-subtitle">Browse products and click the heart icon to save items for later.</p>
+      <a href="/store" id="wishlist-browse-btn" data-testid="wishlist-browse-btn"
+         class="store-btn store-btn-primary" aria-label="Browse products">
+        <i class="fas fa-store" aria-hidden="true"></i> Browse Products
+      </a>
+    </div>
+
+  <% } else { %>
+    <!-- Wishlist grid -->
+    <div class="store-product-grid" id="wishlist-grid" data-testid="wishlist-grid"
+         aria-label="Wishlist items">
+
+      <% wishlistItems.forEach(function(product) { %>
+        <article class="store-product-card" id="wishlist-item-<%= product.id %>"
+                 data-testid="wishlist-item-<%= product.id %>"
+                 aria-label="<%= product.name %>">
+
+          <div class="product-card-img-wrap">
+            <a href="/store/product/<%= product.id %>"
+               id="wishlist-img-link-<%= product.id %>" data-testid="wishlist-img-link-<%= product.id %>"
+               aria-label="View <%= product.name %> details">
+              <img src="<%= product.image %>" alt="<%= product.name %>"
+                   loading="lazy"
+                   onerror="this.src='https://placehold.co/300x220?text=<%= encodeURIComponent(product.name) %>'"
+                   id="wishlist-img-<%= product.id %>" data-testid="wishlist-img-<%= product.id %>" />
+            </a>
+            <% if (product.originalPrice > product.price) { %>
+              <span class="product-badge" aria-label="Discount badge">
+                -<%= Math.round((1 - product.price / product.originalPrice) * 100) %>%
+              </span>
+            <% } %>
+          </div>
+
+          <div class="product-card-body">
+            <span class="product-category"
+                  id="wishlist-cat-<%= product.id %>" data-testid="wishlist-cat-<%= product.id %>">
+              <%= product.category %>
+            </span>
+
+            <a href="/store/product/<%= product.id %>" class="product-name"
+               id="wishlist-name-<%= product.id %>" data-testid="wishlist-name-<%= product.id %>"
+               aria-label="<%= product.name %>">
+              <%= product.name %>
+            </a>
+
+            <div class="product-rating" id="wishlist-rating-<%= product.id %>"
+                 data-testid="wishlist-rating-<%= product.id %>"
+                 aria-label="Rating: <%= product.rating %> out of 5">
+              <% for(let i=1;i<=5;i++) { %>
+                <i class="fa<%= i <= Math.round(product.rating) ? 's' : 'r' %> fa-star"
+                   aria-hidden="true"
+                   style="color:<%= i <= Math.round(product.rating) ? '#f59e0b' : '#d1d5db' %>;font-size:12px;"></i>
+              <% } %>
+              <span style="font-size:11px;color:#64748b;">(<%= product.reviews %>)</span>
+            </div>
+
+            <div class="product-price-row">
+              <span class="product-price" id="wishlist-price-<%= product.id %>"
+                    data-testid="wishlist-price-<%= product.id %>">
+                $<%= product.price.toFixed(2) %>
+              </span>
+              <% if (product.originalPrice > product.price) { %>
+                <span class="product-orig-price" id="wishlist-orig-price-<%= product.id %>"
+                      data-testid="wishlist-orig-price-<%= product.id %>"
+                      aria-label="Original price $<%= product.originalPrice.toFixed(2) %>">
+                  $<%= product.originalPrice.toFixed(2) %>
+                </span>
+              <% } %>
+            </div>
+
+          </div><!-- /.product-card-body -->
+
+          <div class="product-card-actions"
+               style="display:flex;gap:8px;padding:12px;border-top:1px solid #f1f5f9;">
+
+            <!-- Add to cart form -->
+            <form action="/store/cart/add" method="POST" style="flex:1;"
+                  id="wishlist-add-cart-form-<%= product.id %>">
+              <input type="hidden" name="productId" value="<%= product.id %>" />
+              <input type="hidden" name="qty" value="1" />
+              <input type="hidden" name="redirect" value="/store/wishlist" />
+              <button type="submit"
+                      id="wishlist-add-cart-<%= product.id %>"
+                      data-testid="wishlist-add-cart-<%= product.id %>"
+                      class="store-btn store-btn-primary"
+                      style="width:100%;font-size:13px;padding:8px 12px;"
+                      aria-label="Add <%= product.name %> to cart">
+                <i class="fas fa-cart-plus" aria-hidden="true"></i> Add to Cart
+              </button>
+            </form>
+
+            <!-- Remove from wishlist form -->
+            <form action="/store/wishlist/toggle" method="POST"
+                  id="wishlist-remove-form-<%= product.id %>">
+              <input type="hidden" name="productId" value="<%= product.id %>" />
+              <input type="hidden" name="redirect" value="/store/wishlist" />
+              <button type="submit"
+                      id="wishlist-remove-<%= product.id %>"
+                      data-testid="wishlist-remove-<%= product.id %>"
+                      class="store-btn"
+                      style="padding:8px 14px;background:#fff;border:1px solid #ef4444;color:#ef4444;border-radius:8px;cursor:pointer;font-size:13px;"
+                      aria-label="Remove <%= product.name %> from wishlist"
+                      title="Remove from wishlist">
+                <i class="fas fa-heart" aria-hidden="true"></i>
+              </button>
+            </form>
+
+          </div><!-- /.product-card-actions -->
+
+        </article>
+      <% }); %>
+
+    </div><!-- /#wishlist-grid -->
+
+    <!-- Recommendations banner -->
+    <div style="margin-top:40px;padding:20px 24px;background:var(--store-primary-light, #fff7f2);border:1px solid #fde8d8;border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;"
+         id="wishlist-recommendations-banner" data-testid="wishlist-recommendations-banner">
+      <div>
+        <p style="font-weight:600;margin:0 0 4px;">Looking for more great deals?</p>
+        <p style="font-size:13px;color:#64748b;margin:0;">Check out our full product catalogue.</p>
+      </div>
+      <a href="/store" id="keep-shopping-btn" data-testid="keep-shopping-btn"
+         class="store-btn store-btn-primary" aria-label="Continue shopping">
+        <i class="fas fa-store" aria-hidden="true"></i> Keep Shopping
+      </a>
+    </div>
+
+  <% } %>
+
+</div><!-- /.store-body -->

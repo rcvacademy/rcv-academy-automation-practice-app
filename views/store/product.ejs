@@ -1,0 +1,238 @@
+<%# RCV Academy eStore – Product Detail Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-product-detail" data-testid="store-product-detail">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="product-breadcrumb" data-testid="product-breadcrumb">
+    <a href="/store" id="breadcrumb-home" data-testid="breadcrumb-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <a href="/store?category=<%= product.category %>" id="breadcrumb-category" data-testid="breadcrumb-category"><%= product.category %></a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span id="breadcrumb-product" data-testid="breadcrumb-product" aria-current="page"><%= product.name %></span>
+  </nav>
+
+  <div class="store-detail-layout">
+
+    <!-- Gallery -->
+    <div class="product-detail-gallery" id="product-gallery" data-testid="product-gallery"
+         role="region" aria-label="Product image gallery">
+      <img src="<%= product.image %>" alt="<%= product.name %>"
+           class="main-image" id="main-product-image" data-testid="main-product-image" />
+      <div class="thumb-row" id="thumb-row" data-testid="thumb-row">
+        <img src="<%= product.image %>" alt="View 1 of <%= product.name %>"
+             class="thumb active" id="thumb-1" data-testid="thumb-1"
+             onclick="setMain(this.src)" tabindex="0"
+             onkeydown="if(event.key==='Enter')setMain(this.src)" />
+        <% (product.images || []).slice(0,3).forEach((img, i) => { %>
+          <img src="<%= img %>" alt="View <%= i+2 %> of <%= product.name %>"
+               class="thumb" id="thumb-<%= i+2 %>" data-testid="thumb-<%= i+2 %>"
+               onclick="setMain(this.src)" tabindex="0"
+               onkeydown="if(event.key==='Enter')setMain(this.src)" />
+        <% }); %>
+      </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="product-detail-info" id="product-info-panel" data-testid="product-info-panel"
+         role="region" aria-label="Product information">
+
+      <span class="product-category-tag" id="detail-category" data-testid="detail-category"><%= product.category %></span>
+
+      <h1 class="product-name" id="detail-product-name" data-testid="detail-product-name"><%= product.name %></h1>
+
+      <div class="product-rating" style="margin:10px 0;"
+           id="detail-rating" data-testid="detail-rating"
+           aria-label="Rating: <%= product.rating %> out of 5 stars, <%= product.reviews %> reviews">
+        <span class="stars" aria-hidden="true">
+          <% for(let s=1;s<=5;s++) { %>
+            <i class="fas fa-star<%= s <= Math.floor(product.rating) ? '' : (s - product.rating < 1 ? '-half-alt' : '') %>" aria-hidden="true"></i>
+          <% } %>
+        </span>
+        <span class="rating-count" id="detail-rating-count" data-testid="detail-rating-count">
+          <%= product.rating %> (<%= product.reviews %> reviews)
+        </span>
+      </div>
+
+      <div class="product-price-row" style="margin:14px 0;">
+        <span class="product-price" id="detail-price" data-testid="detail-price">$<%= product.price.toFixed(2) %></span>
+        <% if (product.originalPrice) {
+             const disc = Math.round((1 - product.price / product.originalPrice) * 100);
+        %>
+          <span class="product-original-price" id="detail-orig-price" data-testid="detail-orig-price">$<%= product.originalPrice.toFixed(2) %></span>
+          <span class="product-discount-badge" id="detail-discount" data-testid="detail-discount">-<%= disc %>% OFF</span>
+        <% } %>
+      </div>
+
+      <p class="product-desc" id="detail-description" data-testid="detail-description"><%= product.description %></p>
+
+      <!-- Stock status -->
+      <div id="detail-stock-status" data-testid="detail-stock-status"
+           style="font-size:13px;font-weight:600;margin-bottom:4px;"
+           aria-label="Stock status: <%= product.stock > 0 ? 'In stock' : 'Out of stock' %>">
+        <% if (product.stock > 0) { %>
+          <span style="color:#22c55e;"><i class="fas fa-check-circle" aria-hidden="true"></i> In Stock</span>
+          <span style="color:#64748b;margin-left:8px;">(<%= product.stock %> available)</span>
+        <% } else { %>
+          <span style="color:#ef4444;"><i class="fas fa-times-circle" aria-hidden="true"></i> Out of Stock</span>
+        <% } %>
+      </div>
+
+      <% if (storeUser) { %>
+
+        <!-- Quantity selector -->
+        <div class="qty-selector" role="group" aria-label="Quantity selector" id="qty-selector" data-testid="qty-selector">
+          <button type="button" id="qty-decrease" data-testid="qty-decrease"
+                  aria-label="Decrease quantity" onclick="changeQty(-1)">−</button>
+          <input type="number" id="qty-input" data-testid="qty-input"
+                 value="1" min="1" max="<%= product.stock %>"
+                 aria-label="Product quantity" aria-valuemin="1" aria-valuemax="<%= product.stock %>" />
+          <button type="button" id="qty-increase" data-testid="qty-increase"
+                  aria-label="Increase quantity" onclick="changeQty(1)">+</button>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="detail-action-row" id="detail-action-row" data-testid="detail-action-row">
+          <form action="/store/cart/add" method="POST" style="display:contents;" id="add-to-cart-form">
+            <input type="hidden" name="productId" value="<%= product.id %>" />
+            <input type="hidden" name="qty" id="form-qty" value="1" />
+            <input type="hidden" name="redirect" value="/store/product/<%= product.id %>" />
+            <button type="submit" class="btn-add-to-cart"
+                    id="detail-add-cart-btn" data-testid="detail-add-cart-btn"
+                    aria-label="Add <%= product.name %> to cart">
+              <i class="fas fa-cart-plus" aria-hidden="true"></i> Add to Cart
+            </button>
+          </form>
+
+          <form action="/store/cart/add" method="POST" style="display:contents;" id="buy-now-form">
+            <input type="hidden" name="productId" value="<%= product.id %>" />
+            <input type="hidden" name="qty" id="form-qty-buy" value="1" />
+            <input type="hidden" name="redirect" value="/store/checkout" />
+            <button type="submit" class="btn-buy-now"
+                    id="detail-buy-now-btn" data-testid="detail-buy-now-btn"
+                    aria-label="Buy <%= product.name %> now">
+              <i class="fas fa-bolt" aria-hidden="true"></i> Buy Now
+            </button>
+          </form>
+
+          <form action="/store/wishlist/toggle" method="POST" style="display:contents;">
+            <input type="hidden" name="productId" value="<%= product.id %>" />
+            <input type="hidden" name="redirect" value="/store/product/<%= product.id %>" />
+            <button type="submit"
+                    class="btn-wishlist-detail <%= wishlisted ? 'wishlisted' : '' %>"
+                    id="detail-wishlist-btn" data-testid="detail-wishlist-btn"
+                    aria-label="<%= wishlisted ? 'Remove from wishlist' : 'Add to wishlist' %>">
+              <i class="fas fa-heart" aria-hidden="true"></i>
+            </button>
+          </form>
+        </div>
+
+      <% } else { %>
+        <a href="/store/login" class="btn-add-to-cart" style="text-decoration:none;"
+           id="detail-login-to-buy" data-testid="detail-login-to-buy">
+          <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In to Purchase
+        </a>
+      <% } %>
+
+      <!-- Product specs table -->
+      <table class="product-meta-table" id="product-specs-table" data-testid="product-specs-table"
+             aria-label="Product specifications">
+        <caption style="display:none;">Product specifications for <%= product.name %></caption>
+        <tbody>
+          <tr><td>Brand</td><td id="spec-brand" data-testid="spec-brand"><%= product.brand %></td></tr>
+          <tr><td>Model</td><td id="spec-model" data-testid="spec-model"><%= product.model %></td></tr>
+          <tr><td>Category</td><td id="spec-category" data-testid="spec-category"><%= product.category %></td></tr>
+          <tr><td>SKU</td><td id="spec-sku" data-testid="spec-sku"><%= product.sku %></td></tr>
+          <% if (product.specs) { Object.entries(product.specs).forEach(([k,v]) => { %>
+            <tr>
+              <td id="spec-key-<%= k.replace(/\s+/g,'-').toLowerCase() %>"
+                  data-testid="spec-key-<%= k.replace(/\s+/g,'-').toLowerCase() %>"><%= k %></td>
+              <td id="spec-val-<%= k.replace(/\s+/g,'-').toLowerCase() %>"
+                  data-testid="spec-val-<%= k.replace(/\s+/g,'-').toLowerCase() %>"><%= v %></td>
+            </tr>
+          <% }); } %>
+          <tr><td>Warranty</td><td id="spec-warranty" data-testid="spec-warranty"><%= product.warranty %></td></tr>
+        </tbody>
+      </table>
+
+    </div><!-- /.product-detail-info -->
+  </div><!-- /.store-detail-layout -->
+
+  <!-- Reviews section -->
+  <div style="margin-top:32px;" id="reviews-section" data-testid="reviews-section"
+       role="region" aria-label="Customer reviews">
+    <h2 class="store-section-heading">
+      <i class="fas fa-star" aria-hidden="true" style="color:var(--store-gold);"></i>
+      Customer Reviews
+      <span class="heading-line"></span>
+    </h2>
+
+    <% product.reviewList.forEach((r, i) => { %>
+      <div class="review-card" id="review-<%= i+1 %>" data-testid="review-<%= i+1 %>">
+        <div class="review-header">
+          <div class="review-avatar" aria-hidden="true"><%= r.author.charAt(0) %></div>
+          <span class="review-name" id="review-name-<%= i+1 %>" data-testid="review-name-<%= i+1 %>"><%= r.author %></span>
+          <span class="stars" aria-label="Rated <%= r.rating %> stars" style="color:var(--store-gold);font-size:13px;">
+            <% for(let s=1;s<=5;s++) { %><i class="fas fa-star<%= s <= r.rating ? '' : '' %>" aria-hidden="true" style="<%= s <= r.rating ? '' : 'opacity:.3' %>"></i><% } %>
+          </span>
+          <span class="review-date" id="review-date-<%= i+1 %>" data-testid="review-date-<%= i+1 %>"><%= r.date %></span>
+        </div>
+        <p class="review-text" id="review-text-<%= i+1 %>" data-testid="review-text-<%= i+1 %>"><%= r.text %></p>
+      </div>
+    <% }); %>
+
+    <!-- Write a review (logged-in users) -->
+    <% if (storeUser) { %>
+      <div style="margin-top:20px;background:#fff;border-radius:10px;padding:22px;box-shadow:var(--store-shadow);"
+           id="write-review" data-testid="write-review" role="region" aria-label="Write a review">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:14px;">Write a Review</h3>
+        <form action="/store/review/add" method="POST" id="review-form" data-testid="review-form"
+              aria-label="Submit a product review">
+          <input type="hidden" name="productId" value="<%= product.id %>" />
+          <div class="store-form-group" style="margin-bottom:12px;">
+            <label for="review-rating-select">Your Rating</label>
+            <select id="review-rating-select" name="rating" data-testid="review-rating-select"
+                    aria-label="Review rating" style="width:160px;">
+              <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+              <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+              <option value="3">⭐⭐⭐ (3 stars)</option>
+              <option value="2">⭐⭐ (2 stars)</option>
+              <option value="1">⭐ (1 star)</option>
+            </select>
+          </div>
+          <div class="store-form-group" style="margin-bottom:12px;">
+            <label for="review-text-input">Your Review</label>
+            <textarea id="review-text-input" name="reviewText" data-testid="review-text-input"
+                      rows="3" placeholder="Share your experience with this product…"
+                      aria-label="Your review text"
+                      style="width:100%;padding:10px 12px;border:1.5px solid var(--store-border);border-radius:6px;resize:vertical;font-size:14px;outline:none;"
+                      onfocus="this.style.borderColor='var(--store-primary)'"
+                      onblur="this.style.borderColor='var(--store-border)'"></textarea>
+          </div>
+          <button type="submit" id="submit-review-btn" data-testid="submit-review-btn"
+                  class="store-btn store-btn-primary" aria-label="Submit review">
+            <i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Review
+          </button>
+        </form>
+      </div>
+    <% } %>
+  </div>
+
+</div><!-- /.store-body -->
+
+<script>
+function setMain(src) {
+  document.getElementById('main-product-image').src = src;
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.thumb[src="${src}"]`)?.classList.add('active');
+}
+function changeQty(delta) {
+  const inp = document.getElementById('qty-input');
+  const max = parseInt(inp.max) || 99;
+  let v = parseInt(inp.value) + delta;
+  if (v < 1) v = 1;
+  if (v > max) v = max;
+  inp.value = v;
+  document.getElementById('form-qty').value = v;
+  document.getElementById('form-qty-buy').value = v;
+}
+</script>

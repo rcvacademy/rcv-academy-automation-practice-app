@@ -1,0 +1,485 @@
+<%# RCV Academy eStore – Profile Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-profile-page" data-testid="store-profile-page">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="profile-breadcrumb" data-testid="profile-breadcrumb">
+    <a href="/store" id="bc-home" data-testid="bc-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">My Profile</span>
+  </nav>
+
+  <div class="store-profile-layout" id="profile-layout" data-testid="profile-layout">
+
+    <!-- Sidebar -->
+    <aside class="profile-sidebar" id="profile-sidebar" data-testid="profile-sidebar"
+           role="complementary" aria-label="Profile navigation">
+
+      <div class="profile-avatar-section" id="profile-avatar-section" data-testid="profile-avatar-section">
+        <div class="profile-avatar" id="profile-avatar" data-testid="profile-avatar" aria-hidden="true">
+          <%= storeUser.firstName ? storeUser.firstName.charAt(0).toUpperCase() : storeUser.email.charAt(0).toUpperCase() %>
+        </div>
+        <div class="profile-name" id="profile-display-name" data-testid="profile-display-name">
+          <%= storeUser.firstName %> <%= storeUser.lastName %>
+        </div>
+        <div class="profile-email" id="profile-display-email" data-testid="profile-display-email">
+          <%= storeUser.email %>
+        </div>
+      </div>
+
+      <nav class="profile-nav" aria-label="Profile sections">
+        <a href="#section-personal"
+           class="profile-nav-link <%= activeTab === 'personal' ? 'active' : '' %>"
+           id="profile-nav-personal" data-testid="profile-nav-personal"
+           aria-label="Personal information section"
+           onclick="showTab('personal')">
+          <i class="fas fa-user" aria-hidden="true"></i> Personal Info
+        </a>
+        <a href="#section-password"
+           class="profile-nav-link <%= activeTab === 'password' ? 'active' : '' %>"
+           id="profile-nav-password" data-testid="profile-nav-password"
+           aria-label="Change password section"
+           onclick="showTab('password')">
+          <i class="fas fa-lock" aria-hidden="true"></i> Change Password
+        </a>
+        <a href="#section-address"
+           class="profile-nav-link <%= activeTab === 'address' ? 'active' : '' %>"
+           id="profile-nav-address" data-testid="profile-nav-address"
+           aria-label="Saved addresses section"
+           onclick="showTab('address')">
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Addresses
+        </a>
+        <a href="#section-preferences"
+           class="profile-nav-link <%= activeTab === 'preferences' ? 'active' : '' %>"
+           id="profile-nav-preferences" data-testid="profile-nav-preferences"
+           aria-label="Notification preferences section"
+           onclick="showTab('preferences')">
+          <i class="fas fa-bell" aria-hidden="true"></i> Preferences
+        </a>
+        <a href="/store/orders" class="profile-nav-link"
+           id="profile-nav-orders" data-testid="profile-nav-orders"
+           aria-label="View my orders">
+          <i class="fas fa-box" aria-hidden="true"></i> My Orders
+        </a>
+        <a href="/store/wishlist" class="profile-nav-link"
+           id="profile-nav-wishlist" data-testid="profile-nav-wishlist"
+           aria-label="View my wishlist">
+          <i class="fas fa-heart" aria-hidden="true"></i> Wishlist
+        </a>
+        <a href="/store/logout" class="profile-nav-link"
+           id="profile-nav-logout" data-testid="profile-nav-logout"
+           aria-label="Sign out of your account"
+           style="color:#ef4444;">
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out
+        </a>
+      </nav>
+
+    </aside><!-- /.profile-sidebar -->
+
+    <!-- Main content area -->
+    <div id="profile-content" data-testid="profile-content">
+
+      <% if (typeof updateMessage !== 'undefined' && updateMessage) { %>
+        <div class="store-alert store-alert-<%= updateMessage.type %>" role="alert"
+             id="profile-update-msg" data-testid="profile-update-msg">
+          <i class="fas fa-<%= updateMessage.type === 'success' ? 'check-circle' : 'exclamation-circle' %>" aria-hidden="true"></i>
+          <%= updateMessage.text %>
+        </div>
+      <% } %>
+
+      <!-- ── Section: Personal Info ──────────────────────────── -->
+      <div id="section-personal" class="profile-section" data-testid="section-personal"
+           style="display: <%= activeTab === 'personal' || !activeTab ? 'block' : 'none' %>;">
+
+        <div class="store-form-card">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:22px;" id="personal-section-heading">
+            <i class="fas fa-user" aria-hidden="true" style="color:var(--store-primary);"></i> Personal Information
+          </h2>
+
+          <form action="/store/profile/update" method="POST" id="personal-info-form" data-testid="personal-info-form"
+                novalidate aria-label="Update personal information form">
+            <input type="hidden" name="section" value="personal" />
+
+            <div class="form-grid-2" style="gap:16px;">
+
+              <div class="store-form-group">
+                <label for="profile-first-name">First Name <span class="req">*</span></label>
+                <input type="text" id="profile-first-name" name="firstName"
+                       value="<%= storeUser.firstName || '' %>"
+                       placeholder="First name" aria-label="First name" aria-required="true"
+                       data-testid="profile-first-name" autocomplete="given-name" />
+                <span class="field-error" id="err-profile-first-name" data-testid="err-profile-first-name">Required</span>
+              </div>
+
+              <div class="store-form-group">
+                <label for="profile-last-name">Last Name <span class="req">*</span></label>
+                <input type="text" id="profile-last-name" name="lastName"
+                       value="<%= storeUser.lastName || '' %>"
+                       placeholder="Last name" aria-label="Last name" aria-required="true"
+                       data-testid="profile-last-name" autocomplete="family-name" />
+                <span class="field-error" id="err-profile-last-name" data-testid="err-profile-last-name">Required</span>
+              </div>
+
+              <div class="store-form-group span-2">
+                <label for="profile-email">Email Address</label>
+                <input type="email" id="profile-email" name="email"
+                       value="<%= storeUser.email %>"
+                       aria-label="Email address (read only)" readonly
+                       data-testid="profile-email"
+                       style="background:#f8fafc;cursor:not-allowed;" />
+                <span style="font-size:11px;color:#9ca3af;margin-top:4px;">Email cannot be changed</span>
+              </div>
+
+              <div class="store-form-group">
+                <label for="profile-phone">Phone</label>
+                <input type="tel" id="profile-phone" name="phone"
+                       value="<%= storeUser.phone || '' %>"
+                       placeholder="+1 (555) 000-0000" aria-label="Phone number"
+                       data-testid="profile-phone" autocomplete="tel" />
+              </div>
+
+              <div class="store-form-group">
+                <label for="profile-dob">Date of Birth</label>
+                <input type="date" id="profile-dob" name="dob"
+                       value="<%= storeUser.dob || '' %>"
+                       aria-label="Date of birth"
+                       data-testid="profile-dob" />
+              </div>
+
+              <div class="store-form-group span-2">
+                <label for="profile-gender">Gender</label>
+                <select id="profile-gender" name="gender" aria-label="Gender"
+                        data-testid="profile-gender">
+                  <option value="">Prefer not to say</option>
+                  <option value="male"   <%= storeUser.gender === 'male'   ? 'selected' : '' %>>Male</option>
+                  <option value="female" <%= storeUser.gender === 'female' ? 'selected' : '' %>>Female</option>
+                  <option value="other"  <%= storeUser.gender === 'other'  ? 'selected' : '' %>>Other</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:20px;">
+              <button type="submit" id="save-personal-btn" data-testid="save-personal-btn"
+                      class="store-btn store-btn-primary" aria-label="Save personal information">
+                <i class="fas fa-save" aria-hidden="true"></i> Save Changes
+              </button>
+              <button type="reset" id="reset-personal-btn" data-testid="reset-personal-btn"
+                      class="store-btn store-btn-outline" aria-label="Reset form">
+                Reset
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div><!-- /#section-personal -->
+
+      <!-- ── Section: Change Password ───────────────────────── -->
+      <div id="section-password" class="profile-section" data-testid="section-password"
+           style="display: <%= activeTab === 'password' ? 'block' : 'none' %>;">
+
+        <div class="store-form-card">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:22px;" id="password-section-heading">
+            <i class="fas fa-lock" aria-hidden="true" style="color:var(--store-primary);"></i> Change Password
+          </h2>
+
+          <form action="/store/profile/update" method="POST" id="change-password-form" data-testid="change-password-form"
+                novalidate aria-label="Change password form" style="max-width:440px;">
+            <input type="hidden" name="section" value="password" />
+
+            <div class="store-form-group" style="margin-bottom:14px;">
+              <label for="current-password">Current Password <span class="req">*</span></label>
+              <div style="position:relative;">
+                <input type="password" id="current-password" name="currentPassword"
+                       placeholder="Enter current password"
+                       aria-label="Current password" aria-required="true"
+                       data-testid="current-password" autocomplete="current-password"
+                       style="width:100%;padding-right:44px;" />
+                <button type="button" onclick="togglePwd('current-password', this)"
+                        aria-label="Show or hide current password" data-testid="toggle-current-pwd"
+                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <span class="field-error" id="err-current-password" data-testid="err-current-password">Required</span>
+            </div>
+
+            <div class="store-form-group" style="margin-bottom:14px;">
+              <label for="new-password">New Password <span class="req">*</span></label>
+              <div style="position:relative;">
+                <input type="password" id="new-password" name="newPassword"
+                       placeholder="Min 8 characters"
+                       aria-label="New password" aria-required="true"
+                       data-testid="new-password" autocomplete="new-password"
+                       style="width:100%;padding-right:44px;" />
+                <button type="button" onclick="togglePwd('new-password', this)"
+                        aria-label="Show or hide new password" data-testid="toggle-new-pwd"
+                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <span class="field-error" id="err-new-password" data-testid="err-new-password">Min 8 characters</span>
+            </div>
+
+            <!-- Password strength bar -->
+            <div style="margin-bottom:14px;" id="password-strength-bar" data-testid="password-strength-bar">
+              <div style="height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden;">
+                <div id="strength-fill" data-testid="strength-fill"
+                     style="height:100%;width:0;background:#ef4444;border-radius:2px;transition:width .3s,background .3s;"></div>
+              </div>
+              <span id="strength-label" data-testid="strength-label"
+                    style="font-size:11px;color:#9ca3af;"></span>
+            </div>
+
+            <div class="store-form-group" style="margin-bottom:20px;">
+              <label for="confirm-new-password">Confirm New Password <span class="req">*</span></label>
+              <div style="position:relative;">
+                <input type="password" id="confirm-new-password" name="confirmNewPassword"
+                       placeholder="Repeat new password"
+                       aria-label="Confirm new password" aria-required="true"
+                       data-testid="confirm-new-password" autocomplete="new-password"
+                       style="width:100%;padding-right:44px;" />
+                <button type="button" onclick="togglePwd('confirm-new-password', this)"
+                        aria-label="Show or hide confirm new password" data-testid="toggle-confirm-pwd"
+                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <span class="field-error" id="err-confirm-new-password" data-testid="err-confirm-new-password">Passwords do not match</span>
+            </div>
+
+            <button type="submit" id="change-password-btn" data-testid="change-password-btn"
+                    class="store-btn store-btn-primary" aria-label="Update password">
+              <i class="fas fa-lock" aria-hidden="true"></i> Update Password
+            </button>
+
+          </form>
+        </div>
+
+      </div><!-- /#section-password -->
+
+      <!-- ── Section: Addresses ─────────────────────────────── -->
+      <div id="section-address" class="profile-section" data-testid="section-address"
+           style="display: <%= activeTab === 'address' ? 'block' : 'none' %>;">
+
+        <div class="store-form-card">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:22px;" id="address-section-heading">
+            <i class="fas fa-map-marker-alt" aria-hidden="true" style="color:var(--store-primary);"></i> Saved Address
+          </h2>
+
+          <form action="/store/profile/update" method="POST" id="address-form" data-testid="address-form"
+                novalidate aria-label="Update address form">
+            <input type="hidden" name="section" value="address" />
+
+            <div class="form-grid-2" style="gap:16px;">
+
+              <div class="store-form-group span-2">
+                <label for="addr-line1">Address Line 1</label>
+                <input type="text" id="addr-line1" name="address1"
+                       value="<%= storeUser.address1 || '' %>"
+                       placeholder="Street address" aria-label="Address line 1"
+                       data-testid="addr-line1" autocomplete="address-line1" />
+              </div>
+
+              <div class="store-form-group span-2">
+                <label for="addr-line2">Address Line 2</label>
+                <input type="text" id="addr-line2" name="address2"
+                       value="<%= storeUser.address2 || '' %>"
+                       placeholder="Apt, suite, floor (optional)" aria-label="Address line 2"
+                       data-testid="addr-line2" autocomplete="address-line2" />
+              </div>
+
+              <div class="store-form-group">
+                <label for="addr-city">City</label>
+                <input type="text" id="addr-city" name="city"
+                       value="<%= storeUser.city || '' %>"
+                       placeholder="City" aria-label="City"
+                       data-testid="addr-city" autocomplete="address-level2" />
+              </div>
+
+              <div class="store-form-group">
+                <label for="addr-state">State</label>
+                <input type="text" id="addr-state" name="state"
+                       value="<%= storeUser.state || '' %>"
+                       placeholder="State" aria-label="State"
+                       data-testid="addr-state" autocomplete="address-level1" />
+              </div>
+
+              <div class="store-form-group">
+                <label for="addr-zip">ZIP Code</label>
+                <input type="text" id="addr-zip" name="zip"
+                       value="<%= storeUser.zip || '' %>"
+                       placeholder="ZIP" aria-label="ZIP code"
+                       data-testid="addr-zip" autocomplete="postal-code" />
+              </div>
+
+              <div class="store-form-group">
+                <label for="addr-country">Country</label>
+                <input type="text" id="addr-country" name="country"
+                       value="<%= storeUser.country || 'US' %>"
+                       placeholder="Country" aria-label="Country"
+                       data-testid="addr-country" autocomplete="country-name" />
+              </div>
+
+            </div>
+
+            <button type="submit" id="save-address-btn" data-testid="save-address-btn"
+                    class="store-btn store-btn-primary" style="margin-top:20px;"
+                    aria-label="Save address">
+              <i class="fas fa-save" aria-hidden="true"></i> Save Address
+            </button>
+
+          </form>
+        </div>
+
+      </div><!-- /#section-address -->
+
+      <!-- ── Section: Preferences ───────────────────────────── -->
+      <div id="section-preferences" class="profile-section" data-testid="section-preferences"
+           style="display: <%= activeTab === 'preferences' ? 'block' : 'none' %>;">
+
+        <div class="store-form-card">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:22px;" id="prefs-section-heading">
+            <i class="fas fa-bell" aria-hidden="true" style="color:var(--store-primary);"></i> Notification Preferences
+          </h2>
+
+          <form action="/store/profile/update" method="POST" id="preferences-form" data-testid="preferences-form"
+                aria-label="Update notification preferences form">
+            <input type="hidden" name="section" value="preferences" />
+
+            <% const prefs = storeUser.preferences || {}; %>
+
+            <div role="group" aria-label="Email notification preferences" style="display:flex;flex-direction:column;gap:14px;margin-bottom:22px;">
+              <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:400;font-size:14px;"
+                     id="pref-order-updates-label" data-testid="pref-order-updates-label">
+                <input type="checkbox" name="pref_orderUpdates" id="pref-order-updates"
+                       value="yes" <%= prefs.orderUpdates !== false ? 'checked' : '' %>
+                       aria-label="Email me order updates" data-testid="pref-order-updates" />
+                <span>
+                  <strong>Order Updates</strong>
+                  <span style="display:block;font-size:12px;color:#64748b;">Shipping confirmations, delivery updates</span>
+                </span>
+              </label>
+
+              <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:400;font-size:14px;"
+                     id="pref-promotions-label" data-testid="pref-promotions-label">
+                <input type="checkbox" name="pref_promotions" id="pref-promotions"
+                       value="yes" <%= prefs.promotions ? 'checked' : '' %>
+                       aria-label="Email me promotions and deals" data-testid="pref-promotions" />
+                <span>
+                  <strong>Promotions &amp; Deals</strong>
+                  <span style="display:block;font-size:12px;color:#64748b;">Sales, discount codes, special offers</span>
+                </span>
+              </label>
+
+              <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:400;font-size:14px;"
+                     id="pref-newsletter-label" data-testid="pref-newsletter-label">
+                <input type="checkbox" name="pref_newsletter" id="pref-newsletter"
+                       value="yes" <%= prefs.newsletter ? 'checked' : '' %>
+                       aria-label="Subscribe to newsletter" data-testid="pref-newsletter" />
+                <span>
+                  <strong>Newsletter</strong>
+                  <span style="display:block;font-size:12px;color:#64748b;">Weekly product highlights and tech news</span>
+                </span>
+              </label>
+
+              <label style="display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:400;font-size:14px;"
+                     id="pref-wishlist-alerts-label" data-testid="pref-wishlist-alerts-label">
+                <input type="checkbox" name="pref_wishlistAlerts" id="pref-wishlist-alerts"
+                       value="yes" <%= prefs.wishlistAlerts ? 'checked' : '' %>
+                       aria-label="Notify me when wishlist items go on sale" data-testid="pref-wishlist-alerts" />
+                <span>
+                  <strong>Wishlist Price Alerts</strong>
+                  <span style="display:block;font-size:12px;color:#64748b;">Notify when wishlist items go on sale</span>
+                </span>
+              </label>
+
+            </div>
+
+            <button type="submit" id="save-prefs-btn" data-testid="save-prefs-btn"
+                    class="store-btn store-btn-primary" aria-label="Save notification preferences">
+              <i class="fas fa-save" aria-hidden="true"></i> Save Preferences
+            </button>
+
+          </form>
+        </div>
+
+      </div><!-- /#section-preferences -->
+
+    </div><!-- /#profile-content -->
+
+  </div><!-- /.store-profile-layout -->
+
+</div><!-- /.store-body -->
+
+<script>
+function showTab(tab) {
+  document.querySelectorAll('.profile-section').forEach(s => s.style.display = 'none');
+  document.getElementById('section-' + tab).style.display = 'block';
+  document.querySelectorAll('.profile-nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('profile-nav-' + tab)?.classList.add('active');
+  history.replaceState(null,'','/store/profile?tab=' + tab);
+}
+
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  const icon = btn.querySelector('i');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+// Password strength meter
+const newPwdEl = document.getElementById('new-password');
+if (newPwdEl) {
+  newPwdEl.addEventListener('input', function() {
+    const v = this.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    const fill = document.getElementById('strength-fill');
+    const label = document.getElementById('strength-label');
+    const widths = ['0%','25%','50%','75%','100%'];
+    const colors = ['#ef4444','#f59e0b','#f59e0b','#22c55e','#22c55e'];
+    const labels = ['','Weak','Fair','Good','Strong'];
+    fill.style.width  = widths[score];
+    fill.style.background = colors[score];
+    label.textContent = labels[score];
+    label.style.color = colors[score];
+  });
+}
+
+// Change-password form validation
+const changePwdForm = document.getElementById('change-password-form');
+if (changePwdForm) {
+  changePwdForm.addEventListener('submit', function(e) {
+    let valid = true;
+    if (!document.getElementById('current-password').value) {
+      document.getElementById('current-password').closest('.store-form-group').classList.add('has-error');
+      valid = false;
+    } else {
+      document.getElementById('current-password').closest('.store-form-group').classList.remove('has-error');
+    }
+    if (document.getElementById('new-password').value.length < 8) {
+      document.getElementById('new-password').closest('.store-form-group').classList.add('has-error');
+      valid = false;
+    } else {
+      document.getElementById('new-password').closest('.store-form-group').classList.remove('has-error');
+    }
+    if (document.getElementById('confirm-new-password').value !== document.getElementById('new-password').value) {
+      document.getElementById('confirm-new-password').closest('.store-form-group').classList.add('has-error');
+      valid = false;
+    } else {
+      document.getElementById('confirm-new-password').closest('.store-form-group').classList.remove('has-error');
+    }
+    if (!valid) e.preventDefault();
+  });
+}
+</script>

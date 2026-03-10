@@ -1,0 +1,224 @@
+<%# RCV Academy eStore – Search Results Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-search-page" data-testid="store-search-page">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="search-breadcrumb" data-testid="search-breadcrumb">
+    <a href="/store" id="bc-home" data-testid="bc-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">Search Results</span>
+  </nav>
+
+  <!-- Search summary bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+    <div>
+      <h1 style="font-size:20px;font-weight:700;margin:0 0 4px;"
+          id="search-heading" data-testid="search-heading">
+        <% if (query) { %>
+          Search results for "<span id="search-query-display" data-testid="search-query-display"><%= query %></span>"
+        <% } else { %>
+          All Products
+        <% } %>
+      </h1>
+      <p style="font-size:13px;color:#64748b;margin:0;" id="search-result-count" data-testid="search-result-count"
+         role="status" aria-live="polite">
+        <%= products.length %> product<%= products.length !== 1 ? 's' : '' %> found
+      </p>
+    </div>
+
+    <!-- Sort control -->
+    <div style="display:flex;align-items:center;gap:8px;">
+      <label for="search-sort" style="font-size:13px;font-weight:500;white-space:nowrap;">Sort by:</label>
+      <select id="search-sort" data-testid="search-sort"
+              aria-label="Sort search results"
+              onchange="sortResults(this.value)"
+              style="padding:7px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;background:#fff;">
+        <option value="relevance" <%= sortBy === 'relevance' ? 'selected' : '' %>>Relevance</option>
+        <option value="price-asc" <%= sortBy === 'price-asc' ? 'selected' : '' %>>Price: Low → High</option>
+        <option value="price-desc" <%= sortBy === 'price-desc' ? 'selected' : '' %>>Price: High → Low</option>
+        <option value="rating" <%= sortBy === 'rating' ? 'selected' : '' %>>Best Rating</option>
+        <option value="newest" <%= sortBy === 'newest' ? 'selected' : '' %>>Newest</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Inline search refinement -->
+  <form action="/store/search" method="GET" id="refine-search-form" data-testid="refine-search-form"
+        style="margin-bottom:28px;" aria-label="Refine search">
+    <div style="display:flex;gap:8px;max-width:560px;">
+      <input type="search" name="q" id="refine-search-input" data-testid="refine-search-input"
+             value="<%= query %>" placeholder="Search again or try a new term…"
+             aria-label="Search input" autocomplete="off"
+             style="flex:1;padding:10px 16px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;" />
+      <button type="submit" id="refine-search-btn" data-testid="refine-search-btn"
+              class="store-btn store-btn-primary" aria-label="Submit search">
+        <i class="fas fa-search" aria-hidden="true"></i> Search
+      </button>
+    </div>
+  </form>
+
+  <!-- Category filter chips (for quick refinement) -->
+  <% if (categories && categories.length > 0) { %>
+    <div class="category-filters" id="search-filter-chips" data-testid="search-filter-chips"
+         role="group" aria-label="Filter by category" style="margin-bottom:24px;">
+      <a href="/store/search?q=<%= encodeURIComponent(query) %>"
+         class="cat-btn <%= !activeCategory ? 'active' : '' %>"
+         id="search-cat-all" data-testid="search-cat-all" aria-pressed="<%= !activeCategory %>">
+        All
+      </a>
+      <% categories.forEach(function(cat) { %>
+        <a href="/store/search?q=<%= encodeURIComponent(query) %>&cat=<%= encodeURIComponent(cat) %>"
+           class="cat-btn <%= activeCategory === cat ? 'active' : '' %>"
+           id="search-cat-<%= cat.toLowerCase().replace(/\s+/g,'-') %>"
+           data-testid="search-cat-<%= cat.toLowerCase().replace(/\s+/g,'-') %>"
+           aria-pressed="<%= activeCategory === cat %>">
+          <%= cat %>
+        </a>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <!-- Results area -->
+  <% if (products.length === 0) { %>
+    <!-- No results state -->
+    <div class="store-empty-state" id="no-results" data-testid="no-results" role="status"
+         aria-label="No products found">
+      <div class="empty-icon" aria-hidden="true">
+        <i class="fas fa-search"></i>
+      </div>
+      <h2 class="empty-title">No results found</h2>
+      <% if (query) { %>
+        <p class="empty-subtitle">
+          We couldn't find anything matching "<strong><%= query %></strong>".<br/>
+          Try a different keyword or browse all products.
+        </p>
+      <% } else { %>
+        <p class="empty-subtitle">Try searching for a product name, brand, or category.</p>
+      <% } %>
+      <a href="/store" id="search-browse-all-btn" data-testid="search-browse-all-btn"
+         class="store-btn store-btn-primary" aria-label="Browse all products">
+        <i class="fas fa-store" aria-hidden="true"></i> Browse All Products
+      </a>
+    </div>
+
+  <% } else { %>
+    <!-- Product grid -->
+    <div class="store-product-grid" id="search-results-grid" data-testid="search-results-grid"
+         aria-label="Search results">
+
+      <% products.forEach(function(product) { %>
+        <article class="store-product-card" id="search-card-<%= product.id %>"
+                 data-testid="search-card-<%= product.id %>"
+                 data-price="<%= product.price %>"
+                 data-rating="<%= product.rating %>"
+                 data-id="<%= product.id %>"
+                 aria-label="<%= product.name %>">
+
+          <div class="product-card-img-wrap">
+            <a href="/store/product/<%= product.id %>"
+               id="search-img-link-<%= product.id %>" data-testid="search-img-link-<%= product.id %>"
+               aria-label="View <%= product.name %> details">
+              <img src="<%= product.image %>" alt="<%= product.name %>"
+                   loading="lazy"
+                   onerror="this.src='https://placehold.co/300x220?text=<%= encodeURIComponent(product.name) %>'"
+                   id="search-img-<%= product.id %>" data-testid="search-img-<%= product.id %>" />
+            </a>
+            <% if (product.originalPrice > product.price) { %>
+              <span class="product-badge" aria-label="Discount badge">
+                -<%= Math.round((1 - product.price / product.originalPrice) * 100) %>%
+              </span>
+            <% } %>
+          </div>
+
+          <div class="product-card-body">
+            <span class="product-category"
+                  id="search-cat-label-<%= product.id %>" data-testid="search-cat-label-<%= product.id %>">
+              <%= product.category %>
+            </span>
+
+            <a href="/store/product/<%= product.id %>" class="product-name"
+               id="search-name-<%= product.id %>" data-testid="search-name-<%= product.id %>"
+               aria-label="<%= product.name %>">
+              <%= product.name %>
+            </a>
+
+            <div class="product-rating" id="search-rating-<%= product.id %>"
+                 data-testid="search-rating-<%= product.id %>"
+                 aria-label="Rating: <%= product.rating %> out of 5">
+              <% for (let i=1;i<=5;i++) { %>
+                <i class="fa<%= i <= Math.round(product.rating) ? 's' : 'r' %> fa-star"
+                   aria-hidden="true"
+                   style="color:<%= i <= Math.round(product.rating) ? '#f59e0b' : '#d1d5db' %>;font-size:12px;"></i>
+              <% } %>
+              <span style="font-size:11px;color:#64748b;">(<%= product.reviews %>)</span>
+            </div>
+
+            <div class="product-price-row">
+              <span class="product-price" id="search-price-<%= product.id %>"
+                    data-testid="search-price-<%= product.id %>">
+                $<%= product.price.toFixed(2) %>
+              </span>
+              <% if (product.originalPrice > product.price) { %>
+                <span class="product-orig-price" id="search-orig-<%= product.id %>"
+                      data-testid="search-orig-<%= product.id %>"
+                      aria-label="Original price $<%= product.originalPrice.toFixed(2) %>">
+                  $<%= product.originalPrice.toFixed(2) %>
+                </span>
+              <% } %>
+            </div>
+
+          </div><!-- /.product-card-body -->
+
+          <div class="product-card-footer"
+               style="display:flex;gap:8px;padding:12px;border-top:1px solid #f1f5f9;align-items:center;">
+
+            <!-- Add to cart -->
+            <form action="/store/cart/add" method="POST" style="flex:1;"
+                  id="search-add-form-<%= product.id %>">
+              <input type="hidden" name="productId" value="<%= product.id %>" />
+              <input type="hidden" name="qty" value="1" />
+              <input type="hidden" name="redirect" value="/store/search?q=<%= encodeURIComponent(query) %>" />
+              <button type="submit"
+                      id="search-add-cart-<%= product.id %>"
+                      data-testid="search-add-cart-<%= product.id %>"
+                      class="store-btn store-btn-primary"
+                      style="width:100%;font-size:13px;padding:8px;"
+                      aria-label="Add <%= product.name %> to cart">
+                <i class="fas fa-cart-plus" aria-hidden="true"></i> Add to Cart
+              </button>
+            </form>
+
+            <!-- Wishlist toggle -->
+            <form action="/store/wishlist/toggle" method="POST"
+                  id="search-wl-form-<%= product.id %>">
+              <input type="hidden" name="productId" value="<%= product.id %>" />
+              <input type="hidden" name="redirect" value="/store/search?q=<%= encodeURIComponent(query) %>" />
+              <button type="submit"
+                      id="search-wishlist-<%= product.id %>"
+                      data-testid="search-wishlist-<%= product.id %>"
+                      class="store-btn"
+                      style="padding:8px 12px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;color:<%= storeUser && storeUser.wishlist && storeUser.wishlist.includes(product.id) ? '#ef4444' : '#94a3b8' %>;"
+                      aria-label="<%= storeUser && storeUser.wishlist && storeUser.wishlist.includes(product.id) ? 'Remove from' : 'Add to' %> wishlist"
+                      aria-pressed="<%= storeUser && storeUser.wishlist && storeUser.wishlist.includes(product.id) ? 'true' : 'false' %>">
+                <i class="fas fa-heart" aria-hidden="true"></i>
+              </button>
+            </form>
+
+          </div><!-- /.product-card-footer -->
+
+        </article>
+      <% }); %>
+
+    </div><!-- /#search-results-grid -->
+
+  <% } %>
+
+</div><!-- /.store-body -->
+
+<script>
+function sortResults(val) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('sort', val);
+  window.location.href = url.toString();
+}
+</script>

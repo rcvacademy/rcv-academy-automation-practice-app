@@ -1,0 +1,178 @@
+<%# RCV Academy eStore – Register Page %>
+<%- include('layout') %>
+<div class="store-auth-wrapper">
+  <div class="store-auth-card" role="main" id="store-register-card" data-testid="store-register-card">
+
+    <div class="auth-logo">
+      <div class="logo-text">RCV <span>Store</span></div>
+    </div>
+    <h2 id="register-heading">Create your account</h2>
+    <p class="auth-sub">Join RCV Academy eStore and start shopping today</p>
+
+    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+      <div class="store-alert store-alert-error" role="alert" id="register-error-msg" data-testid="register-error-msg">
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i> <%= errorMessage %>
+      </div>
+    <% } %>
+
+    <form action="/store/register" method="POST" id="store-register-form" data-testid="store-register-form"
+          novalidate aria-label="Account registration form">
+
+      <div class="form-grid-2" style="gap:14px;">
+
+        <div class="store-form-group">
+          <label for="reg-first-name">First Name <span class="req">*</span></label>
+          <input type="text" id="reg-first-name" name="firstName"
+                 placeholder="First name"
+                 value="<%= typeof formData !== 'undefined' ? formData.firstName || '' : '' %>"
+                 aria-label="First name" aria-required="true"
+                 data-testid="reg-first-name" autocomplete="given-name" />
+          <span class="field-error" id="err-firstName" data-testid="err-firstName">First name is required</span>
+        </div>
+
+        <div class="store-form-group">
+          <label for="reg-last-name">Last Name <span class="req">*</span></label>
+          <input type="text" id="reg-last-name" name="lastName"
+                 placeholder="Last name"
+                 value="<%= typeof formData !== 'undefined' ? formData.lastName || '' : '' %>"
+                 aria-label="Last name" aria-required="true"
+                 data-testid="reg-last-name" autocomplete="family-name" />
+          <span class="field-error" id="err-lastName" data-testid="err-lastName">Last name is required</span>
+        </div>
+
+        <div class="store-form-group span-2">
+          <label for="reg-email">Email Address <span class="req">*</span></label>
+          <input type="email" id="reg-email" name="email"
+                 placeholder="you@example.com"
+                 value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"
+                 aria-label="Email address" aria-required="true"
+                 data-testid="reg-email" autocomplete="email" />
+          <span class="field-error" id="err-email" data-testid="err-email">Please enter a valid email</span>
+        </div>
+
+        <div class="store-form-group">
+          <label for="reg-phone">Phone Number</label>
+          <input type="tel" id="reg-phone" name="phone"
+                 placeholder="+1 (555) 000-0000"
+                 value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>"
+                 aria-label="Phone number" data-testid="reg-phone" autocomplete="tel" />
+        </div>
+
+        <div class="store-form-group">
+          <label for="reg-dob">Date of Birth</label>
+          <input type="date" id="reg-dob" name="dob"
+                 value="<%= typeof formData !== 'undefined' ? formData.dob || '' : '' %>"
+                 aria-label="Date of birth" data-testid="reg-dob" />
+        </div>
+
+        <div class="store-form-group span-2">
+          <label for="reg-password">Password <span class="req">*</span></label>
+          <div style="position:relative;">
+            <input type="password" id="reg-password" name="password"
+                   placeholder="Min 8 characters"
+                   aria-label="Password" aria-required="true"
+                   data-testid="reg-password" autocomplete="new-password"
+                   style="width:100%;padding-right:44px;" />
+            <button type="button" id="toggle-reg-password" data-testid="toggle-reg-password"
+                    aria-label="Show or hide password"
+                    onclick="togglePwd('reg-password', this)"
+                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;font-size:16px;">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <span class="field-error" id="err-password" data-testid="err-password">Password must be at least 8 characters</span>
+        </div>
+
+        <div class="store-form-group span-2">
+          <label for="reg-confirm-password">Confirm Password <span class="req">*</span></label>
+          <div style="position:relative;">
+            <input type="password" id="reg-confirm-password" name="confirmPassword"
+                   placeholder="Repeat your password"
+                   aria-label="Confirm password" aria-required="true"
+                   data-testid="reg-confirm-password" autocomplete="new-password"
+                   style="width:100%;padding-right:44px;" />
+            <button type="button" id="toggle-reg-confirm-password" data-testid="toggle-reg-confirm-password"
+                    aria-label="Show or hide confirm password"
+                    onclick="togglePwd('reg-confirm-password', this)"
+                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;font-size:16px;">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <span class="field-error" id="err-confirmPassword" data-testid="err-confirmPassword">Passwords do not match</span>
+        </div>
+
+        <div class="store-form-group span-2">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:400;">
+            <input type="checkbox" id="reg-terms" name="terms" value="yes"
+                   aria-label="I agree to the terms and conditions"
+                   aria-required="true"
+                   data-testid="reg-terms"
+                   style="margin-top:2px;width:16px;height:16px;flex-shrink:0;" />
+            <span>I agree to the <a href="/terms" style="color:var(--store-primary);">Terms &amp; Conditions</a> and <a href="/privacy-policy" style="color:var(--store-primary);">Privacy Policy</a></span>
+          </label>
+          <span class="field-error" id="err-terms" data-testid="err-terms">You must accept the terms</span>
+        </div>
+
+        <div class="store-form-group span-2">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:400;">
+            <input type="checkbox" id="reg-gdpr-consent" name="gdprConsent" value="yes"
+                   aria-label="I consent to processing of my personal data as described in the Privacy Policy"
+                   aria-required="true"
+                   data-testid="reg-gdpr-consent"
+                   style="margin-top:2px;width:16px;height:16px;flex-shrink:0;" />
+            <span>I consent to the processing of my personal data as described in the <a href="/privacy-policy" style="color:var(--store-primary);">Privacy Policy</a> in accordance with GDPR and applicable data protection laws. I understand I can withdraw consent at any time.</span>
+          </label>
+          <span class="field-error" id="err-gdprConsent" data-testid="err-gdprConsent">You must consent to data processing</span>
+        </div>
+
+      </div>
+
+      <button type="submit" id="reg-submit-btn" data-testid="reg-submit-btn"
+              class="store-btn store-btn-primary" style="width:100%;justify-content:center;margin-top:8px;padding:13px;"
+              aria-label="Create account">
+        <i class="fas fa-user-plus" aria-hidden="true"></i> Create Account
+      </button>
+
+    </form>
+
+    <div class="store-auth-footer">
+      Already have an account? <a href="/store/login" id="go-to-login" data-testid="go-to-login">Sign in</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  const icon = btn.querySelector('i');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+document.getElementById('store-register-form').addEventListener('submit', function(e) {
+  let valid = true;
+  const fns = {
+    firstName:       [v => v.trim().length > 0],
+    lastName:        [v => v.trim().length > 0],
+    email:           [v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],
+    password:        [v => v.length >= 8],
+    confirmPassword: [v => v === document.getElementById('reg-password').value],
+    terms:           [() => document.getElementById('reg-terms').checked],
+    gdprConsent:     [() => document.getElementById('reg-gdpr-consent').checked],
+  };
+  Object.entries(fns).forEach(([name, validators]) => {
+    const el = this.elements[name];
+    const group = el ? el.closest('.store-form-group') : null;
+    const ok = validators.every(fn => fn(el ? el.value : ''));
+    if (group) group.classList.toggle('has-error', !ok);
+    if (!ok) valid = false;
+  });
+  if (!valid) e.preventDefault();
+});
+</script>

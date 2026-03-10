@@ -1,0 +1,189 @@
+<%# RCV Academy eStore – Cart Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="store-cart" data-testid="store-cart">
+
+  <!-- Breadcrumb -->
+  <nav class="store-breadcrumb" aria-label="Breadcrumb navigation" id="cart-breadcrumb" data-testid="cart-breadcrumb">
+    <a href="/store" id="bc-home" data-testid="bc-home">Home</a>
+    <span class="sep" aria-hidden="true">›</span>
+    <span aria-current="page">Shopping Cart</span>
+  </nav>
+
+  <h1 class="store-section-heading" id="cart-heading" data-testid="cart-heading">
+    <i class="fas fa-shopping-cart" aria-hidden="true" style="color:var(--store-primary);"></i>
+    Shopping Cart
+    <% if (cartItems.length > 0) { %>
+      <span style="font-size:14px;font-weight:500;color:#64748b;">(<%= cartItems.length %> item<%= cartItems.length > 1 ? 's' : '' %>)</span>
+    <% } %>
+    <span class="heading-line"></span>
+  </h1>
+
+  <% if (cartItems.length === 0) { %>
+    <div class="cart-empty" id="cart-empty" data-testid="cart-empty" role="status" aria-label="Cart is empty">
+      <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+      <h3>Your cart is empty</h3>
+      <p style="margin-bottom:24px;">Looks like you haven't added any items yet.</p>
+      <a href="/store" class="store-btn store-btn-primary" id="continue-shopping-empty" data-testid="continue-shopping-empty"
+         aria-label="Continue shopping">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i> Continue Shopping
+      </a>
+    </div>
+
+  <% } else { %>
+
+    <div class="store-cart-layout" id="cart-layout" data-testid="cart-layout">
+
+      <!-- Cart items table -->
+      <div id="cart-items-section" data-testid="cart-items-section">
+
+        <table class="store-table" id="cart-table" data-testid="cart-table"
+               aria-label="Cart items">
+          <thead>
+            <tr>
+              <th id="col-product" scope="col">Product</th>
+              <th id="col-price"   scope="col">Price</th>
+              <th id="col-qty"     scope="col">Quantity</th>
+              <th id="col-subtotal" scope="col">Subtotal</th>
+              <th id="col-remove"  scope="col"><span class="sr-only">Remove</span></th>
+            </tr>
+          </thead>
+          <tbody id="cart-table-body" data-testid="cart-table-body">
+            <% cartItems.forEach(function(item) { %>
+              <tr id="cart-row-<%= item.product.id %>" data-testid="cart-row-<%= item.product.id %>"
+                  data-product-id="<%= item.product.id %>">
+
+                <td>
+                  <div class="cart-product-cell">
+                    <img src="<%= item.product.image %>" alt="<%= item.product.name %>"
+                         id="cart-img-<%= item.product.id %>" data-testid="cart-img-<%= item.product.id %>" />
+                    <div>
+                      <div class="cart-prod-name" id="cart-name-<%= item.product.id %>" data-testid="cart-name-<%= item.product.id %>">
+                        <a href="/store/product/<%= item.product.id %>" style="color:inherit;text-decoration:none;">
+                          <%= item.product.name %>
+                        </a>
+                      </div>
+                      <div class="cart-prod-category" id="cart-cat-<%= item.product.id %>" data-testid="cart-cat-<%= item.product.id %>">
+                        <%= item.product.category %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <td id="cart-price-<%= item.product.id %>" data-testid="cart-price-<%= item.product.id %>">
+                  $<%= item.product.price.toFixed(2) %>
+                </td>
+
+                <td>
+                  <form action="/store/cart/update" method="POST" style="display:inline;" id="qty-form-<%= item.product.id %>">
+                    <input type="hidden" name="productId" value="<%= item.product.id %>" />
+                    <input type="number" name="qty" value="<%= item.qty %>" min="1" max="<%= item.product.stock %>"
+                           class="cart-qty-input" id="cart-qty-<%= item.product.id %>" data-testid="cart-qty-<%= item.product.id %>"
+                           aria-label="Quantity for <%= item.product.name %>"
+                           onchange="this.form.submit()" />
+                  </form>
+                </td>
+
+                <td style="font-weight:700;" id="cart-subtotal-<%= item.product.id %>" data-testid="cart-subtotal-<%= item.product.id %>">
+                  $<%= (item.product.price * item.qty).toFixed(2) %>
+                </td>
+
+                <td>
+                  <form action="/store/cart/remove" method="POST" style="display:inline;">
+                    <input type="hidden" name="productId" value="<%= item.product.id %>" />
+                    <button type="submit" class="cart-remove-btn"
+                            id="cart-remove-<%= item.product.id %>" data-testid="cart-remove-<%= item.product.id %>"
+                            aria-label="Remove <%= item.product.name %> from cart">
+                      <i class="fas fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </form>
+                </td>
+
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <!-- Cart actions -->
+        <div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;" id="cart-actions" data-testid="cart-actions">
+          <a href="/store" class="store-btn store-btn-outline" id="continue-shopping" data-testid="continue-shopping"
+             aria-label="Continue shopping">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i> Continue Shopping
+          </a>
+          <form action="/store/cart/clear" method="POST" style="display:inline;">
+            <button type="submit" class="store-btn store-btn-danger" id="clear-cart-btn" data-testid="clear-cart-btn"
+                    aria-label="Clear all items from cart"
+                    onclick="return confirm('Remove all items from your cart?')">
+              <i class="fas fa-trash" aria-hidden="true"></i> Clear Cart
+            </button>
+          </form>
+        </div>
+
+      </div><!-- /.cart-items-section -->
+
+      <!-- Summary panel -->
+      <aside class="store-summary-panel" id="cart-summary" data-testid="cart-summary"
+             role="complementary" aria-label="Cart summary">
+
+        <h3 id="cart-summary-heading">Order Summary</h3>
+
+        <div class="summary-row" id="summary-subtotal-row" data-testid="summary-subtotal-row">
+          <span>Subtotal (<%= cartItems.reduce((s,i) => s+i.qty,0) %> items)</span>
+          <span id="summary-subtotal" data-testid="summary-subtotal">$<%= subtotal.toFixed(2) %></span>
+        </div>
+        <div class="summary-row" id="summary-shipping-row" data-testid="summary-shipping-row">
+          <span>Shipping</span>
+          <span id="summary-shipping" data-testid="summary-shipping">
+            <% if (shipping === 0) { %><span style="color:#22c55e;">FREE</span><% } else { %>$<%= shipping.toFixed(2) %><% } %>
+          </span>
+        </div>
+        <div class="summary-row" id="summary-tax-row" data-testid="summary-tax-row">
+          <span>Tax (8%)</span>
+          <span id="summary-tax" data-testid="summary-tax">$<%= tax.toFixed(2) %></span>
+        </div>
+
+        <% if (discount > 0) { %>
+          <div class="summary-row discount" id="summary-discount-row" data-testid="summary-discount-row">
+            <span>Promo Discount</span>
+            <span id="summary-discount" data-testid="summary-discount">-$<%= discount.toFixed(2) %></span>
+          </div>
+        <% } %>
+
+        <!-- Promo code -->
+        <div class="promo-row" id="promo-row" data-testid="promo-row">
+          <form action="/store/cart/promo" method="POST" style="display:contents;">
+            <input type="text" name="code" id="promo-code-input" data-testid="promo-code-input"
+                   placeholder="Promo code" aria-label="Enter promo code"
+                   value="<%= typeof appliedPromo !== 'undefined' ? appliedPromo : '' %>" />
+            <button type="submit" id="apply-promo-btn" data-testid="apply-promo-btn"
+                    aria-label="Apply promo code">Apply</button>
+          </form>
+        </div>
+        <% if (typeof promoMessage !== 'undefined' && promoMessage) { %>
+          <p id="promo-message" data-testid="promo-message"
+             style="font-size:12px;color:<%= promoMessage.ok ? '#22c55e' : '#ef4444' %>;margin-bottom:8px;">
+            <%= promoMessage.text %>
+          </p>
+        <% } %>
+
+        <div class="summary-row total" id="summary-total-row" data-testid="summary-total-row">
+          <span>Total</span>
+          <span id="summary-total" data-testid="summary-total">$<%= total.toFixed(2) %></span>
+        </div>
+
+        <a href="/store/checkout" class="btn-checkout"
+           id="proceed-to-checkout-btn" data-testid="proceed-to-checkout-btn"
+           aria-label="Proceed to checkout">
+          <i class="fas fa-lock" aria-hidden="true"></i> Proceed to Checkout
+        </a>
+
+        <p style="font-size:11px;color:#9ca3af;text-align:center;margin-top:12px;">
+          <i class="fas fa-shield-alt" aria-hidden="true"></i> Secure checkout
+        </p>
+
+      </aside>
+
+    </div><!-- /.store-cart-layout -->
+
+  <% } %>
+
+</div><!-- /.store-body -->

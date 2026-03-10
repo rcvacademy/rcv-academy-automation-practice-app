@@ -654,12 +654,17 @@
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
     toast.setAttribute('data-testid', 'toast-' + type);
-    toast.innerHTML =
-      `<span>${msg}</span>
-       <button class="toast-close" aria-label="Dismiss notification">&times;</button>`;
+    const span = document.createElement('span');
+    span.textContent = msg;
+    toast.appendChild(span);
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close';
+    closeBtn.setAttribute('aria-label', 'Dismiss notification');
+    closeBtn.textContent = '\u00d7';
+    toast.appendChild(closeBtn);
     container.appendChild(toast);
     const timer = setTimeout(() => toast.remove(), 4000);
-    toast.querySelector('.toast-close').addEventListener('click', () => {
+    closeBtn.addEventListener('click', () => {
       clearTimeout(timer);
       toast.remove();
     });
@@ -798,46 +803,8 @@
   });
 })();
 
-/* ─── File Upload (drag-drop zone) ───────────────────────────────────────── */
+/* ─── File Upload (multi-file preview) ───────────────────────────────────── */
 (function initFileUpload() {
-  const zone       = document.getElementById('drop-zone');
-  const input      = document.getElementById('drop-zone-input');
-  const browseLink = document.getElementById('browse-link');
-  const list       = document.getElementById('dropped-files-list');
-  if (!zone) return;
-
-  zone.addEventListener('dragenter', e => { e.preventDefault(); zone.classList.add('drag-active'); });
-  zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-active'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('drag-active'));
-  zone.addEventListener('drop', e => {
-    e.preventDefault();
-    zone.classList.remove('drag-active');
-    showFiles(e.dataTransfer.files);
-  });
-  zone.addEventListener('click', () => input && input.click());
-  if (browseLink) browseLink.addEventListener('click', e => { e.stopPropagation(); input && input.click(); });
-  if (input) input.addEventListener('change', () => showFiles(input.files));
-
-  function showFiles(files) {
-    if (!list) return;
-    list.innerHTML = '';
-    Array.from(files).forEach(f => {
-      const p = document.createElement('p');
-      p.style.cssText = 'margin:4px 0;font-size:13px;';
-      p.setAttribute('data-testid', 'uploaded-file');
-      var icon = document.createElement('i');
-      icon.className = 'fas fa-file';
-      icon.style.cssText = 'color:var(--primary);margin-right:6px;';
-      p.appendChild(icon);
-      p.appendChild(document.createTextNode(f.name + ' '));
-      var sizeSpan = document.createElement('span');
-      sizeSpan.style.color = 'var(--text-muted)';
-      sizeSpan.textContent = '(' + (f.size / 1024).toFixed(1) + ' KB)';
-      p.appendChild(sizeSpan);
-      list.appendChild(p);
-    });
-  }
-
   /* Multiple file preview */
   const multiInput   = document.getElementById('multi-file-input');
   const multiPreview = document.getElementById('multi-file-preview');

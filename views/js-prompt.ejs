@@ -56,15 +56,16 @@
 
 <script>
   document.getElementById('trigger-prompt-btn').addEventListener('click', function () {
-    const name = prompt('What is your name?');
-    const el = document.getElementById('prompt-result');
-    if (name === null)       { el.innerHTML = '<span style="color:var(--danger);">❌ Prompt was cancelled.</span>'; }
-    else if (name.trim() === '') { el.innerHTML = '<span style="color:var(--warning);">⚠️ No name entered.</span>'; }
-    else                     { el.innerHTML = '<span style="color:var(--success);">✅ Hello, <strong>' + name + '</strong>!</span>'; }
+    var name = prompt('What is your name?');
+    var el = document.getElementById('prompt-result');
+    el.textContent = '';
+    if (name === null)            { el.style.color = 'var(--danger)';  el.textContent = '❌ Prompt was cancelled.'; }
+    else if (name.trim() === '')  { el.style.color = 'var(--warning)'; el.textContent = '⚠️ No name entered.'; }
+    else                          { el.style.color = 'var(--success)'; el.textContent = '✅ Hello, ' + name + '!'; }
   });
 
   document.getElementById('trigger-default-prompt').addEventListener('click', function () {
-    const city = prompt('Enter your city:', 'New York');
+    var city = prompt('Enter your city:', 'New York');
     document.getElementById('default-prompt-result').textContent = city !== null
       ? '📍 City entered: ' + (city || '(empty)')
       : '❌ Cancelled.';
@@ -72,15 +73,15 @@
 
   document.getElementById('prompt-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    const code = prompt('Enter coupon code (or leave blank for no discount):', '');
-    const product = document.getElementById('order-product').value;
-    const el = document.getElementById('order-result');
+    var code = prompt('Enter coupon code (or leave blank for no discount):', '');
+    var product = document.getElementById('order-product').value;
+    var el = document.getElementById('order-result');
     if (code === null) {
       el.textContent = '❌ Order cancelled.';
     } else if (code.toUpperCase() === 'SAVE20') {
-      el.innerHTML = '✅ Coupon applied! 20% off <strong>' + product + '</strong> placed.';
+      el.textContent = '✅ Coupon applied! 20% off ' + product + ' placed.';
     } else {
-      el.innerHTML = '✅ Order for <strong>' + product + '</strong> placed' + (code ? ' (invalid coupon)' : '') + '.';
+      el.textContent = '✅ Order for ' + product + ' placed' + (code ? ' (invalid coupon)' : '') + '.';
     }
   });
 </script>

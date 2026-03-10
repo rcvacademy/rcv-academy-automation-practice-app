@@ -6,19 +6,38 @@
   <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Automation Practice Website' %> | Software Testing Mentor & RCV Academy</title>
 
   <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- jQuery (for jQuery UI pages) -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+          crossorigin="anonymous"></script>
   <!-- jQuery UI -->
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css" />
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+          integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0="
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css"
+        integrity="sha256-cPSccRMnDkmGRU/lPA5LPdeBlVEbByYtbSJULwlp7lA="
+        crossorigin="anonymous" />
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/files/stm-logo-720.png" />
   <!-- App stylesheet -->
   <link rel="stylesheet" href="/css/style.css" />
   <%- typeof extraHead !== 'undefined' ? extraHead : '' %>
+
+  <% if (typeof gaId !== 'undefined' && gaId) { %>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= gaId %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '<%= gaId %>');
+  </script>
+  <% } %>
 </head>
 <body id="app-body" data-page="<%= activePage %>">
 
@@ -66,6 +85,21 @@
     </div>
   </header>
 
+  <% if (typeof sponsors !== 'undefined' && sponsors.diamond && sponsors.diamond.length > 0) { %>
+  <!-- Diamond Sponsor – leaderboard banner (header) -->
+  <div class="sponsor-banner sponsor-banner--diamond" id="sponsor-banner-diamond" data-testid="sponsor-banner-diamond">
+    <span class="sponsor-banner__label"><i class="fas fa-gem"></i> Diamond Sponsor</span>
+    <div class="sponsor-banner__items">
+      <% sponsors.diamond.forEach(function(s) { %>
+      <a href="<%= s.url %>" target="_blank" rel="noopener noreferrer sponsored"
+         class="sponsor-banner__link sponsor-banner__link--diamond" data-testid="sponsor-link-diamond">
+        <img src="<%= s.image %>" alt="<%= s.alt %>" class="sponsor-banner__img sponsor-banner__img--diamond" loading="lazy" />
+      </a>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+
   <!-- ===== Sidebar + Main content row ===== -->
   <div class="app-row">
 
@@ -108,10 +142,61 @@
 
   </div><!-- /.app-row -->
 
+  <% if (typeof sponsors !== 'undefined' && (sponsors.platinum.length || sponsors.gold.length || sponsors.silver.length)) { %>
+  <!-- Footer sponsor tiers -->
+  <div class="sponsor-tiers" id="sponsor-tiers-footer" data-testid="sponsor-tiers-footer">
+
+    <% if (sponsors.platinum && sponsors.platinum.length > 0) { %>
+    <!-- Platinum Sponsors – small banners -->
+    <div class="sponsor-tier sponsor-tier--platinum" id="sponsor-tier-platinum" data-testid="sponsor-tier-platinum">
+      <h4 class="sponsor-tier__heading"><i class="fas fa-award"></i> Platinum Sponsors</h4>
+      <div class="sponsor-tier__items">
+        <% sponsors.platinum.forEach(function(s) { %>
+        <a href="<%= s.url %>" target="_blank" rel="noopener noreferrer sponsored"
+           class="sponsor-tier__link sponsor-tier__link--platinum" data-testid="sponsor-link-platinum">
+          <img src="<%= s.image %>" alt="<%= s.alt %>" class="sponsor-tier__img sponsor-tier__img--platinum" loading="lazy" />
+          <span class="sponsor-tier__name"><%= s.name %></span>
+        </a>
+        <% }); %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (sponsors.gold && sponsors.gold.length > 0) { %>
+    <!-- Gold Sponsors – medium logo only -->
+    <div class="sponsor-tier sponsor-tier--gold" id="sponsor-tier-gold" data-testid="sponsor-tier-gold">
+      <h4 class="sponsor-tier__heading"><i class="fas fa-medal"></i> Gold Sponsors</h4>
+      <div class="sponsor-tier__items">
+        <% sponsors.gold.forEach(function(s) { %>
+        <a href="<%= s.url %>" target="_blank" rel="noopener noreferrer sponsored"
+           class="sponsor-tier__link sponsor-tier__link--gold" data-testid="sponsor-link-gold"
+           title="<%= s.name %>">
+          <img src="<%= s.image %>" alt="<%= s.alt %>" class="sponsor-tier__img sponsor-tier__img--gold" loading="lazy" />
+        </a>
+        <% }); %>
+      </div>
+    </div>
+    <% } %>
+
+    <p class="sponsor-enquiry" data-testid="sponsor-enquiry-footer">
+      <i class="fas fa-envelope" aria-hidden="true"></i> Interested in sponsoring?
+      Contact <a href="mailto:admin@rcvacademy.com">admin@rcvacademy.com</a> |
+      <a href="mailto:admin@softwaretestingmentor.com">admin@softwaretestingmentor.com</a>
+    </p>
+
+  </div>
+  <% } %>
+
   <footer class="app-footer" role="contentinfo">
       <div class="footer-links">
         <a href="/" class="footer-link" id="footer-home" data-testid="footer-home">
           <i class="fas fa-home" aria-hidden="true"></i> Home
+        </a>
+        <a href="/terms" class="footer-link" id="footer-terms" data-testid="footer-terms">
+          <i class="fas fa-file-contract" aria-hidden="true"></i> Terms &amp; Conditions
+        </a>
+        <a href="/privacy-policy" class="footer-link" id="footer-privacy" data-testid="footer-privacy">
+          <i class="fas fa-shield-alt" aria-hidden="true"></i> Privacy Policy
         </a>
         <a href="https://training.rcvacademy.com/" target="_blank" rel="noopener noreferrer"
            class="footer-link" id="footer-rcv-portal" data-testid="footer-rcv-portal">
@@ -158,6 +243,19 @@
   <!-- ===== Scripts ===== -->
   <!-- Main app JS -->
   <script src="/js/main.js"></script>
+  <script>
+  (function() {
+    var token = '<%= typeof csrfToken !== "undefined" ? csrfToken : "" %>';
+    if (!token) return;
+    document.querySelectorAll('form').forEach(function(f) {
+      if (f.method === 'post' && !f.querySelector('input[name="_csrf"]')) {
+        var i = document.createElement('input');
+        i.type = 'hidden'; i.name = '_csrf'; i.value = token;
+        f.appendChild(i);
+      }
+    });
+  })();
+  </script>
   <%- typeof extraScripts !== 'undefined' ? extraScripts : '' %>
 </body>
 </html>

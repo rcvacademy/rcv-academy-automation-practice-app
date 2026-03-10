@@ -1,0 +1,147 @@
+<%# views/store/layout.ejs - Store sub-nav partial, included at top of every store page %>
+
+<!-- ===== Store sub-nav ===== -->
+<div class="store-subnav" id="store-subnav" data-testid="store-subnav">
+
+  <!-- Logo / brand link -->
+  <a href="/store" class="store-subnav-brand" id="store-subnav-brand" data-testid="store-subnav-brand"
+     aria-label="RCV Academy eStore home">
+    <i class="fas fa-store" aria-hidden="true"></i>
+    <span>RCV Academy <strong>eStore</strong></span>
+  </a>
+
+  <!-- Search form -->
+  <form class="store-subnav-search" action="/store/search" method="GET" role="search"
+        id="store-search-form" data-testid="store-search-form" aria-label="Search products">
+    <input type="text" name="q" id="store-search-input" data-testid="store-search-input"
+           placeholder="Search products…"
+           value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+           aria-label="Search products" autocomplete="off" />
+    <button type="submit" id="store-search-btn" data-testid="store-search-btn"
+            aria-label="Submit search">
+      <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+  </form>
+
+  <!-- Nav links -->
+  <nav class="store-subnav-links" aria-label="Store navigation" id="store-subnav-links">
+
+    <a href="/store"
+       class="store-snl <%= typeof activePage !== 'undefined' && activePage === 'home' ? 'active' : '' %>"
+       id="store-nav-home" data-testid="store-nav-home" aria-label="Store home">
+      <i class="fas fa-home" aria-hidden="true"></i> Home
+    </a>
+
+    <% if (typeof storeUser !== 'undefined' && storeUser) { %>
+
+      <a href="/store/wishlist"
+         class="store-snl <%= typeof activePage !== 'undefined' && activePage === 'wishlist' ? 'active' : '' %>"
+         id="store-nav-wishlist" data-testid="store-nav-wishlist" aria-label="My wishlist"
+         style="position:relative;">
+        <i class="fas fa-heart" aria-hidden="true"></i> Wishlist
+        <% if (storeUser.wishlist && storeUser.wishlist.length > 0) { %>
+          <span class="store-snl-badge" id="wishlist-badge" data-testid="wishlist-badge">
+            <%= storeUser.wishlist.length %>
+          </span>
+        <% } %>
+      </a>
+
+      <a href="/store/cart"
+         class="store-snl <%= typeof activePage !== 'undefined' && activePage === 'cart' ? 'active' : '' %>"
+         id="store-nav-cart" data-testid="store-nav-cart" aria-label="Shopping cart"
+         style="position:relative;">
+        <% const cartCount = storeUser.cart ? storeUser.cart.reduce((s,i) => s + i.qty, 0) : 0; %>
+        <i class="fas fa-shopping-cart" aria-hidden="true"></i> Cart
+        <% if (cartCount > 0) { %>
+          <span class="store-snl-badge" id="cart-badge" data-testid="cart-badge"><%= cartCount %></span>
+        <% } %>
+      </a>
+
+      <a href="/store/orders"
+         class="store-snl <%= typeof activePage !== 'undefined' && activePage === 'orders' ? 'active' : '' %>"
+         id="store-nav-orders" data-testid="store-nav-orders" aria-label="My orders">
+        <i class="fas fa-box" aria-hidden="true"></i> Orders
+      </a>
+
+      <!-- Profile dropdown -->
+      <div class="store-snl store-snl-dropdown"
+           id="store-nav-profile-btn" data-testid="store-nav-profile-btn"
+           aria-haspopup="true" tabindex="0" role="button"
+           onclick="toggleStoreProfile(event)"
+           onkeydown="if(event.key==='Enter')toggleStoreProfile(event)"
+           aria-label="Account menu">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+        <%= storeUser.firstName || storeUser.email.split('@')[0] %>
+        <i class="fas fa-caret-down" style="font-size:11px;" aria-hidden="true"></i>
+
+        <div id="store-profile-dropdown" data-testid="store-profile-dropdown"
+             class="store-snl-menu" role="menu" style="display:none;">
+          <a href="/store/profile" role="menuitem" data-testid="dd-profile" class="store-snl-menu-item">
+            <i class="fas fa-user" aria-hidden="true"></i> My Profile
+          </a>
+          <a href="/store/orders" role="menuitem" data-testid="dd-orders" class="store-snl-menu-item">
+            <i class="fas fa-box" aria-hidden="true"></i> My Orders
+          </a>
+          <a href="/store/wishlist" role="menuitem" data-testid="dd-wishlist" class="store-snl-menu-item">
+            <i class="fas fa-heart" aria-hidden="true"></i> Wishlist
+          </a>
+          <div class="store-snl-menu-divider"></div>
+          <a href="/store/logout" role="menuitem" data-testid="dd-logout"
+             class="store-snl-menu-item" style="color:#ef4444;">
+            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
+          </a>
+        </div>
+      </div>
+
+    <% } else { %>
+
+      <a href="/store/login"  class="store-snl" id="store-nav-login"    data-testid="store-nav-login"    aria-label="Login">
+        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
+      </a>
+      <a href="/store/register" class="store-snl store-snl-cta" id="store-nav-register" data-testid="store-nav-register" aria-label="Register">
+        <i class="fas fa-user-plus" aria-hidden="true"></i> Register
+      </a>
+
+    <% } %>
+
+  </nav>
+</div><!-- /.store-subnav -->
+
+<!-- Toast container -->
+<div class="store-toast-container" id="store-toast-container" data-testid="store-toast-container"
+     aria-live="polite" aria-label="Notifications"></div>
+
+<script>
+function toggleStoreProfile(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('store-profile-dropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function() {
+  const dd = document.getElementById('store-profile-dropdown');
+  if (dd) dd.style.display = 'none';
+});
+function showToast(msg, type) {
+  type = type || 'success';
+  const c = document.getElementById('store-toast-container');
+  if (!c) return;
+  const t = document.createElement('div');
+  t.className = 'store-toast ' + type;
+  t.setAttribute('role', 'alert');
+  var icon = document.createElement('i');
+  icon.className = 'fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
+  icon.setAttribute('aria-hidden', 'true');
+  t.appendChild(icon);
+  t.appendChild(document.createTextNode(' ' + msg));
+  c.appendChild(t);
+  setTimeout(function() { t.remove(); }, 3500);
+}
+<% if (typeof flashMessage !== 'undefined' && flashMessage) { %>
+  document.addEventListener('DOMContentLoaded', function() {
+    showToast(<%= JSON.stringify(flashMessage.text) %>, '<%= flashMessage.type %>');
+  });
+<% } %>
+</script>
+
+
+

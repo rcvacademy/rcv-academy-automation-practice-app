@@ -1,0 +1,114 @@
+<%# RCV Academy eStore – Order Confirmation Page %>
+<%- include('layout') %>
+<div class="store-body" role="main" id="order-confirm-page" data-testid="order-confirm-page">
+
+  <div class="order-confirm-box" id="confirm-box" data-testid="confirm-box">
+
+    <div class="confirm-icon" aria-hidden="true">
+      <i class="fas fa-check-circle"></i>
+    </div>
+
+    <h1 class="confirm-title" id="confirm-title" data-testid="confirm-title">Order Placed Successfully!</h1>
+    <p class="confirm-sub" id="confirm-sub" data-testid="confirm-sub">
+      Thank you, <strong><%= order.name %></strong>! Your order has been received and is being processed.
+    </p>
+
+    <div class="confirm-order-num" id="confirm-order-num" data-testid="confirm-order-num"
+         aria-label="Order number <%= order.id %>">
+      Order #<%= order.id %>
+    </div>
+
+    <!-- Order summary table -->
+    <div style="text-align:left;margin-bottom:24px;" id="confirm-order-detail" data-testid="confirm-order-detail">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;" aria-label="Confirmed order details">
+        <thead>
+          <tr style="background:#f8fafc;">
+            <th style="padding:10px 14px;border-bottom:1px solid var(--store-border);text-align:left;font-weight:700;color:#374151;">Item</th>
+            <th style="padding:10px 14px;border-bottom:1px solid var(--store-border);text-align:center;font-weight:700;color:#374151;">Qty</th>
+            <th style="padding:10px 14px;border-bottom:1px solid var(--store-border);text-align:right;font-weight:700;color:#374151;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% order.items.forEach(function(item, i) { %>
+            <tr id="confirm-item-<%= i+1 %>" data-testid="confirm-item-<%= i+1 %>">
+              <td style="padding:10px 14px;border-bottom:1px solid var(--store-border);">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <img src="<%= item.image %>" alt="<%= item.name %>"
+                       style="width:40px;height:40px;object-fit:contain;background:#f8f9fb;border-radius:4px;padding:4px;border:1px solid var(--store-border);" />
+                  <span id="confirm-item-name-<%= i+1 %>" data-testid="confirm-item-name-<%= i+1 %>"><%= item.name %></span>
+                </div>
+              </td>
+              <td style="padding:10px 14px;border-bottom:1px solid var(--store-border);text-align:center;"
+                  id="confirm-item-qty-<%= i+1 %>" data-testid="confirm-item-qty-<%= i+1 %>">
+                <%= item.qty %>
+              </td>
+              <td style="padding:10px 14px;border-bottom:1px solid var(--store-border);text-align:right;font-weight:600;"
+                  id="confirm-item-price-<%= i+1 %>" data-testid="confirm-item-price-<%= i+1 %>">
+                $<%= (item.price * item.qty).toFixed(2) %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="padding:10px 14px;text-align:right;font-weight:700;font-size:16px;">Total</td>
+            <td style="padding:10px 14px;text-align:right;font-weight:800;font-size:18px;color:var(--store-primary);"
+                id="confirm-total" data-testid="confirm-total">
+              $<%= order.total.toFixed(2) %>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Shipping & payment info -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;margin-bottom:24px;font-size:13px;"
+         id="confirm-info-grid" data-testid="confirm-info-grid">
+
+      <div style="background:#f8fafc;border-radius:8px;padding:14px;border:1px solid var(--store-border);"
+           id="confirm-ship-info" data-testid="confirm-ship-info">
+        <div style="font-weight:700;margin-bottom:6px;color:#374151;">
+          <i class="fas fa-map-marker-alt" aria-hidden="true" style="color:var(--store-primary);"></i> Ship To
+        </div>
+        <div id="confirm-ship-name" data-testid="confirm-ship-name"><%= order.shipName %></div>
+        <div id="confirm-ship-addr" data-testid="confirm-ship-addr"><%= order.shipAddress %></div>
+        <div id="confirm-ship-city" data-testid="confirm-ship-city"><%= order.shipCity %></div>
+      </div>
+
+      <div style="background:#f8fafc;border-radius:8px;padding:14px;border:1px solid var(--store-border);"
+           id="confirm-pay-info" data-testid="confirm-pay-info">
+        <div style="font-weight:700;margin-bottom:6px;color:#374151;">
+          <i class="fas fa-credit-card" aria-hidden="true" style="color:var(--store-primary);"></i> Payment
+        </div>
+        <div id="confirm-pay-method" data-testid="confirm-pay-method"><%= order.paymentMethod %></div>
+        <div style="color:#64748b;margin-top:4px;" id="confirm-ship-method" data-testid="confirm-ship-method">
+          <i class="fas fa-truck" aria-hidden="true"></i> <%= order.shippingMethod %>
+        </div>
+        <div style="color:#64748b;" id="confirm-est-delivery" data-testid="confirm-est-delivery">
+          Est. delivery: <strong><%= order.estDelivery %></strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Confirmation email notice -->
+    <div class="store-alert store-alert-info" style="margin-bottom:24px;" id="confirm-email-notice" data-testid="confirm-email-notice">
+      <i class="fas fa-envelope" aria-hidden="true"></i>
+      A confirmation has been sent to <strong><%= order.email %></strong> <em>(demo mode — no actual email)</em>
+    </div>
+
+    <!-- CTA buttons -->
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;" id="confirm-ctas" data-testid="confirm-ctas">
+      <a href="/store/orders" class="store-btn store-btn-primary"
+         id="view-orders-btn" data-testid="view-orders-btn" aria-label="View my orders">
+        <i class="fas fa-box" aria-hidden="true"></i> View My Orders
+      </a>
+      <a href="/store" class="store-btn store-btn-outline"
+         id="continue-shopping-btn" data-testid="continue-shopping-btn" aria-label="Continue shopping">
+        <i class="fas fa-shopping-bag" aria-hidden="true"></i> Continue Shopping
+      </a>
+    </div>
+
+  </div>
+
+</div>
