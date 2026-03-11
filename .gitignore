@@ -25,6 +25,9 @@ Desktop.ini
 public/uploads/*
 !public/uploads/.gitkeep
 
+# Persistent data files
+data/
+
 # Build output
 dist/
 build/

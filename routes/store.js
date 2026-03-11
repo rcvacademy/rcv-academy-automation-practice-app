@@ -3,6 +3,7 @@
 const express        = require('express');
 const router         = express.Router();
 const path           = require('path');
+const fs             = require('fs');
 const rateLimit      = require('express-rate-limit');
 const bcrypt         = require('bcryptjs');
 
@@ -12,8 +13,32 @@ const authLimiter = rateLimit({
   standardHeaders: true, legacyHeaders: false
 });
 
-// ── In-Memory Stores ──────────────────────────────────────────────────────────
-const storeUsers    = new Map(); // email → userObject
+// ── Persistent User Store ──────────────────────────────────────────────────────
+const USERS_FILE = path.join(__dirname, '..', 'data', 'store-users.json');
+
+function loadUsers() {
+  try {
+    if (fs.existsSync(USERS_FILE)) {
+      const raw = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+      return new Map(raw.map(u => [u.email, u]));
+    }
+  } catch (err) {
+    console.error('Failed to load users file:', err.message);
+  }
+  return new Map();
+}
+
+function saveUsers() {
+  try {
+    const dir = path.dirname(USERS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(USERS_FILE, JSON.stringify([...storeUsers.values()], null, 2), 'utf8');
+  } catch (err) {
+    console.error('Failed to save users file:', err.message);
+  }
+}
+
+const storeUsers    = loadUsers();
 const storeSessions = new Map(); // sessionId → { email, createdAt }
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days (matches cookie maxAge)
 
@@ -562,6 +587,7 @@ router.post('/register', authLimiter, function(req, res) {
     gdprConsentDate: new Date().toISOString()
   };
   storeUsers.set(normalEmail, user);
+  saveUsers();
 
   const sid = genSessionId();
   storeSessions.set(sid, { email: normalEmail, createdAt: Date.now() });
@@ -684,6 +710,7 @@ router.post('/cart/add', function(req, res) {
   } else {
     user.cart.push({ productId, qty });
   }
+  saveUsers();
   res.redirect(safeRedirect(req.body.redirect, '/store/cart'));
 });
 
@@ -701,6 +728,7 @@ router.post('/cart/update', requireAuth, function(req, res) {
       item.qty = Math.min(qty, product ? product.stock : 99);
     }
   }
+  saveUsers();
   res.redirect('/store/cart');
 });
 
@@ -709,6 +737,7 @@ router.post('/cart/remove', requireAuth, function(req, res) {
   const user = req.storeUser;
   const productId = parseInt(req.body.productId, 10);
   user.cart = user.cart.filter(i => i.productId !== productId);
+  saveUsers();
   res.redirect('/store/cart');
 });
 
@@ -716,6 +745,7 @@ router.post('/cart/remove', requireAuth, function(req, res) {
 router.post('/cart/clear', requireAuth, function(req, res) {
   req.storeUser.cart = [];
   req.storeUser.appliedPromo = null;
+  saveUsers();
   res.redirect('/store/cart');
 });
 
@@ -725,9 +755,11 @@ router.post('/cart/promo', requireAuth, function(req, res) {
   const code  = (req.body.promoCode || '').trim().toUpperCase();
   if (PROMO_CODES[code]) {
     user.appliedPromo = code;
+    saveUsers();
     return res.redirect('/store/cart?promo=Promo+code+applied!');
   }
   user.appliedPromo = null;
+  saveUsers();
   res.redirect('/store/cart?promo=Invalid+or+expired+promo+code');
 });
 
@@ -796,6 +828,7 @@ router.post('/checkout/place', requireAuth, function(req, res) {
   if (user.orders.length > 10) user.orders.length = 10; // keep only 10 most recent
   user.cart = [];
   user.appliedPromo = null;
+  saveUsers();
 
   res.redirect('/store/order-confirm/' + orderId);
 });
@@ -839,6 +872,7 @@ router.post('/orders/:id/cancel', requireAuth, function(req, res) {
   const order = user.orders.find(o => o.id === req.params.id);
   if (order && order.status === 'processing') {
     order.status = 'cancelled';
+    saveUsers();
   }
   res.redirect('/store/orders/' + req.params.id);
 });
@@ -865,12 +899,14 @@ router.post('/wishlist/toggle', function(req, res) {
   } else {
     user.wishlist.splice(idx, 1);
   }
+  saveUsers();
   res.redirect(safeRedirect(req.body.redirect, '/store/wishlist'));
 });
 
 // ── Wishlist: clear ───────────────────────────────────────────────────────────
 router.post('/wishlist/clear', requireAuth, function(req, res) {
   req.storeUser.wishlist = [];
+  saveUsers();
   res.redirect('/store/wishlist');
 });
 
@@ -895,6 +931,7 @@ router.post('/profile/update', requireAuth, function(req, res) {
     user.phone     = req.body.phone || '';
     user.dob       = req.body.dob   || '';
     user.gender    = req.body.gender || '';
+    saveUsers();
     return storeRender(res, 'profile', {
       storeUser: user, activeTab: 'personal',
       updateMessage: { type: 'success', text: 'Personal information updated successfully.' },
@@ -925,6 +962,7 @@ router.post('/profile/update', requireAuth, function(req, res) {
       });
     }
     user.password = bcrypt.hashSync(req.body.newPassword, 10);
+    saveUsers();
     return storeRender(res, 'profile', {
       storeUser: user, activeTab: 'password',
       updateMessage: { type: 'success', text: 'Password changed successfully.' },
@@ -939,6 +977,7 @@ router.post('/profile/update', requireAuth, function(req, res) {
     user.state    = req.body.state    || '';
     user.zip      = req.body.zip      || '';
     user.country  = req.body.country  || '';
+    saveUsers();
     return storeRender(res, 'profile', {
       storeUser: user, activeTab: 'address',
       updateMessage: { type: 'success', text: 'Address saved successfully.' },
@@ -953,6 +992,7 @@ router.post('/profile/update', requireAuth, function(req, res) {
       newsletter:     !!req.body.pref_newsletter,
       wishlistAlerts: !!req.body.pref_wishlistAlerts
     };
+    saveUsers();
     return storeRender(res, 'profile', {
       storeUser: user, activeTab: 'preferences',
       updateMessage: { type: 'success', text: 'Preferences saved.' },
