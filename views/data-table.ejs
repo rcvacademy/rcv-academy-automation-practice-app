@@ -38,6 +38,7 @@
           <th data-col="salary">    Salary</th>
           <th data-col="joined">    Joined</th>
           <th data-col="status">    Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="dt-tbody">
@@ -50,26 +51,26 @@
 <!-- Seed data -->
 <script id="employee-seed" type="application/json">
 [
-  {"id":1, "name":"Alice Johnson",  "email":"alice@company.com",   "dept":"Engineering", "role":"Senior Dev",    "salary":"$95,000",  "joined":"2019-03-12", "status":"Active"},
-  {"id":2, "name":"Bob Martinez",   "email":"bob@company.com",     "dept":"Marketing",   "role":"Manager",       "salary":"$72,000",  "joined":"2020-07-01", "status":"Active"},
-  {"id":3, "name":"Carol White",    "email":"carol@company.com",   "dept":"HR",          "role":"Specialist",    "salary":"$68,000",  "joined":"2018-11-20", "status":"On Leave"},
-  {"id":4, "name":"David Lee",      "email":"david@company.com",   "dept":"Engineering", "role":"Tech Lead",     "salary":"$105,000", "joined":"2017-05-30", "status":"Active"},
-  {"id":5, "name":"Eva Brown",      "email":"eva@company.com",     "dept":"Finance",     "role":"Analyst",       "salary":"$88,000",  "joined":"2021-02-14", "status":"Active"},
-  {"id":6, "name":"Frank Wilson",   "email":"frank@company.com",   "dept":"Sales",       "role":"Rep",           "salary":"$62,000",  "joined":"2022-06-05", "status":"Inactive"},
-  {"id":7, "name":"Grace Taylor",   "email":"grace@company.com",   "dept":"Design",      "role":"UX Designer",   "salary":"$78,000",  "joined":"2020-09-17", "status":"Active"},
-  {"id":8, "name":"Henry Davis",    "email":"henry@company.com",   "dept":"Engineering", "role":"Junior Dev",    "salary":"$72,000",  "joined":"2023-01-09", "status":"Active"},
-  {"id":9, "name":"Iris Clark",     "email":"iris@company.com",    "dept":"Marketing",   "role":"Coordinator",   "salary":"$58,000",  "joined":"2021-08-22", "status":"Active"},
-  {"id":10,"name":"Jack Turner",    "email":"jack@company.com",    "dept":"Finance",     "role":"CFO",           "salary":"$130,000", "joined":"2015-04-11", "status":"Active"},
-  {"id":11,"name":"Karen Scott",    "email":"karen@company.com",   "dept":"HR",          "role":"Director",      "salary":"$98,000",  "joined":"2016-12-03", "status":"Active"},
-  {"id":12,"name":"Leo Adams",      "email":"leo@company.com",     "dept":"Engineering", "role":"DevOps Eng",    "salary":"$91,000",  "joined":"2019-10-28", "status":"Active"},
-  {"id":13,"name":"Mia Harris",     "email":"mia@company.com",     "dept":"Design",      "role":"Graphic Design","salary":"$65,000",  "joined":"2022-03-15", "status":"Active"},
-  {"id":14,"name":"Noah Martin",    "email":"noah@company.com",    "dept":"Sales",       "role":"Director",      "salary":"$112,000", "joined":"2014-07-07", "status":"Active"},
-  {"id":15,"name":"Olivia Thompson","email":"olivia@company.com",  "dept":"Engineering", "role":"QA Engineer",   "salary":"$82,000",  "joined":"2020-11-30", "status":"On Leave"},
-  {"id":16,"name":"Paul Garcia",    "email":"paul@company.com",    "dept":"Marketing",   "role":"SEO Spec",      "salary":"$69,000",  "joined":"2021-05-19", "status":"Active"},
-  {"id":17,"name":"Quinn Moore",    "email":"quinn@company.com",   "dept":"Finance",     "role":"Accountant",    "salary":"$75,000",  "joined":"2018-09-08", "status":"Inactive"},
-  {"id":18,"name":"Rachel Jackson", "email":"rachel@company.com",  "dept":"Engineering", "role":"Backend Dev",   "salary":"$89,000",  "joined":"2020-04-22", "status":"Active"},
-  {"id":19,"name":"Sam Lee",        "email":"sam@company.com",     "dept":"Design",      "role":"Product Des",   "salary":"$84,000",  "joined":"2019-07-14", "status":"Active"},
-  {"id":20,"name":"Tina Walker",    "email":"tina@company.com",    "dept":"Sales",       "role":"Account Exec",  "salary":"$71,000",  "joined":"2023-02-28", "status":"Active"}
+  {"id":1, "name":"Aarav Sharma",     "email":"aarav@company.com",    "dept":"Engineering", "role":"Senior Dev",    "salary":"$95,000",  "joined":"2019-03-12", "status":"Active"},
+  {"id":2, "name":"Priya Patel",      "email":"priya@company.com",    "dept":"Marketing",   "role":"Manager",       "salary":"$72,000",  "joined":"2020-07-01", "status":"Active"},
+  {"id":3, "name":"Rohan Mehta",      "email":"rohan@company.com",    "dept":"HR",          "role":"Specialist",    "salary":"$68,000",  "joined":"2018-11-20", "status":"On Leave"},
+  {"id":4, "name":"Ananya Gupta",     "email":"ananya@company.com",   "dept":"Engineering", "role":"Tech Lead",     "salary":"$105,000", "joined":"2017-05-30", "status":"Active"},
+  {"id":5, "name":"Vikram Singh",     "email":"vikram@company.com",   "dept":"Finance",     "role":"Analyst",       "salary":"$88,000",  "joined":"2021-02-14", "status":"Active"},
+  {"id":6, "name":"Neha Reddy",       "email":"neha@company.com",     "dept":"Sales",       "role":"Rep",           "salary":"$62,000",  "joined":"2022-06-05", "status":"Inactive"},
+  {"id":7, "name":"Arjun Nair",       "email":"arjun@company.com",    "dept":"Design",      "role":"UX Designer",   "salary":"$78,000",  "joined":"2020-09-17", "status":"Active"},
+  {"id":8, "name":"Kavya Iyer",       "email":"kavya@company.com",    "dept":"Engineering", "role":"Junior Dev",    "salary":"$72,000",  "joined":"2023-01-09", "status":"Active"},
+  {"id":9, "name":"Siddharth Joshi",  "email":"siddharth@company.com","dept":"Marketing",   "role":"Coordinator",   "salary":"$58,000",  "joined":"2021-08-22", "status":"Active"},
+  {"id":10,"name":"Deepika Verma",    "email":"deepika@company.com",  "dept":"Finance",     "role":"CFO",           "salary":"$130,000", "joined":"2015-04-11", "status":"Active"},
+  {"id":11,"name":"Rajesh Kumar",     "email":"rajesh@company.com",   "dept":"HR",          "role":"Director",      "salary":"$98,000",  "joined":"2016-12-03", "status":"Active"},
+  {"id":12,"name":"Meera Krishnan",   "email":"meera@company.com",    "dept":"Engineering", "role":"DevOps Eng",    "salary":"$91,000",  "joined":"2019-10-28", "status":"Active"},
+  {"id":13,"name":"Aditya Rao",       "email":"aditya@company.com",   "dept":"Design",      "role":"Graphic Design","salary":"$65,000",  "joined":"2022-03-15", "status":"Active"},
+  {"id":14,"name":"Ishaan Malhotra",  "email":"ishaan@company.com",   "dept":"Sales",       "role":"Director",      "salary":"$112,000", "joined":"2014-07-07", "status":"Active"},
+  {"id":15,"name":"Pooja Deshmukh",   "email":"pooja@company.com",    "dept":"Engineering", "role":"QA Engineer",   "salary":"$82,000",  "joined":"2020-11-30", "status":"On Leave"},
+  {"id":16,"name":"Karan Thakur",     "email":"karan@company.com",    "dept":"Marketing",   "role":"SEO Spec",      "salary":"$69,000",  "joined":"2021-05-19", "status":"Active"},
+  {"id":17,"name":"Shreya Bose",      "email":"shreya@company.com",   "dept":"Finance",     "role":"Accountant",    "salary":"$75,000",  "joined":"2018-09-08", "status":"Inactive"},
+  {"id":18,"name":"Arun Pillai",      "email":"arun@company.com",     "dept":"Engineering", "role":"Backend Dev",   "salary":"$89,000",  "joined":"2020-04-22", "status":"Active"},
+  {"id":19,"name":"Divya Chauhan",    "email":"divya@company.com",    "dept":"Design",      "role":"Product Des",   "salary":"$84,000",  "joined":"2019-07-14", "status":"Active"},
+  {"id":20,"name":"Manish Tiwari",    "email":"manish@company.com",   "dept":"Sales",       "role":"Account Exec",  "salary":"$71,000",  "joined":"2023-02-28", "status":"Active"}
 ]
 </script>
 

@@ -57,9 +57,16 @@
       const tr = document.createElement('tr');
       tr.setAttribute('data-row-id', r.id);
       tr.setAttribute('data-testid', 'dynamic-row-' + r.id);
-      const cells = columns.map(c => `<td>${r[c] !== undefined ? r[c] : ''}</td>`).join('');
+      const cells = columns.map(c => `<td data-col="${c}">${r[c] !== undefined ? r[c] : ''}</td>`).join('');
       tr.innerHTML = cells +
-        `<td>
+        `<td class="action-cell" style="white-space:nowrap;">
+           <button class="btn btn-sm btn-outline edit-row-btn"
+                   data-testid="edit-row-${r.id}"
+                   data-row-id="${r.id}"
+                   aria-label="Edit row ${r.id}"
+                   title="Edit row">
+             <i class="fas fa-pencil-alt"></i>
+           </button>
            <button class="btn btn-sm btn-danger del-row-btn"
                    data-testid="delete-row-${r.id}"
                    data-row-id="${r.id}"
@@ -113,6 +120,55 @@
     if (!btn) return;
     const id = Number(btn.getAttribute('data-row-id'));
     rows = rows.filter(r => r.id !== id);
+    render(rows);
+  });
+
+  /* Edit row inline (delegated) */
+  tbody.addEventListener('click', e => {
+    const editBtn = e.target.closest('.edit-row-btn');
+    if (!editBtn) return;
+    const tr = editBtn.closest('tr');
+    const rowId = Number(editBtn.getAttribute('data-row-id'));
+    const rowData = rows.find(r => r.id === rowId);
+    if (!rowData || tr.classList.contains('editing')) return;
+
+    tr.classList.add('editing');
+
+    /* Turn each data cell into an input */
+    const dataCells = tr.querySelectorAll('td[data-col]');
+    dataCells.forEach(td => {
+      const col = td.getAttribute('data-col');
+      const val = rowData[col] !== undefined ? rowData[col] : '';
+      td.innerHTML = `<input type="text" class="edit-input" data-col="${col}" value="${String(val).replace(/"/g, '&quot;')}" style="width:100%;padding:4px 6px;border:1px solid var(--primary);border-radius:4px;font-size:13px;" />`;
+    });
+
+    /* Replace edit/delete buttons with save/cancel */
+    const actionCell = tr.querySelector('.action-cell');
+    actionCell.innerHTML =
+      `<button class="btn btn-sm btn-success save-row-btn" data-row-id="${rowId}" aria-label="Save row ${rowId}" title="Save"><i class="fas fa-check"></i></button> ` +
+      `<button class="btn btn-sm btn-outline cancel-row-btn" data-row-id="${rowId}" aria-label="Cancel edit row ${rowId}" title="Cancel" style="margin-left:4px;"><i class="fas fa-times"></i></button>`;
+  });
+
+  /* Save edited row */
+  tbody.addEventListener('click', e => {
+    const saveBtn = e.target.closest('.save-row-btn');
+    if (!saveBtn) return;
+    const tr = saveBtn.closest('tr');
+    const rowId = Number(saveBtn.getAttribute('data-row-id'));
+    const rowData = rows.find(r => r.id === rowId);
+    if (!rowData) return;
+
+    tr.querySelectorAll('.edit-input').forEach(input => {
+      const col = input.getAttribute('data-col');
+      rowData[col] = col === 'id' ? Number(input.value) || rowData[col] : input.value;
+    });
+    render(rows);
+  });
+
+  /* Cancel edit */
+  tbody.addEventListener('click', e => {
+    const cancelBtn = e.target.closest('.cancel-row-btn');
+    if (!cancelBtn) return;
     render(rows);
   });
 
@@ -221,18 +277,100 @@
     try { allData = JSON.parse(seedEl.textContent); } catch(e) {}
   }
 
+  const EDITABLE_KEYS = ['name','email','dept','role','salary','status'];
+
   function render(data) {
     tbody.innerHTML = '';
     data.forEach((r, i) => {
       const tr = document.createElement('tr');
       tr.setAttribute('data-testid', 'data-row-' + (i + 1));
       tr.setAttribute('data-row-index', i + 1);
-      tr.innerHTML = Object.values(r).map(v => `<td>${v}</td>`).join('');
+      const keys = Object.keys(r);
+      tr.innerHTML = keys.map(k => `<td data-field="${k}">${r[k]}</td>`).join('') +
+        '<td class="dt-actions">' +
+          '<button class="dt-edit-btn" data-testid="edit-btn-' + (i + 1) + '" title="Edit">✏️ Edit</button> ' +
+          '<button class="dt-delete-btn" data-testid="delete-btn-' + (i + 1) + '" title="Delete">🗑️ Delete</button>' +
+        '</td>';
       tbody.appendChild(tr);
     });
     const cnt = document.getElementById('dt-row-count');
     if (cnt) cnt.textContent = data.length + ' rows';
   }
+
+  /* ── Inline Edit ─────────────────────────────────────────────── */
+  tbody.addEventListener('click', function(e) {
+    const editBtn = e.target.closest('.dt-edit-btn');
+    const saveBtn = e.target.closest('.dt-save-btn');
+    const cancelBtn = e.target.closest('.dt-cancel-btn');
+    const deleteBtn = e.target.closest('.dt-delete-btn');
+
+    if (editBtn) {
+      const tr = editBtn.closest('tr');
+      if (tr.classList.contains('dt-editing')) return;
+      tr.classList.add('dt-editing');
+      const cells = tr.querySelectorAll('td[data-field]');
+      cells.forEach(td => {
+        const field = td.getAttribute('data-field');
+        const val = td.textContent;
+        td.setAttribute('data-original', val);
+        if (EDITABLE_KEYS.includes(field)) {
+          if (field === 'status') {
+            td.innerHTML = '<select class="dt-edit-input" data-testid="edit-' + field + '">' +
+              '<option value="Active"'  + (val === 'Active'   ? ' selected' : '') + '>Active</option>' +
+              '<option value="Inactive"'+ (val === 'Inactive' ? ' selected' : '') + '>Inactive</option>' +
+              '<option value="On Leave"'+ (val === 'On Leave' ? ' selected' : '') + '>On Leave</option>' +
+            '</select>';
+          } else {
+            td.innerHTML = '<input class="dt-edit-input" data-testid="edit-' + field + '" value="' + val.replace(/"/g, '&quot;') + '">';
+          }
+        }
+      });
+      const actionsCell = tr.querySelector('.dt-actions');
+      actionsCell.innerHTML =
+        '<button class="dt-save-btn" data-testid="save-btn" title="Save">💾 Save</button> ' +
+        '<button class="dt-cancel-btn" data-testid="cancel-btn" title="Cancel">❌ Cancel</button>';
+    }
+
+    if (saveBtn) {
+      const tr = saveBtn.closest('tr');
+      const idx = parseInt(tr.getAttribute('data-row-index'), 10);
+      const cells = tr.querySelectorAll('td[data-field]');
+      cells.forEach(td => {
+        const field = td.getAttribute('data-field');
+        if (EDITABLE_KEYS.includes(field)) {
+          const input = td.querySelector('.dt-edit-input');
+          const newVal = input ? input.value : td.textContent;
+          td.textContent = newVal;
+          // update source data
+          const rec = allData.find(r => r.id === idx || r.id === String(idx));
+          if (rec) rec[field] = newVal;
+        }
+        td.removeAttribute('data-original');
+      });
+      tr.classList.remove('dt-editing');
+      filterData();
+    }
+
+    if (cancelBtn) {
+      const tr = cancelBtn.closest('tr');
+      const cells = tr.querySelectorAll('td[data-field]');
+      cells.forEach(td => {
+        const orig = td.getAttribute('data-original');
+        if (orig !== null) { td.textContent = orig; td.removeAttribute('data-original'); }
+      });
+      tr.classList.remove('dt-editing');
+      filterData();
+    }
+
+    if (deleteBtn) {
+      const tr = deleteBtn.closest('tr');
+      const name = tr.querySelector('td[data-field="name"]').textContent;
+      if (!confirm('Delete row for "' + name + '"?')) return;
+      const idx = parseInt(tr.getAttribute('data-row-index'), 10);
+      allData = allData.filter(r => r.id !== idx && r.id !== String(idx));
+      filterData();
+    }
+  });
 
   function filterData() {
     let filtered = allData;

@@ -16,26 +16,29 @@
   <!-- Category filter -->
   <div class="store-filter-bar" id="store-filter-bar" data-testid="store-filter-bar" role="navigation" aria-label="Product category filters">
     <label id="filter-label">Category:</label>
-    <button class="store-filter-btn <%= typeof activeCategory === 'undefined' || activeCategory === 'all' ? 'active' : '' %>"
-            id="filter-all" data-testid="filter-all" data-category="all"
-            aria-label="Show all products" aria-pressed="<%= typeof activeCategory === 'undefined' || activeCategory === 'all' ? 'true' : 'false' %>">
+    <a href="/store"
+       class="store-filter-btn <%= typeof activeCategory === 'undefined' || activeCategory === '' ? 'active' : '' %>"
+       id="filter-all" data-testid="filter-all"
+       aria-label="Show all products"
+       aria-current="<%= typeof activeCategory === 'undefined' || activeCategory === '' ? 'true' : 'false' %>">
       All
-    </button>
+    </a>
     <% ['Smartphones','Laptops','Audio','Cameras','Accessories','Gaming','Wearables','Networking'].forEach(cat => { %>
-      <button class="store-filter-btn <%= typeof activeCategory !== 'undefined' && activeCategory === cat ? 'active' : '' %>"
-              id="filter-<%= cat.toLowerCase() %>" data-testid="filter-<%= cat.toLowerCase() %>"
-              data-category="<%= cat %>"
-              aria-label="Filter by <%= cat %>"
-              aria-pressed="<%= typeof activeCategory !== 'undefined' && activeCategory === cat ? 'true' : 'false' %>">
+      <a href="/store?cat=<%= encodeURIComponent(cat) %>"
+         class="store-filter-btn <%= typeof activeCategory !== 'undefined' && activeCategory === cat ? 'active' : '' %>"
+         id="filter-<%= cat.toLowerCase() %>" data-testid="filter-<%= cat.toLowerCase() %>"
+         aria-label="Filter by <%= cat %>"
+         aria-current="<%= typeof activeCategory !== 'undefined' && activeCategory === cat ? 'true' : 'false' %>">
         <%= cat %>
-      </button>
+      </a>
     <% }); %>
   </div>
 
   <!-- Results bar -->
   <div class="store-results-bar" id="store-results-bar" data-testid="store-results-bar">
     <span class="store-results-count" id="results-count" data-testid="results-count">
-      Showing <strong id="visible-count" data-testid="visible-count"><%= products.length %></strong> of <strong><%= products.length %></strong> products
+      Showing <strong id="visible-count" data-testid="visible-count"><%= products.length %></strong> of <strong><%= totalProducts %></strong> products
+      <% if (totalPages > 1) { %>(Page <strong id="current-page" data-testid="current-page"><%= currentPage %></strong> of <strong id="total-pages" data-testid="total-pages"><%= totalPages %></strong>)<% } %>
     </span>
     <select class="store-sort-select" id="store-sort-select" data-testid="store-sort-select"
             aria-label="Sort products by">
@@ -137,32 +140,68 @@
 
   </div><!-- /#product-list -->
 
+  <% if (totalPages > 1) { %>
+  <!-- Pagination -->
+  <nav class="store-pagination" id="store-pagination" data-testid="store-pagination" role="navigation" aria-label="Product pagination">
+    <% const catParam = activeCategory ? '&cat=' + encodeURIComponent(activeCategory) : ''; %>
+
+    <% if (currentPage > 1) { %>
+      <a href="/store?page=<%= currentPage - 1 %><%= catParam %>"
+         class="pagination-btn pagination-prev" id="pagination-prev" data-testid="pagination-prev"
+         aria-label="Go to previous page">
+        <i class="fas fa-chevron-left" aria-hidden="true"></i> Prev
+      </a>
+    <% } else { %>
+      <span class="pagination-btn pagination-prev disabled" id="pagination-prev" data-testid="pagination-prev" aria-disabled="true">
+        <i class="fas fa-chevron-left" aria-hidden="true"></i> Prev
+      </span>
+    <% } %>
+
+    <div class="pagination-pages" id="pagination-pages" data-testid="pagination-pages">
+      <%
+        // Show first page, last page, current page, and neighbors
+        const pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+          if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            pages.push(i);
+          } else if (pages[pages.length - 1] !== '...') {
+            pages.push('...');
+          }
+        }
+      %>
+      <% pages.forEach(function(pg) { %>
+        <% if (pg === '...') { %>
+          <span class="pagination-ellipsis" aria-hidden="true">&hellip;</span>
+        <% } else { %>
+          <a href="/store?page=<%= pg %><%= catParam %>"
+             class="pagination-btn pagination-page <%= pg === currentPage ? 'active' : '' %>"
+             id="pagination-page-<%= pg %>" data-testid="pagination-page-<%= pg %>"
+             aria-label="Go to page <%= pg %>"
+             <%= pg === currentPage ? 'aria-current="page"' : '' %>>
+            <%= pg %>
+          </a>
+        <% } %>
+      <% }); %>
+    </div>
+
+    <% if (currentPage < totalPages) { %>
+      <a href="/store?page=<%= currentPage + 1 %><%= catParam %>"
+         class="pagination-btn pagination-next" id="pagination-next" data-testid="pagination-next"
+         aria-label="Go to next page">
+        Next <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </a>
+    <% } else { %>
+      <span class="pagination-btn pagination-next disabled" id="pagination-next" data-testid="pagination-next" aria-disabled="true">
+        Next <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </span>
+    <% } %>
+  </nav>
+  <% } %>
+
 </div><!-- /.store-body -->
 
 <script>
-// ── Category filter ──────────────────────────────────────
-document.querySelectorAll('.store-filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const cat = btn.dataset.category;
-    document.querySelectorAll('.store-filter-btn').forEach(b => {
-      b.classList.remove('active');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('active');
-    btn.setAttribute('aria-pressed', 'true');
-
-    const cards = document.querySelectorAll('.store-product-card');
-    let visible = 0;
-    cards.forEach(c => {
-      const show = cat === 'all' || c.dataset.category === cat;
-      c.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-    document.getElementById('visible-count').textContent = visible;
-  });
-});
-
-// ── Sort ─────────────────────────────────────────────────
+// ── Sort (client-side, sorts current page) ───────────────────
 document.getElementById('store-sort-select').addEventListener('change', function() {
   const grid = document.getElementById('product-list');
   const cards = Array.from(grid.querySelectorAll('.store-product-card'));

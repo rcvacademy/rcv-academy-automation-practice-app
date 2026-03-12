@@ -674,6 +674,32 @@ table.data-table td { padding: 10px 14px; }
 table.data-table tbody tr:nth-child(even) { background: #f8fafc; }
 table.data-table tbody tr:nth-child(even):hover { background: var(--primary-light); }
 
+/* ── Data-Table Edit / Delete ─────────────────────────────── */
+.dt-actions { white-space: nowrap; }
+.dt-edit-btn, .dt-delete-btn, .dt-save-btn, .dt-cancel-btn {
+  padding: 4px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: #fff;
+  transition: background var(--transition);
+}
+.dt-edit-btn:hover   { background: var(--primary-light); }
+.dt-delete-btn:hover { background: #fee2e2; }
+.dt-save-btn         { background: var(--success); color: #fff; border-color: var(--success); }
+.dt-save-btn:hover   { opacity: .85; }
+.dt-cancel-btn:hover { background: #f1f5f9; }
+.dt-edit-input {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 13px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+tr.dt-editing { background: #fefce8 !important; }
+
 /* ── Pagination ───────────────────────────────────────────── */
 .pagination {
   display: flex;

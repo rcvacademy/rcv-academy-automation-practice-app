@@ -1,0 +1,486 @@
+<%# Lists & Dropdowns Page %>
+<div class="page-header">
+  <h2><i class="fas fa-list-alt" aria-hidden="true"></i> Lists &amp; Dropdowns</h2>
+  <p>Practice automating single-select, multi-select, grouped, searchable, dynamic, and nested list/dropdown patterns. Use CSS, XPath, ID, name, value, and ARIA locator strategies.</p>
+</div>
+
+<style>
+  .ld-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .ld-grid .card { margin-bottom: 0; height: 100%; display: flex; flex-direction: column; }
+  .ld-grid .card-title { border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; }
+  .ld-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .booking-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: end;
+  }
+  @media (max-width: 600px) {
+    .booking-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<h4 class="ld-section-title mt-3"><i class="fas fa-caret-down" aria-hidden="true"></i> Select Dropdowns</h4>
+<div class="ld-grid">
+
+  <!-- ═══ 1. Basic Select Dropdown ═══ -->
+  <div class="card">
+    <h3 class="card-title">Basic Select Dropdown</h3>
+    <label for="color-select" class="text-muted" style="font-size:13px;">Choose a colour:</label>
+    <select id="color-select" name="color" class="form-select" data-testid="color-select" aria-label="Select a colour">
+      <option value="" disabled selected>-- Select --</option>
+      <option value="red"    id="opt-red">Red</option>
+      <option value="green"  id="opt-green">Green</option>
+      <option value="blue"   id="opt-blue">Blue</option>
+      <option value="yellow" id="opt-yellow">Yellow</option>
+      <option value="purple" id="opt-purple">Purple</option>
+    </select>
+    <p id="color-result" class="mt-2 text-muted" data-testid="color-result" style="font-size:12px;"></p>
+  </div>
+
+  <!-- ═══ 2. Multi-Select Listbox ═══ -->
+  <div class="card">
+    <h3 class="card-title">Multi-Select Listbox</h3>
+    <label for="lang-multi" class="text-muted" style="font-size:13px;">Hold Ctrl/Cmd to select multiple:</label>
+    <select id="lang-multi" name="languages" multiple size="6" class="form-select" data-testid="lang-multi" aria-label="Select programming languages">
+      <option value="javascript" id="lang-js">JavaScript</option>
+      <option value="python"     id="lang-py">Python</option>
+      <option value="java"       id="lang-java">Java</option>
+      <option value="csharp"     id="lang-cs">C#</option>
+      <option value="ruby"       id="lang-rb">Ruby</option>
+      <option value="go"         id="lang-go">Go</option>
+      <option value="rust"       id="lang-rs">Rust</option>
+      <option value="swift"      id="lang-sw">Swift</option>
+    </select>
+    <p id="lang-multi-result" class="mt-2 text-muted" data-testid="lang-multi-result" style="font-size:12px;"></p>
+  </div>
+
+  <!-- ═══ 3. Grouped / OptGroup Dropdown ═══ -->
+  <div class="card">
+    <h3 class="card-title">Grouped Dropdown (OptGroup)</h3>
+    <label for="vehicle-select" class="text-muted" style="font-size:13px;">Pick a vehicle:</label>
+    <select id="vehicle-select" name="vehicle" class="form-select" data-testid="vehicle-select" aria-label="Select a vehicle">
+      <option value="" disabled selected>-- Select --</option>
+      <optgroup label="Cars">
+        <option value="sedan"   id="veh-sedan">Sedan</option>
+        <option value="suv"     id="veh-suv">SUV</option>
+        <option value="coupe"   id="veh-coupe">Coupe</option>
+      </optgroup>
+      <optgroup label="Two-Wheelers">
+        <option value="bike"    id="veh-bike">Motorcycle</option>
+        <option value="scooter" id="veh-scooter">Scooter</option>
+      </optgroup>
+      <optgroup label="Heavy Vehicles">
+        <option value="truck"   id="veh-truck">Truck</option>
+        <option value="bus"     id="veh-bus">Bus</option>
+      </optgroup>
+    </select>
+    <p id="vehicle-result" class="mt-2 text-muted" data-testid="vehicle-result" style="font-size:12px;"></p>
+  </div>
+
+  <!-- ═══ 4. Disabled & Pre-selected Dropdown ═══ -->
+  <div class="card">
+    <h3 class="card-title">Disabled &amp; Pre-selected</h3>
+    <label for="country-select" class="text-muted" style="font-size:13px;">Country (pre-selected):</label>
+    <select id="country-select" name="country" class="form-select" data-testid="country-select" aria-label="Select country">
+      <option value="us">United States</option>
+      <option value="uk">United Kingdom</option>
+      <option value="ca" selected>Canada</option>
+      <option value="au">Australia</option>
+      <option value="in">India</option>
+      <option value="de">Germany</option>
+    </select>
+
+    <label for="disabled-select" class="text-muted mt-3" style="font-size:13px;display:block;">Fully disabled dropdown:</label>
+    <select id="disabled-select" name="disabled-demo" class="form-select" data-testid="disabled-select" disabled aria-label="Disabled dropdown">
+      <option value="locked">Locked Option</option>
+    </select>
+  </div>
+</div><!-- /.ld-grid -->
+
+<h4 class="ld-section-title mt-3"><i class="fas fa-list" aria-hidden="true"></i> Lists &amp; Filtering</h4>
+<div class="ld-grid">
+
+  <!-- ═══ 5. Searchable / Filterable List ═══ -->
+  <div class="card">
+    <h3 class="card-title">Searchable List</h3>
+    <label for="search-list-input" class="text-muted" style="font-size:13px;">Type to filter fruits:</label>
+    <input type="text" id="search-list-input" class="form-input" placeholder="Search..." data-testid="search-list-input" aria-label="Search fruits" autocomplete="off" />
+    <ul id="search-list" class="list-group mt-2" data-testid="search-list" role="listbox" aria-label="Fruit list" style="max-height:180px;overflow:auto;padding:0;margin:0;list-style:none;">
+      <li class="list-item" role="option" data-value="apple">Apple</li>
+      <li class="list-item" role="option" data-value="apricot">Apricot</li>
+      <li class="list-item" role="option" data-value="banana">Banana</li>
+      <li class="list-item" role="option" data-value="blueberry">Blueberry</li>
+      <li class="list-item" role="option" data-value="cherry">Cherry</li>
+      <li class="list-item" role="option" data-value="dragonfruit">Dragonfruit</li>
+      <li class="list-item" role="option" data-value="grape">Grape</li>
+      <li class="list-item" role="option" data-value="kiwi">Kiwi</li>
+      <li class="list-item" role="option" data-value="lemon">Lemon</li>
+      <li class="list-item" role="option" data-value="mango">Mango</li>
+      <li class="list-item" role="option" data-value="orange">Orange</li>
+      <li class="list-item" role="option" data-value="pineapple">Pineapple</li>
+      <li class="list-item" role="option" data-value="strawberry">Strawberry</li>
+      <li class="list-item" role="option" data-value="watermelon">Watermelon</li>
+    </ul>
+    <p id="search-list-result" class="mt-2 text-muted" data-testid="search-list-result" style="font-size:12px;"></p>
+  </div>
+
+  <!-- ═══ 6. Dynamic Add/Remove List ═══ -->
+  <div class="card">
+    <h3 class="card-title">Dynamic List (Add &amp; Remove)</h3>
+    <div class="d-flex gap-2 align-center">
+      <input type="text" id="new-item-input" class="form-input" placeholder="New item…" data-testid="new-item-input" aria-label="New item name" autocomplete="off" style="flex:1;" />
+      <button type="button" id="add-item-btn" class="btn btn-primary btn-sm" data-testid="add-item-btn" aria-label="Add item">Add</button>
+    </div>
+    <ul id="dynamic-list" class="list-group mt-2" data-testid="dynamic-list" role="list" style="padding:0;margin:0;list-style:none;">
+      <li class="list-item d-flex justify-between align-center" role="listitem" data-testid="dynamic-item-1">
+        <span>Sample Item 1</span>
+        <button type="button" class="btn btn-sm remove-item-btn" data-testid="remove-btn-1" aria-label="Remove Sample Item 1" style="color:var(--danger);padding:2px 8px;">✕</button>
+      </li>
+      <li class="list-item d-flex justify-between align-center" role="listitem" data-testid="dynamic-item-2">
+        <span>Sample Item 2</span>
+        <button type="button" class="btn btn-sm remove-item-btn" data-testid="remove-btn-2" aria-label="Remove Sample Item 2" style="color:var(--danger);padding:2px 8px;">✕</button>
+      </li>
+      <li class="list-item d-flex justify-between align-center" role="listitem" data-testid="dynamic-item-3">
+        <span>Sample Item 3</span>
+        <button type="button" class="btn btn-sm remove-item-btn" data-testid="remove-btn-3" aria-label="Remove Sample Item 3" style="color:var(--danger);padding:2px 8px;">✕</button>
+      </li>
+    </ul>
+    <p id="dynamic-list-count" class="mt-2 text-muted" data-testid="dynamic-list-count" style="font-size:12px;">Items: 3</p>
+  </div>
+
+  <!-- ═══ 7. Chained / Dependent Dropdowns ═══ -->
+  <div class="card">
+    <h3 class="card-title">Chained / Dependent Dropdowns</h3>
+    <label for="continent-select" class="text-muted" style="font-size:13px;">Select continent:</label>
+    <select id="continent-select" name="continent" class="form-select" data-testid="continent-select" aria-label="Select continent">
+      <option value="" disabled selected>-- Select Continent --</option>
+      <option value="north-america">North America</option>
+      <option value="europe">Europe</option>
+      <option value="asia">Asia</option>
+    </select>
+
+    <label for="chain-country-select" class="text-muted mt-2" style="font-size:13px;display:block;">Select country:</label>
+    <select id="chain-country-select" name="chain-country" class="form-select" data-testid="chain-country-select" disabled aria-label="Select country">
+      <option value="">-- Select Country --</option>
+    </select>
+
+    <label for="chain-city-select" class="text-muted mt-2" style="font-size:13px;display:block;">Select city:</label>
+    <select id="chain-city-select" name="chain-city" class="form-select" data-testid="chain-city-select" disabled aria-label="Select city">
+      <option value="">-- Select City --</option>
+    </select>
+    <p id="chain-result" class="mt-2 text-muted" data-testid="chain-result" style="font-size:12px;"></p>
+  </div>
+
+  <!-- ═══ 8. Ordered & Unordered Lists ═══ -->
+  <div class="card">
+    <h3 class="card-title">Ordered &amp; Unordered Lists</h3>
+    <h4 style="font-size:13px;margin-bottom:4px;">Top 5 Languages (ordered)</h4>
+    <ol id="ordered-list" data-testid="ordered-list" style="margin:0 0 12px 18px;padding:0;">
+      <li data-testid="ol-item-1">Python</li>
+      <li data-testid="ol-item-2">JavaScript</li>
+      <li data-testid="ol-item-3">Java</li>
+      <li data-testid="ol-item-4">C#</li>
+      <li data-testid="ol-item-5">TypeScript</li>
+    </ol>
+    <h4 style="font-size:13px;margin-bottom:4px;">Grocery List (unordered)</h4>
+    <ul id="unordered-list" data-testid="unordered-list" style="margin:0 0 0 18px;padding:0;">
+      <li data-testid="ul-item-1">Milk</li>
+      <li data-testid="ul-item-2">Eggs</li>
+      <li data-testid="ul-item-3">Bread</li>
+      <li data-testid="ul-item-4">Butter</li>
+      <li data-testid="ul-item-5">Cheese</li>
+    </ul>
+  </div>
+</div><!-- /.ld-grid -->
+
+<h4 class="ld-section-title mt-3"><i class="fas fa-pen-square" aria-hidden="true"></i> Forms &amp; Custom Controls</h4>
+<div class="ld-grid">
+
+<!-- ═══ 9. Form with Dropdown Submission ═══ -->
+<div class="card">
+  <h3 class="card-title">Booking Form with Dropdowns</h3>
+  <form id="booking-form" action="#" data-testid="booking-form" aria-label="Booking form">
+    <input type="hidden" name="_csrf" value="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>" />
+    <div class="booking-grid">
+      <div>
+        <label for="room-type" class="text-muted" style="font-size:13px;">Room Type:</label>
+        <select id="room-type" name="roomType" class="form-select" data-testid="room-type" required aria-label="Room type" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;margin-top:4px;">
+          <option value="" disabled selected>-- Select --</option>
+          <option value="single">Single</option>
+          <option value="double">Double</option>
+          <option value="suite">Suite</option>
+          <option value="penthouse">Penthouse</option>
+        </select>
+      </div>
+      <div>
+        <label for="guests-count" class="text-muted" style="font-size:13px;">Guests:</label>
+        <select id="guests-count" name="guests" class="form-select" data-testid="guests-count" required aria-label="Number of guests" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;margin-top:4px;">
+          <option value="" disabled selected>-- Select --</option>
+          <% for (var g = 1; g <= 6; g++) { %>
+            <option value="<%= g %>"><%= g %></option>
+          <% } %>
+        </select>
+      </div>
+      <div>
+        <label for="meal-plan" class="text-muted" style="font-size:13px;">Meal Plan:</label>
+        <select id="meal-plan" name="mealPlan" class="form-select" data-testid="meal-plan" aria-label="Meal plan" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;margin-top:4px;">
+          <option value="none">No Meals</option>
+          <option value="breakfast">Breakfast Only</option>
+          <option value="half-board">Half Board</option>
+          <option value="full-board">Full Board</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" id="book-btn" class="btn btn-primary mt-3 btn-sm" data-testid="book-btn" aria-label="Book now">Book Now</button>
+    <p id="booking-result" class="mt-2 text-muted" data-testid="booking-result" style="font-size:12px;"></p>
+  </form>
+</div>
+
+<!-- ═══ 10. Custom Dropdown (non-<select>) ═══ -->
+<div class="card">
+  <h3 class="card-title">Custom Dropdown (div-based)</h3>
+  <p class="text-muted" style="font-size:12px;">A dropdown built with divs — no native &lt;select&gt;. Useful for practicing ARIA / keyboard-interaction automation.</p>
+  <div id="custom-dropdown" class="custom-dropdown" data-testid="custom-dropdown" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-label="Select a framework" tabindex="0" style="position:relative;border:1px solid var(--border);border-radius:6px;padding:8px 12px;cursor:pointer;user-select:none;">
+    <span id="custom-dd-value" data-testid="custom-dd-value">-- Select Framework --</span>
+    <span style="float:right;">&#9662;</span>
+    <ul id="custom-dd-list" role="listbox" data-testid="custom-dd-list"
+        style="display:none;position:absolute;left:0;right:0;top:100%;background:var(--surface);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:0;margin:0;list-style:none;z-index:10;max-height:200px;overflow:auto;">
+      <li role="option" data-value="react"   class="custom-dd-option" data-testid="dd-opt-react"   tabindex="-1" style="padding:8px 12px;">React</li>
+      <li role="option" data-value="angular" class="custom-dd-option" data-testid="dd-opt-angular" tabindex="-1" style="padding:8px 12px;">Angular</li>
+      <li role="option" data-value="vue"     class="custom-dd-option" data-testid="dd-opt-vue"     tabindex="-1" style="padding:8px 12px;">Vue</li>
+      <li role="option" data-value="svelte"  class="custom-dd-option" data-testid="dd-opt-svelte"  tabindex="-1" style="padding:8px 12px;">Svelte</li>
+      <li role="option" data-value="ember"   class="custom-dd-option" data-testid="dd-opt-ember"   tabindex="-1" style="padding:8px 12px;">Ember</li>
+    </ul>
+  </div>
+  <p id="custom-dd-result" class="mt-2 text-muted" data-testid="custom-dd-result" style="font-size:12px;"></p>
+</div>
+
+</div><!-- /.ld-grid -->
+
+<script>
+/* ─── 1. Basic select: show chosen colour ──────────────────────────── */
+document.getElementById('color-select').addEventListener('change', function () {
+  document.getElementById('color-result').textContent = '🎨 Selected: ' + this.options[this.selectedIndex].text + ' (' + this.value + ')';
+});
+
+/* ─── 2. Multi-select: show selections ─────────────────────────────── */
+document.getElementById('lang-multi').addEventListener('change', function () {
+  var chosen = Array.from(this.selectedOptions).map(function (o) { return o.text; });
+  document.getElementById('lang-multi-result').textContent = chosen.length ? '💻 Selected: ' + chosen.join(', ') : '';
+});
+
+/* ─── 3. Grouped select ────────────────────────────────────────────── */
+document.getElementById('vehicle-select').addEventListener('change', function () {
+  var opt = this.options[this.selectedIndex];
+  var group = opt.parentElement.tagName === 'OPTGROUP' ? opt.parentElement.label : '';
+  document.getElementById('vehicle-result').textContent = '🚗 ' + opt.text + (group ? ' (' + group + ')' : '');
+});
+
+/* ─── 5. Searchable list ───────────────────────────────────────────── */
+(function () {
+  var input = document.getElementById('search-list-input');
+  var items = document.querySelectorAll('#search-list .list-item');
+  var resultEl = document.getElementById('search-list-result');
+  input.addEventListener('input', function () {
+    var q = this.value.toLowerCase();
+    var visible = 0;
+    items.forEach(function (li) {
+      var match = li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    resultEl.textContent = q ? visible + ' result(s) found' : '';
+  });
+  // Click to select an item
+  document.getElementById('search-list').addEventListener('click', function (e) {
+    if (e.target.classList.contains('list-item')) {
+      items.forEach(function (li) { li.style.background = ''; li.removeAttribute('aria-selected'); });
+      e.target.style.background = 'var(--primary-light, #dbeafe)';
+      e.target.setAttribute('aria-selected', 'true');
+      resultEl.textContent = '✅ Selected: ' + e.target.textContent;
+    }
+  });
+})();
+
+/* ─── 6. Dynamic add/remove list ───────────────────────────────────── */
+(function () {
+  var counter = 3;
+  var list = document.getElementById('dynamic-list');
+  var countEl = document.getElementById('dynamic-list-count');
+  var input = document.getElementById('new-item-input');
+
+  function updateCount() { countEl.textContent = 'Items: ' + list.children.length; }
+
+  function removeHandler(e) {
+    var btn = e.target.closest('.remove-item-btn');
+    if (btn) { btn.parentElement.remove(); updateCount(); }
+  }
+  list.addEventListener('click', removeHandler);
+
+  document.getElementById('add-item-btn').addEventListener('click', function () {
+    var text = input.value.trim();
+    if (!text) return;
+    counter++;
+    var li = document.createElement('li');
+    li.className = 'list-item d-flex justify-between align-center';
+    li.setAttribute('role', 'listitem');
+    li.setAttribute('data-testid', 'dynamic-item-' + counter);
+    li.innerHTML = '<span>' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' +
+                   '<button type="button" class="btn btn-sm remove-item-btn" data-testid="remove-btn-' + counter + '" aria-label="Remove ' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '" style="color:var(--danger);padding:2px 8px;">✕</button>';
+    list.appendChild(li);
+    input.value = '';
+    updateCount();
+  });
+})();
+
+/* ─── 7. Chained/dependent dropdowns ──────────────────────────────── */
+(function () {
+  var data = {
+    'north-america': {
+      countries: [
+        { value: 'usa', label: 'United States', cities: ['New York', 'Los Angeles', 'Chicago'] },
+        { value: 'canada', label: 'Canada', cities: ['Toronto', 'Vancouver', 'Montreal'] },
+        { value: 'mexico', label: 'Mexico', cities: ['Mexico City', 'Guadalajara', 'Monterrey'] }
+      ]
+    },
+    'europe': {
+      countries: [
+        { value: 'uk', label: 'United Kingdom', cities: ['London', 'Manchester', 'Edinburgh'] },
+        { value: 'france', label: 'France', cities: ['Paris', 'Lyon', 'Marseille'] },
+        { value: 'germany', label: 'Germany', cities: ['Berlin', 'Munich', 'Hamburg'] }
+      ]
+    },
+    'asia': {
+      countries: [
+        { value: 'india', label: 'India', cities: ['Mumbai', 'Delhi', 'Bangalore'] },
+        { value: 'japan', label: 'Japan', cities: ['Tokyo', 'Osaka', 'Kyoto'] },
+        { value: 'china', label: 'China', cities: ['Beijing', 'Shanghai', 'Shenzhen'] }
+      ]
+    }
+  };
+
+  var continentSel = document.getElementById('continent-select');
+  var countrySel   = document.getElementById('chain-country-select');
+  var citySel      = document.getElementById('chain-city-select');
+  var resultEl     = document.getElementById('chain-result');
+
+  continentSel.addEventListener('change', function () {
+    var region = data[this.value];
+    countrySel.innerHTML = '<option value="">-- Select Country --</option>';
+    citySel.innerHTML    = '<option value="">-- Select City --</option>';
+    citySel.disabled     = true;
+    if (region) {
+      region.countries.forEach(function (c) {
+        var opt = document.createElement('option');
+        opt.value = c.value; opt.textContent = c.label;
+        countrySel.appendChild(opt);
+      });
+      countrySel.disabled = false;
+    } else {
+      countrySel.disabled = true;
+    }
+    resultEl.textContent = '';
+  });
+
+  countrySel.addEventListener('change', function () {
+    var region = data[continentSel.value];
+    citySel.innerHTML = '<option value="">-- Select City --</option>';
+    if (region) {
+      var country = region.countries.find(function (c) { return c.value === countrySel.value; });
+      if (country) {
+        country.cities.forEach(function (city) {
+          var opt = document.createElement('option');
+          opt.value = city.toLowerCase().replace(/\s+/g, '-');
+          opt.textContent = city;
+          citySel.appendChild(opt);
+        });
+        citySel.disabled = false;
+      }
+    }
+    resultEl.textContent = '';
+  });
+
+  citySel.addEventListener('change', function () {
+    var city = citySel.options[citySel.selectedIndex].text;
+    var country = countrySel.options[countrySel.selectedIndex].text;
+    resultEl.textContent = '📍 ' + city + ', ' + country;
+  });
+})();
+
+/* ─── 9. Booking form submission ──────────────────────────────────── */
+document.getElementById('booking-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var room   = document.getElementById('room-type');
+  var guests = document.getElementById('guests-count');
+  var meal   = document.getElementById('meal-plan');
+  var result = document.getElementById('booking-result');
+  if (!room.value || !guests.value) {
+    result.textContent = '⚠️ Please fill in all required fields.';
+    result.style.color = 'var(--danger)';
+    return;
+  }
+  result.innerHTML = '✅ Booked! <strong>' + room.options[room.selectedIndex].text + '</strong> for ' +
+                     guests.value + ' guest(s), meal plan: <strong>' + meal.options[meal.selectedIndex].text + '</strong>.';
+  result.style.color = 'var(--success)';
+});
+
+/* ─── 10. Custom div-based dropdown ───────────────────────────────── */
+(function () {
+  var dd      = document.getElementById('custom-dropdown');
+  var display = document.getElementById('custom-dd-value');
+  var list    = document.getElementById('custom-dd-list');
+  var options = document.querySelectorAll('.custom-dd-option');
+  var resultEl = document.getElementById('custom-dd-result');
+
+  function toggle(show) {
+    var open = typeof show === 'boolean' ? show : list.style.display === 'none';
+    list.style.display = open ? 'block' : 'none';
+    dd.setAttribute('aria-expanded', String(open));
+  }
+
+  dd.addEventListener('click', function (e) {
+    if (e.target.classList.contains('custom-dd-option')) return;
+    toggle();
+  });
+
+  dd.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    if (e.key === 'Escape') toggle(false);
+  });
+
+  options.forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      display.textContent = this.textContent;
+      dd.setAttribute('data-selected', this.getAttribute('data-value'));
+      options.forEach(function (o) { o.removeAttribute('aria-selected'); o.style.background = ''; });
+      this.setAttribute('aria-selected', 'true');
+      this.style.background = 'var(--primary-light, #dbeafe)';
+      toggle(false);
+      resultEl.textContent = '✅ Selected: ' + this.textContent;
+    });
+    opt.addEventListener('mouseenter', function () { this.style.background = 'var(--primary-light, #dbeafe)'; });
+    opt.addEventListener('mouseleave', function () {
+      if (this.getAttribute('aria-selected') !== 'true') this.style.background = '';
+    });
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', function (e) {
+    if (!dd.contains(e.target)) toggle(false);
+  });
+})();
+</script>

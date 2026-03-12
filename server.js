@@ -179,6 +179,7 @@ const menuItems = [
   { label: 'Scrollbars',             href: '/scrollbars',          icon: 'fa-scroll' },
   { label: 'Calendar',               href: '/calendar',            icon: 'fa-calendar-alt' },
   { label: 'Multi-Login Sections',    href: '/multi-login',         icon: 'fa-layer-group' },
+  { label: 'Lists & Dropdowns',        href: '/lists-dropdowns',     icon: 'fa-list-alt' },
 ];
 
 // Make menuItems available to all views (including the store router)
@@ -230,6 +231,7 @@ app.get('/exit-intent',      (req, res) => render(res, 'exit-intent'));
 app.get('/scrollbars',       (req, res) => render(res, 'scrollbars'));
 app.get('/calendar',         (req, res) => render(res, 'calendar'));
 app.get('/multi-login',      (req, res) => render(res, 'multi-login'));
+app.get('/lists-dropdowns',  (req, res) => render(res, 'lists-dropdowns'));
 
 // POST: login (demo – always succeeds so testers can practice the flow)
 app.post('/login', authLimiter, (req, res) => {
